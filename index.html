@@ -71,10 +71,10 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);outline:3px so
 .report,.check{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;min-height:48px;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
 .report span,.check span{display:block;color:var(--muted);font-size:12px}
 .table-wrap{overflow:auto;margin-top:16px;border:1px solid var(--line);border-radius:8px}
-table{width:100%;border-collapse:collapse;min-width:860px}
-th,td{padding:11px 12px;border-bottom:1px solid #edf2f0;text-align:left;font-size:14px}
+table{width:100%;border-collapse:collapse;min-width:1200px}
+th,td{padding:11px 12px;border-bottom:1px solid #edf2f0;text-align:left;font-size:14px;white-space:nowrap}
 th{color:var(--muted);background:#f7fbfa;font-size:12px;text-transform:uppercase}
-td input{min-height:36px}
+td input{min-height:36px;width:100%}
 .right{text-align:right}
 .upload{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:16px;padding:14px;border:1px dashed #a8beb8;border-radius:8px;background:#f7fbfa}
 .empty{padding:24px;text-align:center;color:var(--muted)}
@@ -236,6 +236,7 @@ td input{min-height:36px}
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Back / Leave Name</th>
                 <th>ID</th>
                 <th>KRA PIN</th>
                 <th>Department</th>
@@ -548,9 +549,9 @@ const defaultState = {
   departments: ['Accounts', 'Sales', 'IT'],
   customDeductions: [],
   employees: [
-    { id:id(), name:'Amina Otieno', empId:'EMP001', kraPin:'A012345678Z', department:'Accounts', jobGrade:'G7', bankAccount:'0123456789', basicSalary:30000, houseAllowance:5000, transportAllowance:3000, otherAllowance:0, helb:0, advance:0, active:true },
-    { id:id(), name:'Brian Mwangi', empId:'EMP002', kraPin:'P000000001A', department:'Sales', jobGrade:'G5', bankAccount:'1234567890', basicSalary:55000, houseAllowance:10000, transportAllowance:5000, otherAllowance:2000, helb:4000, advance:5000, active:true },
-    { id:id(), name:'Faith Njeri',  empId:'EMP003', kraPin:'P000000002B', department:'IT', jobGrade:'G4', bankAccount:'9876543210', basicSalary:85000, houseAllowance:15000, transportAllowance:8000, otherAllowance:5000, helb:5000, advance:7000, active:true }
+    { id:id(), name:'Amina Otieno', backLeaveName:'Amina O.', empId:'EMP001', kraPin:'A012345678Z', department:'Accounts', jobGrade:'G7', bankAccount:'0123456789', basicSalary:30000, houseAllowance:5000, transportAllowance:3000, otherAllowance:0, helb:0, advance:0, active:true },
+    { id:id(), name:'Brian Mwangi', backLeaveName:'Brian M.', empId:'EMP002', kraPin:'P000000001A', department:'Sales', jobGrade:'G5', bankAccount:'1234567890', basicSalary:55000, houseAllowance:10000, transportAllowance:5000, otherAllowance:2000, helb:4000, advance:5000, active:true },
+    { id:id(), name:'Faith Njeri', backLeaveName:'Faith N.', empId:'EMP003', kraPin:'P000000002B', department:'IT', jobGrade:'G4', bankAccount:'9876543210', basicSalary:85000, houseAllowance:15000, transportAllowance:8000, otherAllowance:5000, helb:5000, advance:7000, active:true }
   ],
   employeeDeductions: [],
   advanceHistory: [
@@ -623,6 +624,8 @@ function load() {
     data.payrollHistory = Array.isArray(data.payrollHistory) ? data.payrollHistory : [];
     data.auditLog = Array.isArray(data.auditLog) ? data.auditLog : [];
     data.role = data.role || 'admin';
+    // Backfill new fields on existing data
+    data.employees.forEach(e => { if (!e.hasOwnProperty('backLeaveName')) e.backLeaveName = ''; });
     return data;
   } catch { return structuredClone(defaultState); }
 }
@@ -867,6 +870,7 @@ function renderEmployees() {
     const r = employeeRun(e);
     return `<tr data-id="${e.id}">
       <td><input data-field="name" value="${escapeHtml(e.name)}"></td>
+      <td><input data-field="backLeaveName" value="${escapeHtml(e.backLeaveName||'')}" placeholder="Back/leave name"></td>
       <td><input data-field="empId" value="${escapeHtml(e.empId||'')}" placeholder="EMP001"></td>
       <td><input data-field="kraPin" value="${escapeHtml(e.kraPin)}"></td>
       <td><input data-field="department" value="${escapeHtml(e.department||'')}"></td>
@@ -880,7 +884,7 @@ function renderEmployees() {
           <button class="mini" data-action="${e.active ? 'deactivate' : 'activate'}" style="margin-left:4px">${e.active ? 'Deactivate' : 'Activate'}</button></td>
       <td><button class="mini" data-action="use">Use</button></td>
     </tr>`;
-  }).join('') || '<tr><td colspan="12" class="empty">No employees found.</td></tr>';
+  }).join('') || '<tr><td colspan="13" class="empty">No employees found.</td></tr>';
 
   // Update department filter
   const deptSelect = q('#filterDepartment');
@@ -1121,6 +1125,7 @@ function parseCsv(text) {
   const bankIx = header.findIndex(h => ['bankaccount','account','accountnumber','bankacc','bank'].includes(h));
   const deptIx = header.findIndex(h => ['department','dept'].includes(h));
   const helbIx = header.findIndex(h => ['helb','helbamount'].includes(h));
+  const backLeaveIx = header.findIndex(h => ['backleavename','leavename','backname','leavenamefull'].includes(h));
   const data = hasHeader ? rows.slice(1) : rows;
   const validRows = [];
   const errors = [];
@@ -1133,7 +1138,8 @@ function parseCsv(text) {
       kraPin:row[kraIx>=0?kraIx:2]||'', department:row[deptIx>=0?deptIx:3]||'General',
       jobGrade:row[4]||'G7', bankAccount:row[bankIx>=0?bankIx:5]||'',
       basicSalary:salary, houseAllowance:0, transportAllowance:0, otherAllowance:0,
-      helb:num(row[helbIx>=0?helbIx:6]), advance:num(row[advanceIx>=0?advanceIx:2]), active:true
+      helb:num(row[helbIx>=0?helbIx:6]), advance:num(row[advanceIx>=0?advanceIx:2]),
+      backLeaveName:row[backLeaveIx>=0?backLeaveIx:-1]||'', active:true
     });
   });
   if (errors.length) toast(`Imported ${validRows.length}. ${errors.length} rows skipped.`);
@@ -1180,10 +1186,10 @@ function downloadDeductionReport(key) {
 
 /* ── Bank payment export ── */
 function downloadBankExport() {
-  const rows = ['employee,bankAccount,department,payableAmount,grossPay'];
+  const rows = ['employee,backLeaveName,bankAccount,department,payableAmount,grossPay'];
   state.employees.filter(e=>e.active).forEach(e => {
     const r = employeeRun(e);
-    rows.push([e.name, e.bankAccount||'', e.department||'', r.net, r.gross].map(csvCell).join(','));
+    rows.push([e.name, e.backLeaveName||'', e.bankAccount||'', e.department||'', r.net, r.gross].map(csvCell).join(','));
   });
   download(`easypay-bank-payment-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.join('\n'));
   toast('Bank payment file downloaded.');
@@ -1192,10 +1198,10 @@ function downloadBankExport() {
 
 /* ── KRA P10 Return ── */
 function downloadP10() {
-  const rows = ['employeeName,kraPin,grossPay,taxableIncome,paye,personalRelief,netPaye,empId,department'];
+  const rows = ['employeeName,backLeaveName,kraPin,grossPay,taxableIncome,paye,personalRelief,netPaye,empId,department'];
   state.employees.filter(e=>e.active).forEach(e => {
     const r = employeeRun(e);
-    rows.push([e.name, e.kraPin, r.gross, r.taxablePay, r.paye, 2400, r.paye, e.empId||'', e.department||''].map(csvCell).join(','));
+    rows.push([e.name, e.backLeaveName||'', e.kraPin, r.gross, r.taxablePay, r.paye, 2400, r.paye, e.empId||'', e.department||''].map(csvCell).join(','));
   });
   download(`easypay-kra-p10-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.join('\n'));
   toast('KRA P10 return downloaded.');
@@ -1253,6 +1259,7 @@ function generatePayslipPdf(employee) {
   txt(`Period: ${s.period}`, 120, 11, false);
   y += lh + 4;
   txt(`Employee: ${employee.name}`, 20, 11, false);
+  if (employee.backLeaveName) { txt(`Back/Leave Name: ${employee.backLeaveName}`, 120, 11, false); }
   txt(`ID: ${employee.empId || 'N/A'}`, 120, 11, false);
   y += lh;
   txt(`KRA PIN: ${employee.kraPin || 'N/A'}`, 20, 11, false);
@@ -1488,7 +1495,7 @@ q('#employeeRows').addEventListener('click', e => {
 
 /* Add employee */
 q('#addEmployee').addEventListener('click', () => {
-  const e = { id:id(), name:'New Employee', empId:`EMP${String(state.employees.length+1).padStart(3,'0')}`,
+  const e = { id:id(), name:'New Employee', backLeaveName:'', empId:`EMP${String(state.employees.length+1).padStart(3,'0')}`,
     kraPin:'', department:state.departments[0]||'General', jobGrade:'G7', bankAccount:'',
     basicSalary:30000, houseAllowance:0, transportAllowance:0, otherAllowance:0, helb:0, advance:0, active:true };
   state.employees.push(e);
@@ -1518,9 +1525,9 @@ q('#csvUpload').addEventListener('change', async e => {
 /* Download template */
 q('#downloadTemplate').addEventListener('click', () =>
   download('easypay-employee-template.csv',
-    'name,salary,advance,kraPin,bankAccount,department,helb\n' +
-    'Amina Otieno,30000,0,A012345678Z,0123456789,Accounts,0\n' +
-    'Brian Mwangi,55000,5000,P000000001A,1234567890,Sales,4000\n'
+    'name,backLeaveName,salary,advance,kraPin,bankAccount,department,helb\n' +
+    'Amina Otieno,Amina O.,30000,0,A012345678Z,0123456789,Accounts,0\n' +
+    'Brian Mwangi,Brian M.,55000,5000,P000000001A,1234567890,Sales,4000\n'
   )
 );
 
@@ -1654,10 +1661,10 @@ q('#lock').addEventListener('click', () => {
 
 /* Export CSV */
 q('#exportCsv').addEventListener('click', () => {
-  const rows = ['name,empId,department,gross,paye,nssf,sha,helb,advance,net'];
+  const rows = ['name,backLeaveName,empId,department,gross,paye,nssf,sha,helb,advance,net'];
   state.employees.filter(e=>e.active).forEach(e => {
     const r = employeeRun(e);
-    rows.push([e.name, e.empId||'', e.department||'', r.gross, r.paye, r.nssfEmployee, r.sha, r.helb, r.advance, r.net].join(','));
+    rows.push([e.name, e.backLeaveName||'', e.empId||'', e.department||'', r.gross, r.paye, r.nssfEmployee, r.sha, r.helb, r.advance, r.net].join(','));
   });
   download('easypay-payroll-export.csv', rows.join('\n'));
   toast('Payroll CSV exported.');
