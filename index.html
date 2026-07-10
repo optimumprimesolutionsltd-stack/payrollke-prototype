@@ -3,24 +3,1617 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>PayrollKE Complete Prototype</title>
+<title>PayrollKE — Complete Prototype v2</title>
+<!-- jsPDF for PDF payslips -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- JSZip for bulk downloads -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
-:root{--ink:#17211f;--muted:#63736f;--line:#dfe8e5;--paper:#f7fbfa;--panel:#fff;--green:#116149;--green2:#d9efe7;--gold:#b9831d;--blue:#255f8e;--red:#b94646;--bg:#eef4f2;--shadow:0 18px 45px rgba(25,48,43,.08)}*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}.side{display:flex;flex-direction:column;gap:26px;padding:24px;color:#f7fffc;background:#153b32}.brand{display:flex;align-items:center;gap:12px}.mark{display:grid;width:42px;height:42px;place-items:center;border-radius:8px;color:#153b32;background:#f3c969;font-weight:900}.brand span{display:block;color:#c5d8d2;font-size:13px}.nav{display:grid;gap:8px}.nav button{min-height:42px;border:1px solid transparent;border-radius:8px;color:#effaf6;background:transparent;text-align:left;padding:0 12px}.nav .active,.nav button:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.1)}.period{margin-top:auto;padding:16px;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:rgba(255,255,255,.08)}.period span,.period strong{display:block}.period span{color:#c5d8d2;font-size:13px}.period strong{margin:4px 0 16px}.main{padding:28px}.top,.panel-head,.actions,.form-actions{display:flex;align-items:center}.top,.panel-head{justify-content:space-between;gap:16px}.top{margin-bottom:20px}.top h1,.panel h2{margin:0}.top h1{font-size:34px}.panel h2{font-size:18px}.eyebrow{margin:0 0 5px;color:var(--muted);font-size:12px;font-weight:800;letter-spacing:0;text-transform:uppercase}.actions,.form-actions{gap:10px;flex-wrap:wrap}.primary,.secondary,.icon,.mini,.dangerBtn{min-height:40px;border-radius:8px;border:1px solid transparent;padding:0 14px;font-weight:750}.primary{color:#fff;background:var(--green)}.secondary{color:var(--green);border-color:var(--line);background:#fff}.side .secondary{color:var(--green2);border-color:rgba(255,255,255,.28);background:transparent}.dangerBtn{color:#fff;background:var(--red)}.icon{width:42px;padding:0;color:var(--green);border-color:var(--line);background:#fff;font-size:20px}.mini{min-height:32px;padding:0 10px;font-size:13px;color:var(--green);border-color:var(--line);background:#fff}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}.metric,.panel{border:1px solid var(--line);border-radius:8px;background:var(--panel);box-shadow:var(--shadow)}.metric{padding:16px}.metric span,.employeeStrip span{display:block;color:var(--muted);font-size:13px}.metric strong{display:block;margin-top:6px;font-size:22px}.screen{display:none}.screen.active{display:block}.grid{display:grid;grid-template-columns:1.08fr .92fr;gap:16px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{padding:18px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}label{display:grid;gap:7px;color:var(--muted);font-size:13px;font-weight:700}input,select{width:100%;min-height:42px;border:1px solid var(--line);border-radius:8px;color:var(--ink);background:var(--paper);padding:0 12px}input:focus,select:focus{border-color:var(--green);outline:3px solid rgba(17,97,73,.12)}.toggle{display:flex;grid-template-columns:none;align-items:center;gap:8px;color:var(--ink)}.toggle input{width:18px;min-height:18px}.pill{display:inline-flex;align-items:center;justify-content:center;min-width:72px;border-radius:999px;color:#7b5a0c;background:#fff2c9;padding:7px 10px;text-align:center;font-size:13px;font-weight:800}.pill.ok{color:#0f563f;background:var(--green2)}.pill.bad{color:#fff;background:var(--red)}.employeeStrip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0;padding:12px;border-radius:8px;background:#f4f8f6}.lines,.reports,.stack{display:grid;gap:9px}.line{display:flex;justify-content:space-between;gap:12px;min-height:34px;border-bottom:1px solid #edf2f0;color:var(--muted)}.line strong{color:var(--ink)}.line.net{margin-top:8px;border:0;color:var(--green);font-size:19px;font-weight:850}.line.net strong{color:var(--green)}.report,.check{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;min-height:48px;border:1px solid var(--line);border-radius:8px;padding:10px 12px}.report span,.check span{display:block;color:var(--muted);font-size:12px}.table-wrap{overflow:auto;margin-top:16px;border:1px solid var(--line);border-radius:8px}table{width:100%;border-collapse:collapse;min-width:860px}th,td{padding:11px 12px;border-bottom:1px solid #edf2f0;text-align:left;font-size:14px}th{color:var(--muted);background:#f7fbfa;font-size:12px;text-transform:uppercase}td input{min-height:36px}.right{text-align:right}.upload{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:16px;padding:14px;border:1px dashed #a8beb8;border-radius:8px;background:#f7fbfa}.empty{padding:24px;text-align:center;color:var(--muted)}.notes ul{margin:16px 0 0;padding-left:18px;color:var(--muted)}.notes li+li{margin-top:8px}.miniChart{display:grid;gap:8px}.bar{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;color:var(--muted);font-size:13px}.bar i{display:block;height:10px;border-radius:999px;background:var(--green)}.bench{border-left:4px solid var(--green);padding-left:12px;color:var(--muted)}.toast{position:fixed;right:20px;bottom:20px;transform:translateY(12px);opacity:0;pointer-events:none;max-width:360px;border-radius:8px;color:white;background:#17211f;padding:12px 14px;transition:180ms ease}.toast.show{transform:translateY(0);opacity:1}@media(max-width:1050px){.app{grid-template-columns:1fr}.side{min-height:auto}.nav{grid-template-columns:repeat(7,minmax(120px,1fr));overflow-x:auto}.period{margin-top:0}.grid,.two,.three{grid-template-columns:1fr}}@media(max-width:720px){.main,.side{padding:18px}.top{align-items:flex-start;flex-direction:column}.metrics,.fields,.employeeStrip,.upload{grid-template-columns:1fr}.bar{grid-template-columns:1fr}}
+:root{--ink:#17211f;--muted:#63736f;--line:#dfe8e5;--paper:#f7fbfa;--panel:#fff;--green:#116149;--green2:#d9efe7;--gold:#b9831d;--blue:#255f8e;--red:#b94646;--bg:#eef4f2;--shadow:0 18px 45px rgba(25,48,43,.08)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+/* ── Layout ── */
+.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{display:flex;flex-direction:column;gap:26px;padding:24px;color:#f7fffc;background:#153b32}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{display:grid;width:42px;height:42px;place-items:center;border-radius:8px;color:#153b32;background:#f3c969;font-weight:900;font-size:22px}
+.brand span{display:block;color:#c5d8d2;font-size:13px}
+.role-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:999px;background:var(--gold);color:#fff;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:4px}
+
+.nav{display:grid;gap:8px}
+.nav button{min-height:42px;border:1px solid transparent;border-radius:8px;color:#effaf6;background:transparent;text-align:left;padding:0 12px;font-size:14px}
+.nav .active,.nav button:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.1)}
+
+.period{margin-top:auto;padding:16px;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:rgba(255,255,255,.08)}
+.period span,.period strong{display:block}
+.period span{color:#c5d8d2;font-size:13px}
+.period strong{margin:4px 0 16px}
+
+.main{padding:28px;overflow-y:auto;max-height:100vh}
+.top,.panel-head,.actions,.form-actions{display:flex;align-items:center}
+.top,.panel-head{justify-content:space-between;gap:16px}
+.top{margin-bottom:20px}
+.top h1,.panel h2{margin:0}
+.top h1{font-size:34px}
+.panel h2{font-size:18px}
+.eyebrow{margin:0 0 5px;color:var(--muted);font-size:12px;font-weight:800;letter-spacing:0;text-transform:uppercase}
+.actions,.form-actions{gap:10px;flex-wrap:wrap}
+
+/* ── Buttons ── */
+.primary,.secondary,.icon,.mini,.dangerBtn,.ghost{min-height:40px;border-radius:8px;border:1px solid transparent;padding:0 14px;font-weight:750}
+.primary{color:#fff;background:var(--green)}
+.secondary{color:var(--green);border-color:var(--line);background:#fff}
+.side .secondary{color:var(--green2);border-color:rgba(255,255,255,.28);background:transparent}
+.dangerBtn{color:#fff;background:var(--red)}
+.icon{width:42px;padding:0;color:var(--green);border-color:var(--line);background:#fff;font-size:20px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.mini{min-height:32px;padding:0 10px;font-size:13px;color:var(--green);border-color:var(--line);background:#fff}
+.ghost{color:var(--muted);border-color:var(--line);background:#fff}
+
+/* ── Metrics ── */
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.metric,.panel{border:1px solid var(--line);border-radius:8px;background:var(--panel);box-shadow:var(--shadow)}
+.metric{padding:16px}
+.metric span,.employeeStrip span{display:block;color:var(--muted);font-size:13px}
+.metric strong{display:block;margin-top:6px;font-size:22px}
+
+/* ── Screens ── */
+.screen{display:none}
+.screen.active{display:block}
+
+/* ── Grid helpers ── */
+.grid{display:grid;grid-template-columns:1.08fr .92fr;gap:16px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.panel{padding:18px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+label{display:grid;gap:7px;color:var(--muted);font-size:13px;font-weight:700}
+input,select,textarea{width:100%;min-height:42px;border:1px solid var(--line);border-radius:8px;color:var(--ink);background:var(--paper);padding:0 12px}
+input:focus,select:focus,textarea:focus{border-color:var(--green);outline:3px solid rgba(17,97,73,.12)}
+.toggle{display:flex;grid-template-columns:none;align-items:center;gap:8px;color:var(--ink)}
+.toggle input{width:18px;min-height:18px}
+
+/* ── Pills & badges ── */
+.pill{display:inline-flex;align-items:center;justify-content:center;min-width:72px;border-radius:999px;color:#7b5a0c;background:#fff2c9;padding:7px 10px;text-align:center;font-size:13px;font-weight:800}
+.pill.ok{color:#0f563f;background:var(--green2)}
+.pill.bad{color:#fff;background:var(--red)}
+
+/* ── Employee strip ── */
+.employeeStrip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0;padding:12px;border-radius:8px;background:#f4f8f6}
+
+/* ── Lists ── */
+.lines,.reports,.stack{display:grid;gap:9px}
+.line{display:flex;justify-content:space-between;gap:12px;min-height:34px;border-bottom:1px solid #edf2f0;color:var(--muted);align-items:center}
+.line strong{color:var(--ink)}
+.line.net{margin-top:8px;border:0;color:var(--green);font-size:19px;font-weight:850}
+.line.net strong{color:var(--green)}
+
+.report,.check{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;min-height:48px;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.report span,.check span{display:block;color:var(--muted);font-size:12px}
+
+/* ── Tables ── */
+.table-wrap{overflow:auto;margin-top:16px;border:1px solid var(--line);border-radius:8px}
+table{width:100%;border-collapse:collapse;min-width:860px}
+th,td{padding:11px 12px;border-bottom:1px solid #edf2f0;text-align:left;font-size:14px}
+th{color:var(--muted);background:#f7fbfa;font-size:12px;text-transform:uppercase}
+td input{min-height:36px}
+.right{text-align:right}
+
+/* ── Upload ── */
+.upload{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:16px;padding:14px;border:1px dashed #a8beb8;border-radius:8px;background:#f7fbfa}
+
+/* ── Empty state ── */
+.empty{padding:24px;text-align:center;color:var(--muted)}
+
+/* ── Notes ── */
+.notes ul{margin:16px 0 0;padding-left:18px;color:var(--muted)}
+.notes li+li{margin-top:8px}
+
+/* ── Chart ── */
+.miniChart{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;color:var(--muted);font-size:13px}
+.bar i{display:block;height:10px;border-radius:999px;background:var(--green)}
+
+/* ── Benchmark ── */
+.bench{border-left:4px solid var(--green);padding-left:12px;color:var(--muted)}
+
+/* ── Toast ── */
+.toast{position:fixed;right:20px;bottom:20px;transform:translateY(12px);opacity:0;pointer-events:none;max-width:360px;border-radius:8px;color:white;background:#17211f;padding:12px 14px;transition:180ms ease;z-index:9999}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ── Audit log ── */
+.audit-entry{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #edf2f0;font-size:13px}
+.audit-entry .time{color:var(--muted);min-width:140px}
+.audit-entry .actor{color:var(--ink);font-weight:700;min-width:100px}
+.audit-entry .action{color:var(--ink);flex:1}
+
+/* ── Login overlay ── */
+.login-overlay{position:fixed;inset:0;background:var(--bg);z-index:10000;display:flex;align-items:center;justify-content:center}
+.login-box{background:#fff;border-radius:12px;padding:40px;box-shadow:var(--shadow);width:380px;text-align:center}
+.login-box h2{margin:0 0 8px;font-size:24px}
+.login-box p{color:var(--muted);margin:0 0 20px;font-size:14px}
+.login-box .fields{grid-template-columns:1fr}
+
+/* ── Responsive ── */
+@media(max-width:1050px){
+  .app{grid-template-columns:1fr}
+  .side{min-height:auto}
+  .nav{grid-template-columns:repeat(7,minmax(120px,1fr));overflow-x:auto}
+  .period{margin-top:0}
+  .grid,.two,.three,.four{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:720px){
+  .main,.side{padding:18px}
+  .top{align-items:flex-start;flex-direction:column}
+  .metrics,.fields,.employeeStrip,.upload{grid-template-columns:1fr}
+  .bar{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<main class="app"><aside class="side"><div class="brand"><div class="mark">P</div><div><strong>PayrollKE</strong><span>Kenya payroll cockpit</span></div></div><nav class="nav" aria-label="Main navigation"><button class="active" data-tab="dashboard" type="button">Dashboard</button><button data-tab="employees" type="button">Employees</button><button data-tab="payroll" type="button">Payroll Run</button><button data-tab="advances" type="button">Advances</button><button data-tab="payslips" type="button">Payslips</button><button data-tab="reports" type="button">Reports</button><button data-tab="settings" type="button">Settings</button></nav><section class="period"><span>Current period</span><strong id="periodLabel">July 2026</strong><button class="secondary" type="button" id="lock">Lock Payroll</button></section></aside><section class="main"><header class="top"><div><p class="eyebrow" id="screenEyebrow">Benchmarked payroll workspace</p><h1 id="screenTitle">Dashboard</h1></div><div class="actions"><button class="icon" type="button" title="Export payroll CSV" id="exportCsv">⇩</button><button class="secondary" type="button" id="runPayroll">Run Payroll</button><button class="primary" type="button" id="approve">Approve Payroll</button></div></header><section class="metrics"><article class="metric"><span>Gross Pay</span><strong id="grossMetric">KES 0.00</strong></article><article class="metric"><span>Net Pay</span><strong id="netMetric">KES 0.00</strong></article><article class="metric"><span>PAYE</span><strong id="payeMetric">KES 0.00</strong></article><article class="metric"><span>Salary Advances</span><strong id="advanceMetric">KES 0.00</strong></article></section>
-<section id="dashboard" class="screen active"><div class="three"><article class="panel"><div class="panel-head"><div><p class="eyebrow">Readiness</p><h2>Payroll Checklist</h2></div><span class="pill" id="statusPill">Draft</span></div><div class="stack" id="checklist"></div></article><article class="panel"><div class="panel-head"><div><p class="eyebrow">Variance</p><h2>Run Review</h2></div></div><div class="miniChart" id="varianceChart"></div></article></div></section>
-<section id="employees" class="screen"><section class="panel"><div class="panel-head"><div><p class="eyebrow">Employee master</p><h2>Upload Names and Salaries</h2></div><div class="actions"><button class="secondary" type="button" id="downloadTemplate">Download Template</button><button class="primary" type="button" id="addEmployee">Add Employee</button></div></div><div class="upload"><label>CSV file<input type="file" id="csvUpload" accept=".csv,text/csv"></label><span class="pill ok">name, salary, advance</span></div><div class="table-wrap"><table><thead><tr><th>Name</th><th>KRA PIN</th><th>NSSF</th><th>SHA</th><th class="right">Salary</th><th class="right">Advance</th><th class="right">Net Pay</th><th>Action</th></tr></thead><tbody id="employeeRows"></tbody></table></div></section></section>
-<section id="payroll" class="screen"><section class="grid"><form class="panel" id="payrollForm"><div class="panel-head"><div><p class="eyebrow">Calculator</p><h2>Employee Pay</h2></div><label class="toggle"><input type="checkbox" id="resident" checked>Resident</label></div><div class="fields"><label>Employee<select id="employeeSelect"></select></label><label>KRA PIN<input id="kraPin"></label><label>Basic salary<input id="basicSalary" type="number" min="0"></label><label>Taxable allowances<input id="allowances" type="number" min="0" value="0"></label><label>Non-taxable reimbursements<input id="reimbursements" type="number" min="0" value="0"></label><label>Bonuses / overtime<input id="bonus" type="number" min="0" value="0"></label><label>Pension contribution<input id="pension" type="number" min="0" value="0"></label><label>Salary advance<input id="salaryAdvance" type="number" min="0"></label></div><div class="form-actions"><button class="primary" type="submit">Calculate</button><button class="secondary" type="button" id="saveEmployee">Save to Employee</button></div></form><section class="panel"><div class="panel-head"><div><p class="eyebrow">Preview</p><h2>Payslip</h2></div><span class="pill" id="slipStatus">Draft</span></div><div class="employeeStrip"><div><span>Employee</span><strong id="slipName"></strong></div><div><span>KRA PIN</span><strong id="slipPin"></strong></div></div><div class="lines" id="lines"></div></section></section></section>
-<section id="advances" class="screen"><section class="panel"><div class="panel-head"><div><p class="eyebrow">Main deduction</p><h2>Salary Advances</h2></div><button class="primary" type="button" id="clearAdvances">Clear All Advances</button></div><div class="table-wrap"><table><thead><tr><th>Employee</th><th class="right">Salary</th><th class="right">Advance</th><th class="right">Advance %</th><th>Status</th></tr></thead><tbody id="advanceRows"></tbody></table></div></section></section>
-<section id="payslips" class="screen"><section class="grid"><article class="panel"><div class="panel-head"><div><p class="eyebrow">Employee portal</p><h2>Payslip Browser</h2></div></div><label>Select employee<select id="payslipSelect"></select></label><div class="lines" id="payslipBrowser"></div></article><article class="panel"><div class="panel-head"><div><p class="eyebrow">Delivery</p><h2>Ready Payslips</h2></div></div><div class="reports" id="payslipList"></div></article></section></section>
-<section id="reports" class="screen"><section class="two"><article class="panel"><div class="panel-head"><div><p class="eyebrow">Statutory</p><h2>Deduction Downloads</h2></div></div><div class="reports" id="reportsList"></div></article><article class="panel"><div class="panel-head"><div><p class="eyebrow">Finance</p><h2>Bank Payment Summary</h2></div></div><div class="reports" id="bankList"></div></article></section></section>
-<section id="settings" class="screen"><section class="two"><form class="panel" id="settingsForm"><div class="panel-head"><div><p class="eyebrow">Company</p><h2>Payroll Settings</h2></div></div><div class="fields"><label>Company name<input id="companyName"></label><label>Payroll period<input id="payrollPeriod"></label><label>SHA rate %<input id="shaRate" type="number" step="0.01"></label><label>Housing levy %<input id="housingRate" type="number" step="0.01"></label><label>NSSF rate %<input id="nssfRate" type="number" step="0.01"></label><label>NSSF cap<input id="nssfCap" type="number"></label></div><button class="primary" type="submit">Save Settings</button></form><article class="panel"><div class="panel-head"><div><p class="eyebrow">Custom deductions</p><h2>Add Deductable</h2></div></div><div class="fields"><label>Deduction name<input id="customDeductionName" placeholder="SACCO, welfare, uniform"></label><label>Amount per employee<input id="customDeductionAmount" type="number" min="0" value="0"></label></div><button class="primary" type="button" id="addCustomDeduction">Add Deductable</button><div class="reports" id="customDeductionList" style="margin-top:16px"></div></article></section></section>
-</section></main><div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ═══════════════ LOGIN OVERLAY ═══════════════ -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="mark" style="margin:0 auto 16px">P</div>
+    <h2>PayrollKE</h2>
+    <p>Sign in to access the payroll cockpit</p>
+    <div class="fields">
+      <label>Username
+        <input id="loginUser" placeholder="admin or hr">
+      </label>
+      <label>Password
+        <input id="loginPass" type="password" placeholder="password">
+      </label>
+    </div>
+    <button class="primary" type="button" id="loginBtn" style="width:100%;margin-top:14px">Sign In</button>
+    <p style="margin-top:16px;font-size:12px;color:var(--muted)">Admin: admin / admin — HR: hr / hr123</p>
+  </div>
+</div>
+
+<!-- ═══════════════ MAIN APP ═══════════════ -->
+<main class="app" id="mainApp">
+  <aside class="side">
+    <div class="brand">
+      <div class="mark">P</div>
+      <div>
+        <strong>PayrollKE</strong>
+        <span>Kenya payroll cockpit</span>
+        <span class="role-badge" id="roleBadge">admin</span>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <button class="active" data-tab="dashboard" type="button">Dashboard</button>
+      <button data-tab="employees" type="button">Employees</button>
+      <button data-tab="payroll" type="button">Payroll Run</button>
+      <button data-tab="advances" type="button">Advances &amp; History</button>
+      <button data-tab="payslips" type="button">Payslips</button>
+      <button data-tab="reports" type="button">Reports &amp; Exports</button>
+      <button data-tab="audit" type="button" class="admin-only">Audit Log</button>
+      <button data-tab="settings" type="button">Settings</button>
+    </nav>
+    <section class="period">
+      <span>Current period</span>
+      <strong id="periodLabel">July 2026</strong>
+      <button class="secondary" type="button" id="lock">Lock Payroll</button>
+    </section>
+  </aside>
+
+  <section class="main">
+    <header class="top">
+      <div>
+        <p class="eyebrow" id="screenEyebrow">Benchmarked payroll workspace</p>
+        <h1 id="screenTitle">Dashboard</h1>
+      </div>
+      <div class="actions">
+        <a class="icon" href="#" title="Export payroll CSV" id="exportCsv" download>&#x2193;</a>
+        <button class="secondary" type="button" id="runPayroll">Run Payroll</button>
+        <button class="primary" type="button" id="approve">Approve Payroll</button>
+      </div>
+    </header>
+
+    <!-- Metrics bar -->
+    <section class="metrics">
+      <article class="metric"><span>Gross Pay</span><strong id="grossMetric">KES 0.00</strong></article>
+      <article class="metric"><span>Net Pay</span><strong id="netMetric">KES 0.00</strong></article>
+      <article class="metric"><span>PAYE</span><strong id="payeMetric">KES 0.00</strong></article>
+      <article class="metric"><span>Salary Advances</span><strong id="advanceMetric">KES 0.00</strong></article>
+    </section>
+
+    <!-- ── DASHBOARD ── -->
+    <section id="dashboard" class="screen active">
+      <div class="three">
+        <article class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Readiness</p><h2>Payroll Checklist</h2></div>
+            <span class="pill" id="statusPill">Draft</span>
+          </div>
+          <div class="stack" id="checklist"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Variance</p><h2>Run Review</h2></div></div>
+          <div class="miniChart" id="varianceChart"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Quick Actions</p><h2>Backup &amp; Export</h2></div></div>
+          <div class="stack">
+            <button class="mini" type="button" id="backupAll" style="text-align:left">&#x2B06; Backup All Company Data</button>
+            <button class="mini" type="button" id="downloadZip" style="text-align:left">&#x2B06; Download Payslip ZIP</button>
+            <button class="mini" type="button" id="exportBank" style="text-align:left">&#x2B06; Export Bank Payment File</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ── EMPLOYEES ── -->
+    <section id="employees" class="screen">
+      <section class="panel">
+        <div class="panel-head">
+          <div><p class="eyebrow">Employee master</p><h2>Upload Names and Salaries</h2></div>
+          <div class="actions">
+            <button class="secondary" type="button" id="downloadTemplate">Download Template</button>
+            <button class="primary" type="button" id="addEmployee">Add Employee</button>
+          </div>
+        </div>
+        <div class="upload">
+          <label>CSV file<input type="file" id="csvUpload" accept=".csv,text/csv"></label>
+          <span class="pill ok">name, salary, advance</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>KRA PIN</th>
+                <th>NSSF</th>
+                <th>SHA</th>
+                <th>Bank Acc.</th>
+                <th class="right">Salary</th>
+                <th class="right">Advance</th>
+                <th class="right">Net Pay</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="employeeRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- ── PAYROLL RUN ── -->
+    <section id="payroll" class="screen">
+      <section class="grid">
+        <form class="panel" id="payrollForm">
+          <div class="panel-head">
+            <div><p class="eyebrow">Calculator</p><h2>Employee Pay</h2></div>
+            <label class="toggle"><input type="checkbox" id="resident" checked>Resident</label>
+          </div>
+          <div class="fields">
+            <label>Employee<select id="employeeSelect"></select></label>
+            <label>KRA PIN<input id="kraPin"></label>
+            <label>Basic salary<input id="basicSalary" type="number" min="0"></label>
+            <label>Taxable allowances<input id="allowances" type="number" min="0" value="0"></label>
+            <label>Non-taxable reimbursements<input id="reimbursements" type="number" min="0" value="0"></label>
+            <label>Bonuses / overtime<input id="bonus" type="number" min="0" value="0"></label>
+            <label>Pension contribution<input id="pension" type="number" min="0" value="0"></label>
+            <label>Salary advance<input id="salaryAdvance" type="number" min="0"></label>
+          </div>
+          <div class="form-actions">
+            <button class="primary" type="submit">Calculate</button>
+            <button class="secondary" type="button" id="saveEmployee">Save to Employee</button>
+          </div>
+        </form>
+        <section class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Preview</p><h2>Payslip</h2></div>
+            <span class="pill" id="slipStatus">Draft</span>
+          </div>
+          <div class="employeeStrip">
+            <div><span>Employee</span><strong id="slipName"></strong></div>
+            <div><span>KRA PIN</span><strong id="slipPin"></strong></div>
+          </div>
+          <div class="lines" id="lines"></div>
+          <div class="actions" style="margin-top:14px">
+            <button class="mini" type="button" id="downloadPdf">Download PDF Payslip</button>
+            <button class="mini ghost" type="button" id="employerSplit">Show Employer Split</button>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <!-- ── ADVANCES & HISTORY ── -->
+    <section id="advances" class="screen">
+      <section class="grid">
+        <article class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Main deduction</p><h2>Salary Advances</h2></div>
+            <button class="primary" type="button" id="clearAdvances">Clear All Advances</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Employee</th><th class="right">Salary</th><th class="right">Advance</th><th class="right">Advance %</th><th>Status</th></tr>
+              </thead>
+              <tbody id="advanceRows"></tbody>
+            </table>
+          </div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">History</p><h2>Advance Repayment History</h2></div></div>
+          <div class="reports" id="advanceHistory"></div>
+        </article>
+      </section>
+    </section>
+
+    <!-- ── PAYSLIPS ── -->
+    <section id="payslips" class="screen">
+      <section class="grid">
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Employee portal</p><h2>Payslip Browser</h2></div></div>
+          <label>Select employee<select id="payslipSelect"></select></label>
+          <div class="lines" id="payslipBrowser"></div>
+          <div class="actions" style="margin-top:14px">
+            <button class="mini" type="button" id="downloadSinglePdf">Download PDF</button>
+          </div>
+        </article>
+        <article class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Delivery</p><h2>Ready Payslips</h2></div>
+          </div>
+          <div class="reports" id="payslipList"></div>
+          <div class="actions" style="margin-top:14px">
+            <button class="mini" type="button" id="downloadAllPdf">Download All PDFs (ZIP)</button>
+          </div>
+        </article>
+      </section>
+    </section>
+
+    <!-- ── REPORTS & EXPORTS ── -->
+    <section id="reports" class="screen">
+      <section class="grid">
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Statutory &amp; Custom</p><h2>Deduction Downloads</h2></div></div>
+          <div class="reports" id="reportsList"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Finance</p><h2>Bank Payment Summary</h2></div></div>
+          <div class="reports" id="bankList"></div>
+          <div class="actions" style="margin-top:14px">
+            <button class="mini" type="button" id="exportBankReport">Export Bank CSV</button>
+          </div>
+        </article>
+      </section>
+      <section class="panel" style="margin-top:16px">
+        <div class="panel-head"><div><p class="eyebrow">Employer contributions</p><h2>Employer vs Employee Deductions</h2></div></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Employee</th><th class="right">PAYE (emp)</th><th class="right">NSSF (emp)</th><th class="right">SHA (emp)</th><th class="right">Housing (emp)</th><th class="right">NSSF (er)</th><th class="right">SHA (er)</th><th class="right">Housing (er)</th><th class="right">Total Employer</th></tr>
+            </thead>
+            <tbody id="employerSplitRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- ── AUDIT LOG ── -->
+    <section id="audit" class="screen admin-only">
+      <section class="panel">
+        <div class="panel-head">
+          <div><p class="eyebrow">Compliance</p><h2>Audit Log</h2></div>
+          <button class="mini ghost" type="button" id="clearAudit">Clear Log</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Time</th><th>Actor</th><th>Action</th></tr></thead>
+            <tbody id="auditRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- ── SETTINGS ── -->
+    <section id="settings" class="screen">
+      <section class="grid">
+        <form class="panel" id="settingsForm">
+          <div class="panel-head"><div><p class="eyebrow">Company</p><h2>Payroll Settings</h2></div></div>
+          <div class="fields">
+            <label>Company name<input id="companyName"></label>
+            <label>Payroll period<input id="payrollPeriod"></label>
+            <label>SHA rate %<input id="shaRate" type="number" step="0.01"></label>
+            <label>Housing levy %<input id="housingRate" type="number" step="0.01"></label>
+            <label>NSSF rate %<input id="nssfRate" type="number" step="0.01"></label>
+            <label>NSSF cap<input id="nssfCap" type="number"></label>
+          </div>
+          <button class="primary" type="submit">Save Settings</button>
+        </form>
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Custom deductions</p><h2>Add Deductible</h2></div></div>
+          <div class="fields">
+            <label>Deduction name<input id="customDeductionName" placeholder="SACCO, welfare, uniform"></label>
+            <label>Amount per employee<input id="customDeductionAmount" type="number" min="0" value="0"></label>
+          </div>
+          <button class="primary" type="button" id="addCustomDeduction">Add Deductible</button>
+          <div class="reports" id="customDeductionList" style="margin-top:16px"></div>
+        </article>
+      </section>
+      <!-- Per-employee custom deductions -->
+      <section class="panel" style="margin-top:16px">
+        <div class="panel-head">
+          <div><p class="eyebrow">Per employee</p><h2>Individual Deductibles</h2></div>
+          <button class="mini" type="button" id="addEmployeeDeduction">Add Deduction</button>
+        </div>
+        <div class="fields">
+          <label>Employee<select id="employeeDeductionSelect"></select></label>
+          <label>Deduction name<input id="employeeDeductionName" placeholder="SACCO, loan, etc."></label>
+          <label>Amount<input id="employeeDeductionAmount" type="number" min="0" value="0"></label>
+        </div>
+        <div class="table-wrap" style="margin-top:14px">
+          <table>
+            <thead><tr><th>Employee</th><th>Deduction</th><th class="right">Amount</th><th>Action</th></tr></thead>
+            <tbody id="employeeDeductionRows"></tbody>
+          </table>
+        </div>
+      </section>
+      <!-- Roles -->
+      <section class="panel" style="margin-top:16px">
+        <div class="panel-head"><div><p class="eyebrow">Access</p><h2>User Roles</h2></div></div>
+        <div class="bench" style="margin:0 0 12px">
+          <strong>Admin</strong> — full access to all features, audit log, settings.<br>
+          <strong>HR</strong> — payroll runs, employee data, reports.<br>
+          <strong>Viewer</strong> — read-only dashboard and payslips.
+        </div>
+        <div class="fields">
+          <label>Role<select id="currentUserRole"><option value="admin">Admin</option><option value="hr">HR</option><option value="viewer">Viewer</option></select></label>
+        </div>
+        <button class="secondary" type="button" id="switchRole">Switch Role</button>
+      </section>
+    </section>
+
+  </section>
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <script>
-const q=s=>document.querySelector(s);const qa=s=>Array.from(document.querySelectorAll(s));const money=new Intl.NumberFormat('en-KE',{style:'currency',currency:'KES',minimumFractionDigits:2,maximumFractionDigits:2});const defaultState={settings:{companyName:'PayrollKE Demo Ltd',period:'July 2026',shaRate:2.75,housingRate:1.5,nssfRate:6,nssfCap:72000},approved:false,locked:false,customDeductions:[],employees:[{id:id(),name:'Amina Otieno',kraPin:'A012345678Z',nssf:'NSSF001',sha:'SHA001',salary:30000,advance:0},{id:id(),name:'Brian Mwangi',kraPin:'P000000001A',nssf:'NSSF002',sha:'SHA002',salary:55000,advance:5000},{id:id(),name:'Faith Njeri',kraPin:'P000000002B',nssf:'NSSF003',sha:'SHA003',salary:85000,advance:7000}]};let state=load();let selectedId=state.employees[0]?.id;const bands=[{limit:24000,rate:.1},{limit:8333,rate:.25},{limit:467667,rate:.3},{limit:300000,rate:.325},{limit:Infinity,rate:.35}];const f={employeeSelect:q('#employeeSelect'),payslipSelect:q('#payslipSelect'),kraPin:q('#kraPin'),basicSalary:q('#basicSalary'),allowances:q('#allowances'),reimbursements:q('#reimbursements'),bonus:q('#bonus'),pension:q('#pension'),salaryAdvance:q('#salaryAdvance'),resident:q('#resident')};function id(){return Math.random().toString(36).slice(2)+Date.now().toString(36)}function load(){try{const saved=JSON.parse(localStorage.getItem('payrollke-state'));const data=saved||structuredClone(defaultState);data.settings={...defaultState.settings,...(data.settings||{})};data.customDeductions=Array.isArray(data.customDeductions)?data.customDeductions:[];data.employees=Array.isArray(data.employees)?data.employees:structuredClone(defaultState.employees);return data}catch{return structuredClone(defaultState)}}function save(){localStorage.setItem('payrollke-state',JSON.stringify(state))}function num(v){return Math.max(0,Number(v||0))}function escapeHtml(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}function calcPaye(taxable,resident=true){if(!resident)return taxable*.3;let left=taxable,tax=0;for(const b of bands){if(left<=0)break;const part=Math.min(left,b.limit);tax+=part*b.rate;left-=part}return Math.max(0,tax-2400)}function payroll(input){const s=state.settings;const basic=num(input.salary??input.basicSalary),allowances=num(input.allowances),reimbursements=num(input.reimbursements),bonus=num(input.bonus),pension=num(input.pension),advance=num(input.advance??input.salaryAdvance);const customDeductions=state.customDeductions||[];const customTotal=customDeductions.reduce((sum,d)=>sum+num(d.amount),0);const gross=basic+allowances+bonus+reimbursements;const taxableGross=basic+allowances+bonus;const nssfPensionable=Math.min(taxableGross,num(s.nssfCap));const nssf=nssfPensionable*(num(s.nssfRate)/100);const sha=gross*(num(s.shaRate)/100);const housingEmployee=taxableGross*(num(s.housingRate)/100);const housingEmployer=taxableGross*(num(s.housingRate)/100);const taxablePay=Math.max(0,taxableGross-nssf-Math.min(pension,30000)-sha-housingEmployee);const paye=calcPaye(taxablePay,input.resident!==false);const net=gross-(paye+nssf+sha+housingEmployee+pension+advance+customTotal);return{gross,taxableGross,nssf,sha,housingEmployee,housingEmployer,taxablePay,paye,pension,advance,customTotal,customBreakdown:customDeductions.map(d=>({name:d.name,amount:num(d.amount)})),reimbursements,net,stat:paye+nssf+sha+housingEmployee}}function employeeRun(e){return payroll({salary:e.salary,advance:e.advance,resident:true})}function totals(){return state.employees.reduce((a,e)=>{const r=employeeRun(e);a.gross+=r.gross;a.net+=r.net;a.paye+=r.paye;a.advance+=r.advance;a.nssf+=r.nssf;a.sha+=r.sha;a.housingEmployee+=r.housingEmployee;a.housingEmployer+=r.housingEmployer;a.customTotal+=r.customTotal;return a},{gross:0,net:0,paye:0,advance:0,nssf:0,sha:0,housingEmployee:0,housingEmployer:0,customTotal:0})}function currentInput(){return{basicSalary:f.basicSalary.value,allowances:f.allowances.value,reimbursements:f.reimbursements.value,bonus:f.bonus.value,pension:f.pension.value,salaryAdvance:f.salaryAdvance.value,resident:f.resident.checked}}function syncSelectedToForm(){const e=state.employees.find(x=>x.id===selectedId)||state.employees[0];if(!e)return;selectedId=e.id;f.employeeSelect.value=e.id;f.kraPin.value=e.kraPin||'';f.basicSalary.value=e.salary;f.allowances.value=0;f.reimbursements.value=0;f.bonus.value=0;f.pension.value=0;f.salaryAdvance.value=e.advance}function renderAll(){const t=totals();q('#grossMetric').textContent=money.format(t.gross);q('#netMetric').textContent=money.format(t.net);q('#payeMetric').textContent=money.format(t.paye);q('#advanceMetric').textContent=money.format(t.advance);q('#periodLabel').textContent=state.settings.period;renderSelects();renderPayrollPreview();renderEmployees();renderAdvances();renderPayslips();renderReports();renderDashboard();renderSettings();save()}function renderSelects(){const options=state.employees.map(e=>`<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('');f.employeeSelect.innerHTML=options;f.payslipSelect.innerHTML=options;f.employeeSelect.value=selectedId;f.payslipSelect.value=selectedId}function renderPayrollPreview(){const emp=state.employees.find(e=>e.id===selectedId)||state.employees[0];if(!emp)return;const r=payroll(currentInput());q('#slipName').textContent=emp.name;q('#slipPin').textContent=f.kraPin.value||'Missing PIN';q('#slipStatus').textContent=state.approved?'Approved':'Draft';q('#slipStatus').className='pill '+(state.approved?'ok':'');const rows=[['Gross taxable earnings',r.taxableGross],['Non-taxable reimbursements',r.reimbursements],['Taxable pay after reliefs',r.taxablePay],['PAYE',-r.paye],['NSSF employee',-r.nssf],['SHA employee',-r.sha],['Housing levy employee',-r.housingEmployee],['Pension contribution',-r.pension],['Salary advance',-r.advance],...r.customBreakdown.map(d=>[d.name,-d.amount])];q('#lines').innerHTML=[...rows.map(([l,a])=>`<div class="line"><span>${l}</span><strong>${money.format(a)}</strong></div>`),`<div class="line net"><span>Net pay</span><strong>${money.format(r.net)}</strong></div>`].join('')}function renderEmployees(){q('#employeeRows').innerHTML=state.employees.map(e=>{const r=employeeRun(e);return`<tr data-id="${e.id}"><td><input data-field="name" value="${escapeHtml(e.name)}"></td><td><input data-field="kraPin" value="${escapeHtml(e.kraPin)}"></td><td><input data-field="nssf" value="${escapeHtml(e.nssf)}"></td><td><input data-field="sha" value="${escapeHtml(e.sha)}"></td><td><input class="right" data-field="salary" type="number" min="0" value="${e.salary}"></td><td><input class="right" data-field="advance" type="number" min="0" value="${e.advance}"></td><td class="right"><strong>${money.format(r.net)}</strong></td><td><button class="mini" data-action="use">Use</button></td></tr>`}).join('')||'<tr><td colspan="8" class="empty">No employees yet.</td></tr>'}function renderAdvances(){q('#advanceRows').innerHTML=state.employees.map(e=>{const pct=e.salary?e.advance/e.salary*100:0;const status=pct>40?'Review':pct>0?'Active':'None';return`<tr><td>${escapeHtml(e.name)}</td><td class="right">${money.format(e.salary)}</td><td class="right">${money.format(e.advance)}</td><td class="right">${pct.toFixed(1)}%</td><td><span class="pill ${pct>40?'bad':pct>0?'ok':''}">${status}</span></td></tr>`}).join('')}function renderPayslips(){const emp=state.employees.find(e=>e.id===f.payslipSelect.value)||state.employees[0];if(!emp)return;const r=employeeRun(emp);q('#payslipBrowser').innerHTML=[['Gross pay',r.gross],['PAYE',-r.paye],['NSSF',-r.nssf],['SHA',-r.sha],['Housing levy',-r.housingEmployee],['Salary advance',-r.advance],...r.customBreakdown.map(d=>[d.name,-d.amount]),['Net pay',r.net]].map(([l,a],i,arr)=>`<div class="line ${i===arr.length-1?'net':''}"><span>${l}</span><strong>${money.format(a)}</strong></div>`).join('');q('#payslipList').innerHTML=state.employees.map(e=>`<div class="report"><div><strong>${escapeHtml(e.name)}</strong><span>${state.settings.period} payslip ready</span></div><button class="mini" data-payslip="${e.id}">View</button></div>`).join('')}function renderReports(){const t=totals();const standardReports=[['paye','PAYE return',t.paye,'KRA monthly PAYE'],['nssf','NSSF schedule',t.nssf,'Employee contribution'],['sha','SHA schedule',t.sha,'Health contribution'],['housing','Housing levy',t.housingEmployee+t.housingEmployer,'Employee + employer'],['advance','Salary advance recovery',t.advance,'Internal deduction report']];const customReports=(state.customDeductions||[]).map(d=>['custom:'+d.id,d.name,num(d.amount)*state.employees.length,'Custom deductable']);q('#reportsList').innerHTML=[...standardReports,...customReports].map(([key,a,b,c])=>`<div class="report"><div><strong>${a}</strong><span>${c}</span></div><div class="actions"><strong>${money.format(b)}</strong><button class="mini" data-deduct="${key}">Download</button></div></div>`).join('');q('#bankList').innerHTML=state.employees.map(e=>{const r=employeeRun(e);return`<div class="report"><div><strong>${escapeHtml(e.name)}</strong><span>Net salary payable</span></div><strong>${money.format(r.net)}</strong></div>`}).join('')}function renderDashboard(){const count=state.employees.length,missing=state.employees.filter(e=>!e.kraPin||!e.nssf||!e.sha).length,advances=state.employees.filter(e=>num(e.advance)>0).length;q('#statusPill').textContent=state.locked?'Locked':state.approved?'Approved':'Draft';q('#statusPill').className='pill '+(state.approved||state.locked?'ok':'');q('#checklist').innerHTML=[['Employees loaded',`${count} employee records`,count>0],['Statutory IDs checked',`${missing} missing IDs`,missing===0],['Salary advances reviewed',`${advances} active advances`,true],['Payroll approved',state.approved?'Ready for payment':'Awaiting approval',state.approved],['Period locked',state.locked?'No further edits':'Still editable',state.locked]].map(([a,b,ok])=>`<div class="check"><div><strong>${a}</strong><span>${b}</span></div><span class="pill ${ok?'ok':'bad'}">${ok?'OK':'Open'}</span></div>`).join('');const t=totals();const max=Math.max(t.gross,t.net,t.paye+t.nssf+t.sha+t.housingEmployee,t.advance,1);q('#varianceChart').innerHTML=[['Gross',t.gross],['Net',t.net],['Statutory',t.paye+t.nssf+t.sha+t.housingEmployee],['Advances',t.advance]].map(([l,v])=>`<div class="bar"><span>${l}</span><i style="width:${Math.max(3,v/max*100)}%"></i><strong>${money.format(v)}</strong></div>`).join('')}function renderSettings(){q('#companyName').value=state.settings.companyName;q('#payrollPeriod').value=state.settings.period;q('#shaRate').value=state.settings.shaRate;q('#housingRate').value=state.settings.housingRate;q('#nssfRate').value=state.settings.nssfRate;q('#nssfCap').value=state.settings.nssfCap;renderCustomDeductions()}function renderCustomDeductions(){const list=q('#customDeductionList');if(!list)return;list.innerHTML=(state.customDeductions||[]).map(d=>`<div class="report"><div><strong>${escapeHtml(d.name)}</strong><span>${money.format(num(d.amount))} per employee</span></div><button class="mini" data-remove-deduction="${d.id}">Remove</button></div>`).join('')||'<div class="empty">No custom deductables yet.</div>'}function parseCsv(text){const rows=text.trim().split(/\r?\n/).filter(Boolean).map(line=>line.split(',').map(c=>c.trim().replace(/^"|"$/g,'')));if(!rows.length)return[];const header=rows[0].map(h=>h.toLowerCase().replace(/\s+/g,''));const hasHeader=header.some(h=>['name','employee','salary','advance'].includes(h));const nameIx=header.findIndex(h=>['name','employee','employeename','fullname'].includes(h));const salaryIx=header.findIndex(h=>['salary','basicsalary','basicpay','grosssalary'].includes(h));const advanceIx=header.findIndex(h=>['advance','salaryadvance','loan','deduction'].includes(h));const kraIx=header.findIndex(h=>['krapin','pin','kra'].includes(h));const data=hasHeader?rows.slice(1):rows;return data.map((row,i)=>({id:id(),name:row[nameIx>=0?nameIx:0]||`Employee ${i+1}`,kraPin:row[kraIx>=0?kraIx:3]||'',nssf:'',sha:'',salary:num(row[salaryIx>=0?salaryIx:1]),advance:num(row[advanceIx>=0?advanceIx:2])})).filter(e=>e.name&&e.salary>0)}function download(name,text){const blob=new Blob([text],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)}function csvCell(v){const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}function downloadDeductionReport(key){let label=key;let rows=['employee,kraPin,nssf,sha,amount'];if(key.startsWith('custom:')){const d=(state.customDeductions||[]).find(x=>x.id===key.split(':')[1]);if(!d){toast('Deductable not found.');return}label=d.name;rows.push(...state.employees.map(e=>[e.name,e.kraPin,e.nssf,e.sha,num(d.amount)].map(csvCell).join(',')))}else{rows.push(...state.employees.map(e=>{const r=employeeRun(e);const amount=key==='paye'?r.paye:key==='nssf'?r.nssf:key==='sha'?r.sha:key==='housing'?r.housingEmployee+r.housingEmployer:key==='advance'?r.advance:0;return [e.name,e.kraPin,e.nssf,e.sha,amount].map(csvCell).join(',')}))}download(`payrollke-${label.toLowerCase().replace(/[^a-z0-9]+/g,'-')}-report.csv`,rows.join('\n'));toast(`${label} report downloaded.`)}function toast(m){const e=q('#toast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2400)}function showTab(tab){qa('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));qa('.screen').forEach(s=>s.classList.toggle('active',s.id===tab));const titles={dashboard:['Dashboard','Benchmarked payroll workspace'],employees:['Employees','Upload and maintain staff data'],payroll:['Payroll Run','Calculate and review payroll'],advances:['Advances','Manage salary advance deductions'],payslips:['Payslips','Employee payslip access'],reports:['Reports','Statutory and payment exports'],settings:['Settings','Company and rule configuration']};q('#screenTitle').textContent=titles[tab][0];q('#screenEyebrow').textContent=titles[tab][1]}qa('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>showTab(btn.dataset.tab)));q('#payrollForm').addEventListener('submit',e=>{e.preventDefault();renderPayrollPreview();toast('Payroll recalculated.')});q('#saveEmployee').addEventListener('click',()=>{const e=state.employees.find(x=>x.id===selectedId);if(!e)return;e.kraPin=f.kraPin.value;e.salary=num(f.basicSalary.value);e.advance=num(f.salaryAdvance.value);state.approved=false;state.locked=false;renderAll();toast('Employee payroll details saved.')});f.employeeSelect.addEventListener('change',()=>{selectedId=f.employeeSelect.value;syncSelectedToForm();renderAll()});f.payslipSelect.addEventListener('change',renderPayslips);[f.kraPin,f.basicSalary,f.allowances,f.reimbursements,f.bonus,f.pension,f.salaryAdvance,f.resident].forEach(x=>{x.addEventListener('input',renderPayrollPreview);x.addEventListener('change',renderPayrollPreview)});q('#employeeRows').addEventListener('input',e=>{const row=e.target.closest('tr');if(!row)return;const emp=state.employees.find(x=>x.id===row.dataset.id);if(!emp)return;const field=e.target.dataset.field;if(['salary','advance'].includes(field))emp[field]=num(e.target.value);else emp[field]=e.target.value;state.approved=false;state.locked=false;if(emp.id===selectedId)syncSelectedToForm();renderAll()});q('#employeeRows').addEventListener('click',e=>{if(e.target.dataset.action!=='use')return;selectedId=e.target.closest('tr').dataset.id;syncSelectedToForm();renderAll();showTab('payroll')});q('#addEmployee').addEventListener('click',()=>{const e={id:id(),name:'New Employee',kraPin:'',nssf:'',sha:'',salary:30000,advance:0};state.employees.push(e);selectedId=e.id;syncSelectedToForm();renderAll();toast('Employee added.')});q('#csvUpload').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;const imported=parseCsv(await file.text());if(!imported.length){toast('No valid employees found. Use name,salary,advance.');return}state.employees=imported;selectedId=state.employees[0].id;state.approved=false;state.locked=false;syncSelectedToForm();renderAll();toast(`${imported.length} employees imported.`)});q('#downloadTemplate').addEventListener('click',()=>download('payrollke-employee-template.csv','name,salary,advance,kraPin\nAmina Otieno,30000,0,A012345678Z\nBrian Mwangi,55000,5000,P000000001A\n'));q('#clearAdvances').addEventListener('click',()=>{state.employees.forEach(e=>e.advance=0);state.approved=false;renderAll();toast('All salary advances cleared.')});q('#payslipList').addEventListener('click',e=>{if(!e.target.dataset.payslip)return;f.payslipSelect.value=e.target.dataset.payslip;renderPayslips()});q('#settingsForm').addEventListener('submit',e=>{e.preventDefault();state.settings={companyName:q('#companyName').value,period:q('#payrollPeriod').value,shaRate:num(q('#shaRate').value),housingRate:num(q('#housingRate').value),nssfRate:num(q('#nssfRate').value),nssfCap:num(q('#nssfCap').value)};state.approved=false;renderAll();toast('Settings saved.')});q('#addCustomDeduction').addEventListener('click',()=>{const name=q('#customDeductionName').value.trim();const amount=num(q('#customDeductionAmount').value);if(!name||amount<=0){toast('Enter a deductable name and amount.');return}state.customDeductions.push({id:id(),name,amount});q('#customDeductionName').value='';q('#customDeductionAmount').value=0;state.approved=false;renderAll();toast('Deductable added.')});q('#customDeductionList').addEventListener('click',e=>{const removeId=e.target.dataset.removeDeduction;if(!removeId)return;state.customDeductions=state.customDeductions.filter(d=>d.id!==removeId);state.approved=false;renderAll();toast('Deductable removed.')});q('#reportsList').addEventListener('click',e=>{if(!e.target.dataset.deduct)return;downloadDeductionReport(e.target.dataset.deduct)});q('#runPayroll').addEventListener('click',()=>{state.approved=false;state.locked=false;renderAll();toast('Payroll run refreshed for all employees.')});q('#approve').addEventListener('click',()=>{state.approved=true;renderAll();toast('Payroll approved.')});q('#lock').addEventListener('click',()=>{if(!state.approved){toast('Approve payroll before locking.');return}state.locked=true;renderAll();toast('Payroll period locked.')});q('#exportCsv').addEventListener('click',()=>{const rows=['name,gross,paye,nssf,sha,housing,advance,net',...state.employees.map(e=>{const r=employeeRun(e);return [e.name,r.gross,r.paye,r.nssf,r.sha,r.housingEmployee,r.advance,r.net].join(',')})];download('payrollke-payroll-export.csv',rows.join('\n'))});if(!selectedId&&state.employees[0])selectedId=state.employees[0].id;syncSelectedToForm();renderAll();
+/* ═══════════════════════════════════════════════════════════════════════════════
+   PayrollKE — Complete Prototype v2 (Phase 3 Improvements)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+const q = s => document.querySelector(s);
+const qa = s => Array.from(document.querySelectorAll(s));
+const money = new Intl.NumberFormat('en-KE', { style:'currency', currency:'KES', minimumFractionDigits:2, maximumFractionDigits:2 });
+
+/* ── ID generator ── */
+function id() { return Math.random().toString(36).slice(2) + Date.now().toString(36); }
+
+/* ── Default state ── */
+const defaultState = {
+  settings: {
+    companyName: 'PayrollKE Demo Ltd',
+    period: 'July 2026',
+    shaRate: 2.75,
+    housingRate: 1.5,
+    nssfRate: 6,
+    nssfCap: 72000
+  },
+  approved: false,
+  locked: false,
+  role: 'admin',
+  customDeductions: [],
+  employees: [
+    { id: id(), name:'Amina Otieno', kraPin:'A012345678Z', nssf:'NSSF001', sha:'SHA001', bankAccount:'0123456789', salary:30000, advance:0 },
+    { id: id(), name:'Brian Mwangi', kraPin:'P000000001A', nssf:'NSSF002', sha:'SHA002', bankAccount:'1234567890', salary:55000, advance:5000 },
+    { id: id(), name:'Faith Njeri',  kraPin:'P000000002B', nssf:'NSSF003', sha:'SHA003', bankAccount:'9876543210', salary:85000, advance:7000 }
+  ],
+  employeeDeductions: [],
+  advanceHistory: [
+    { employeeId: null, period:'June 2026', type:'issued', amount:5000, note:'Mid-month advance' },
+    { employeeId: null, period:'June 2026', type:'repayment', amount:2000, note:'Payroll deduction' },
+    { employeeId: null, period:'May 2026', type:'issued', amount:10000, note:'Emergency advance' },
+    { employeeId: null, period:'May 2026', type:'repayment', amount:5000, note:'Payroll deduction' }
+  ],
+  auditLog: [
+    { time: new Date().toISOString(), actor:'System', action:'PayrollKE initialized' }
+  ]
+};
+
+let state = load();
+let selectedId = state.employees[0]?.id;
+let showEmployerSplit = false;
+
+/* ── PAYE bands (Kenya) ── */
+const bands = [
+  { limit: 24000, rate: .1 },
+  { limit: 8333, rate: .25 },
+  { limit: 467667, rate: .3 },
+  { limit: 300000, rate: .325 },
+  { limit: Infinity, rate: .35 }
+];
+
+/* ── DOM field references ── */
+const f = {
+  employeeSelect: q('#employeeSelect'),
+  payslipSelect: q('#payslipSelect'),
+  employeeDeductionSelect: q('#employeeDeductionSelect'),
+  kraPin: q('#kraPin'),
+  basicSalary: q('#basicSalary'),
+  allowances: q('#allowances'),
+  reimbursements: q('#reimbursements'),
+  bonus: q('#bonus'),
+  pension: q('#pension'),
+  salaryAdvance: q('#salaryAdvance'),
+  resident: q('#resident')
+};
+
+/* ═══════════════════════════════════════════════════
+   PERSISTENCE
+   ═══════════════════════════════════════════════════ */
+function load() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('payrollke-state'));
+    const data = saved || structuredClone(defaultState);
+    data.settings = { ...defaultState.settings, ...(data.settings || {}) };
+    data.customDeductions = Array.isArray(data.customDeductions) ? data.customDeductions : [];
+    data.employeeDeductions = Array.isArray(data.employeeDeductions) ? data.employeeDeductions : [];
+    data.employees = Array.isArray(data.employees) ? data.employees : structuredClone(defaultState.employees);
+    data.advanceHistory = Array.isArray(data.advanceHistory) ? data.advanceHistory : [];
+    data.auditLog = Array.isArray(data.auditLog) ? data.auditLog : [];
+    data.role = data.role || 'admin';
+    return data;
+  } catch { return structuredClone(defaultState); }
+}
+
+function save() {
+  localStorage.setItem('payrollke-state', JSON.stringify(state));
+}
+
+function audit(action) {
+  state.auditLog.unshift({
+    time: new Date().toISOString(),
+    actor: state.role === 'admin' ? 'Admin' : state.role === 'hr' ? 'HR' : 'Viewer',
+    action
+  });
+  if (state.auditLog.length > 500) state.auditLog.length = 500;
+}
+
+/* ═══════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════ */
+function num(v) { return Math.max(0, Number(v || 0)); }
+function escapeHtml(v) { return String(v ?? '').replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c])); }
+function formatAgo(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-KE', { day:'numeric', month:'short', year:'numeric' }) + ' ' +
+         d.toLocaleTimeString('en-KE', { hour:'2-digit', minute:'2-digit' });
+}
+
+function calcPaye(taxable, resident = true) {
+  if (!resident) return taxable * .3;
+  let left = taxable, tax = 0;
+  for (const b of bands) {
+    if (left <= 0) break;
+    const part = Math.min(left, b.limit);
+    tax += part * b.rate;
+    left -= part;
+  }
+  return Math.max(0, tax - 2400);
+}
+
+/* ═══════════════════════════════════════════════════
+   PAYROLL ENGINE
+   ═══════════════════════════════════════════════════ */
+function payroll(input) {
+  const s = state.settings;
+  const basic = num(input.salary ?? input.basicSalary);
+  const allowances = num(input.allowances);
+  const reimbursements = num(input.reimbursements);
+  const bonus = num(input.bonus);
+  const pension = num(input.pension);
+  const advance = num(input.advance ?? input.salaryAdvance);
+
+  // Global custom deductions (same for all)
+  const globalCustom = state.customDeductions || [];
+  const globalTotal = globalCustom.reduce((sum, d) => sum + num(d.amount), 0);
+
+  // Per-employee custom deductions
+  const empCustom = (state.employeeDeductions || []).filter(d => d.employeeId === (input.employeeId || selectedId));
+  const empCustomTotal = empCustom.reduce((sum, d) => sum + num(d.amount), 0);
+  const empCustomBreakdown = empCustom.map(d => ({ name: d.name, amount: num(d.amount) }));
+
+  const gross = basic + allowances + bonus + reimbursements;
+  const taxableGross = basic + allowances + bonus;
+  const nssfPensionable = Math.min(taxableGross, num(s.nssfCap));
+  const nssf = nssfPensionable * (num(s.nssfRate) / 100);
+  const sha = gross * (num(s.shaRate) / 100);
+  const housingEmployee = taxableGross * (num(s.housingRate) / 100);
+  const housingEmployer = taxableGross * (num(s.housingRate) / 100);
+  const nssfEmployer = nssf;
+  const shaEmployer = gross * (num(s.shaRate) / 100);
+  const taxablePay = Math.max(0, taxableGross - nssf - Math.min(pension, 30000) - sha - housingEmployee);
+  const paye = calcPaye(taxablePay, input.resident !== false);
+  const net = gross - (paye + nssf + sha + housingEmployee + pension + advance + globalTotal + empCustomTotal);
+
+  return {
+    gross, taxableGross, nssf, sha, housingEmployee, housingEmployer,
+    nssfEmployer, shaEmployer, taxablePay, paye, pension, advance,
+    globalCustomTotal: globalTotal, empCustomTotal, empCustomBreakdown,
+    totalCustom: globalTotal + empCustomTotal,
+    reimbursements, net,
+    statEmployee: paye + nssf + sha + housingEmployee,
+    statEmployer: nssfEmployer + shaEmployer + housingEmployer
+  };
+}
+
+function employeeRun(e) {
+  return payroll({ salary: e.salary, advance: e.advance, resident: true, employeeId: e.id });
+}
+
+function totals() {
+  return state.employees.reduce((a, e) => {
+    const r = employeeRun(e);
+    a.gross += r.gross; a.net += r.net; a.paye += r.paye; a.advance += r.advance;
+    a.nssf += r.nssf; a.sha += r.sha; a.housingEmployee += r.housingEmployee;
+    a.housingEmployer += r.housingEmployer; a.nssfEmployer += r.nssfEmployer;
+    a.shaEmployer += r.shaEmployer; a.totalCustom += r.totalCustom;
+    return a;
+  }, { gross:0, net:0, paye:0, advance:0, nssf:0, sha:0, housingEmployee:0, housingEmployer:0, nssfEmployer:0, shaEmployer:0, totalCustom:0 });
+}
+
+function currentInput() {
+  return {
+    basicSalary: f.basicSalary.value, allowances: f.allowances.value,
+    reimbursements: f.reimbursements.value, bonus: f.bonus.value,
+    pension: f.pension.value, salaryAdvance: f.salaryAdvance.value,
+    resident: f.resident.checked
+  };
+}
+
+function syncSelectedToForm() {
+  const e = state.employees.find(x => x.id === selectedId) || state.employees[0];
+  if (!e) return;
+  selectedId = e.id;
+  f.employeeSelect.value = e.id;
+  f.kraPin.value = e.kraPin || '';
+  f.basicSalary.value = e.salary;
+  f.allowances.value = 0;
+  f.reimbursements.value = 0;
+  f.bonus.value = 0;
+  f.pension.value = 0;
+  f.salaryAdvance.value = e.advance;
+}
+
+/* ═══════════════════════════════════════════════════
+   RENDER ALL
+   ═══════════════════════════════════════════════════ */
+function renderAll() {
+  const t = totals();
+  q('#grossMetric').textContent = money.format(t.gross);
+  q('#netMetric').textContent = money.format(t.net);
+  q('#payeMetric').textContent = money.format(t.paye);
+  q('#advanceMetric').textContent = money.format(t.advance);
+  q('#periodLabel').textContent = state.settings.period;
+  q('#roleBadge').textContent = state.role;
+  renderSelects();
+  renderPayrollPreview();
+  renderEmployees();
+  renderAdvances();
+  renderPayslips();
+  renderReports();
+  renderDashboard();
+  renderSettings();
+  renderAudit();
+  applyRoleRestrictions();
+  save();
+}
+
+function applyRoleRestrictions() {
+  const isAdmin = state.role === 'admin';
+  const isViewer = state.role === 'viewer';
+  qa('.admin-only').forEach(el => el.style.display = isAdmin ? '' : 'none');
+  // Hide action buttons for viewers
+  if (isViewer) {
+    q('#lock').style.display = 'none';
+    q('#approve').style.display = 'none';
+    q('#runPayroll').style.display = 'none';
+    q('#addEmployee').style.display = 'none';
+    q('#addCustomDeduction').style.display = 'none';
+    q('#addEmployeeDeduction').style.display = 'none';
+  } else {
+    q('#lock').style.display = '';
+    q('#approve').style.display = '';
+    q('#runPayroll').style.display = '';
+    q('#addEmployee').style.display = '';
+    q('#addCustomDeduction').style.display = '';
+    q('#addEmployeeDeduction').style.display = '';
+  }
+}
+
+/* ── Selects ── */
+function renderSelects() {
+  const options = state.employees.map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('');
+  f.employeeSelect.innerHTML = options;
+  f.payslipSelect.innerHTML = options;
+  f.employeeDeductionSelect.innerHTML = options;
+  f.employeeSelect.value = selectedId;
+  f.payslipSelect.value = selectedId;
+}
+
+/* ── Payroll preview ── */
+function renderPayrollPreview() {
+  const emp = state.employees.find(e => e.id === selectedId) || state.employees[0];
+  if (!emp) return;
+  const input = currentInput();
+  input.employeeId = selectedId;
+  const r = payroll(input);
+  q('#slipName').textContent = emp.name;
+  q('#slipPin').textContent = f.kraPin.value || 'Missing PIN';
+  q('#slipStatus').textContent = state.approved ? 'Approved' : 'Draft';
+  q('#slipStatus').className = 'pill ' + (state.approved ? 'ok' : '');
+
+  const rows = [
+    ['Gross taxable earnings', r.taxableGross],
+    ['Non-taxable reimbursements', r.reimbursements],
+    ['Taxable pay after reliefs', r.taxablePay],
+    ['PAYE', -r.paye],
+    ['NSSF employee', -r.nssf],
+    ['SHA employee', -r.sha],
+    ['Housing levy employee', -r.housingEmployee],
+    ['Pension contribution', -r.pension],
+    ['Salary advance', -r.advance],
+    ...empCustomBreakdownRows(r.empCustomBreakdown),
+    ['Total custom deductions', -(r.globalCustomTotal + r.empCustomTotal)]
+  ];
+
+  if (showEmployerSplit) {
+    rows.push(['',''], ['EMPLOYER CONTRIBUTIONS','']);
+    rows.push(['NSSF employer', -r.nssfEmployer]);
+    rows.push(['SHA employer', -r.shaEmployer]);
+    rows.push(['Housing levy employer', -r.housingEmployer]);
+    rows.push(['Total employer cost', -(r.nssfEmployer + r.shaEmployer + r.housingEmployer + r.gross)]);
+  }
+
+  q('#lines').innerHTML = [
+    ...rows.map(([l, a]) => {
+      if (l === '' && a === '') return `<div class="line" style="justify-content:center;font-weight:700;color:var(--muted)">—</div>`;
+      return `<div class="line"><span>${escapeHtml(l)}</span><strong>${money.format(a)}</strong></div>`;
+    }),
+    `<div class="line net"><span>Net pay</span><strong>${money.format(r.net)}</strong></div>`
+  ].join('');
+}
+
+function empCustomBreakdownRows(breakdown) {
+  if (!breakdown || !breakdown.length) return [];
+  return breakdown.map(d => [d.name, -d.amount]);
+}
+
+/* ── Employees table ── */
+function renderEmployees() {
+  q('#employeeRows').innerHTML = state.employees.map(e => {
+    const r = employeeRun(e);
+    return `<tr data-id="${e.id}">
+      <td><input data-field="name" value="${escapeHtml(e.name)}"></td>
+      <td><input data-field="kraPin" value="${escapeHtml(e.kraPin)}"></td>
+      <td><input data-field="nssf" value="${escapeHtml(e.nssf)}"></td>
+      <td><input data-field="sha" value="${escapeHtml(e.sha)}"></td>
+      <td><input data-field="bankAccount" value="${escapeHtml(e.bankAccount || '')}" placeholder="Acc. no."></td>
+      <td><input class="right" data-field="salary" type="number" min="0" value="${e.salary}"></td>
+      <td><input class="right" data-field="advance" type="number" min="0" value="${e.advance}"></td>
+      <td class="right"><strong>${money.format(r.net)}</strong></td>
+      <td><button class="mini" data-action="use">Use</button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="9" class="empty">No employees yet.</td></tr>';
+}
+
+/* ── Advances ── */
+function renderAdvances() {
+  q('#advanceRows').innerHTML = state.employees.map(e => {
+    const pct = e.salary ? e.advance / e.salary * 100 : 0;
+    const status = pct > 40 ? 'Review' : pct > 0 ? 'Active' : 'None';
+    return `<tr>
+      <td>${escapeHtml(e.name)}</td>
+      <td class="right">${money.format(e.salary)}</td>
+      <td class="right">${money.format(e.advance)}</td>
+      <td class="right">${pct.toFixed(1)}%</td>
+      <td><span class="pill ${pct > 40 ? 'bad' : pct > 0 ? 'ok' : ''}">${status}</span></td>
+    </tr>`;
+  }).join('');
+
+  // Advance history
+  const history = state.advanceHistory || [];
+  q('#advanceHistory').innerHTML = history.map(h => {
+    const emp = state.employees.find(e => e.id === h.employeeId);
+    const empName = emp ? emp.name : 'All employees';
+    const icon = h.type === 'issued' ? '&#x2B07;' : '&#x2B06;';
+    const colour = h.type === 'issued' ? 'var(--red)' : 'var(--green)';
+    return `<div class="report">
+      <div><strong>${empName}</strong><span>${escapeHtml(h.period)} &middot; ${h.type === 'issued' ? 'Issued' : 'Repaid'}</span></div>
+      <div style="color:${colour};font-weight:700">${icon} ${money.format(h.amount)}</div>
+    </div>`;
+  }).join('') || '<div class="empty">No advance history yet.</div>';
+}
+
+/* ── Payslips ── */
+function renderPayslips() {
+  const emp = state.employees.find(e => e.id === f.payslipSelect.value) || state.employees[0];
+  if (!emp) return;
+  const r = employeeRun(emp);
+  q('#payslipBrowser').innerHTML = [
+    ['Gross pay', r.gross],
+    ['PAYE', -r.paye],
+    ['NSSF', -r.nssf],
+    ['SHA', -r.sha],
+    ['Housing levy', -r.housingEmployee],
+    ['Pension', -r.pension],
+    ['Salary advance', -r.advance],
+    ...r.empCustomBreakdown.map(d => [d.name, -d.amount]),
+    ['Total deductions', -(r.paye + r.nssf + r.sha + r.housingEmployee + r.pension + r.advance + r.totalCustom)],
+    ['Net pay', r.net]
+  ].map(([l, a], i, arr) => `<div class="line ${i === arr.length - 1 ? 'net' : ''}"><span>${escapeHtml(l)}</span><strong>${money.format(a)}</strong></div>`).join('');
+
+  q('#payslipList').innerHTML = state.employees.map(e =>
+    `<div class="report">
+      <div><strong>${escapeHtml(e.name)}</strong><span>${state.settings.period} payslip ready</span></div>
+      <button class="mini" data-payslip="${e.id}">View</button>
+    </div>`
+  ).join('');
+}
+
+/* ── Reports ── */
+function renderReports() {
+  const t = totals();
+  const standardReports = [
+    ['paye', 'PAYE return', t.paye, 'KRA monthly PAYE'],
+    ['nssf', 'NSSF schedule', t.nssf, 'Employee contribution'],
+    ['sha', 'SHA schedule', t.sha, 'Health contribution'],
+    ['housing', 'Housing levy', t.housingEmployee + t.housingEmployer, 'Employee + employer'],
+    ['advance', 'Salary advance recovery', t.advance, 'Internal deduction report']
+  ];
+  const customReports = (state.customDeductions || []).map(d =>
+    ['custom:' + d.id, d.name, num(d.amount) * state.employees.length, 'Custom deductible']
+  );
+  q('#reportsList').innerHTML = [...standardReports, ...customReports].map(([key, a, b, c]) =>
+    `<div class="report">
+      <div><strong>${escapeHtml(a)}</strong><span>${escapeHtml(c)}</span></div>
+      <div class="actions"><strong>${money.format(b)}</strong><button class="mini" data-deduct="${key}">Download</button></div>
+    </div>`
+  ).join('');
+
+  q('#bankList').innerHTML = state.employees.map(e => {
+    const r = employeeRun(e);
+    const acc = e.bankAccount || 'N/A';
+    return `<div class="report">
+      <div><strong>${escapeHtml(e.name)}</strong><span>Acc: ${escapeHtml(acc)} &middot; Net salary payable</span></div>
+      <strong>${money.format(r.net)}</strong>
+    </div>`;
+  }).join('');
+
+  // Employer split table
+  q('#employerSplitRows').innerHTML = state.employees.map(e => {
+    const r = employeeRun(e);
+    return `<tr>
+      <td>${escapeHtml(e.name)}</td>
+      <td class="right">${money.format(r.paye)}</td>
+      <td class="right">${money.format(r.nssf)}</td>
+      <td class="right">${money.format(r.sha)}</td>
+      <td class="right">${money.format(r.housingEmployee)}</td>
+      <td class="right">${money.format(r.nssfEmployer)}</td>
+      <td class="right">${money.format(r.shaEmployer)}</td>
+      <td class="right">${money.format(r.housingEmployer)}</td>
+      <td class="right" style="font-weight:700;color:var(--green)">${money.format(r.statEmployer)}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── Dashboard ── */
+function renderDashboard() {
+  const count = state.employees.length;
+  const missing = state.employees.filter(e => !e.kraPin || !e.nssf || !e.sha).length;
+  const advances = state.employees.filter(e => num(e.advance) > 0).length;
+  q('#statusPill').textContent = state.locked ? 'Locked' : state.approved ? 'Approved' : 'Draft';
+  q('#statusPill').className = 'pill ' + (state.approved || state.locked ? 'ok' : '');
+
+  q('#checklist').innerHTML = [
+    ['Employees loaded', `${count} employee records`, count > 0],
+    ['Statutory IDs checked', `${missing} missing IDs`, missing === 0],
+    ['Salary advances reviewed', `${advances} active advances`, true],
+    ['Payroll approved', state.approved ? 'Ready for payment' : 'Awaiting approval', state.approved],
+    ['Period locked', state.locked ? 'No further edits' : 'Still editable', state.locked]
+  ].map(([a, b, ok]) =>
+    `<div class="check">
+      <div><strong>${a}</strong><span>${b}</span></div>
+      <span class="pill ${ok ? 'ok' : 'bad'}">${ok ? 'OK' : 'Open'}</span>
+    </div>`
+  ).join('');
+
+  const t = totals();
+  const max = Math.max(t.gross, t.net, t.paye + t.nssf + t.sha + t.housingEmployee, t.advance, 1);
+  q('#varianceChart').innerHTML = [
+    ['Gross', t.gross],
+    ['Net', t.net],
+    ['Statutory', t.paye + t.nssf + t.sha + t.housingEmployee],
+    ['Advances', t.advance]
+  ].map(([l, v]) =>
+    `<div class="bar"><span>${l}</span><i style="width:${Math.max(3, v / max * 100)}%"></i><strong>${money.format(v)}</strong></div>`
+  ).join('');
+}
+
+/* ── Settings ── */
+function renderSettings() {
+  q('#companyName').value = state.settings.companyName;
+  q('#payrollPeriod').value = state.settings.period;
+  q('#shaRate').value = state.settings.shaRate;
+  q('#housingRate').value = state.settings.housingRate;
+  q('#nssfRate').value = state.settings.nssfRate;
+  q('#nssfCap').value = state.settings.nssfCap;
+  q('#currentUserRole').value = state.role;
+  renderCustomDeductions();
+  renderEmployeeDeductions();
+}
+
+function renderCustomDeductions() {
+  const list = q('#customDeductionList');
+  if (!list) return;
+  list.innerHTML = (state.customDeductions || []).map(d =>
+    `<div class="report">
+      <div><strong>${escapeHtml(d.name)}</strong><span>${money.format(num(d.amount))} per employee</span></div>
+      <button class="mini" data-remove-deduction="${d.id}">Remove</button>
+    </div>`
+  ).join('') || '<div class="empty">No custom deductibles yet.</div>';
+}
+
+function renderEmployeeDeductions() {
+  q('#employeeDeductionRows').innerHTML = (state.employeeDeductions || []).map(d => {
+    const emp = state.employees.find(e => e.id === d.employeeId);
+    return `<tr data-ded-id="${d.id}">
+      <td>${escapeHtml(emp ? emp.name : 'Unknown')}</td>
+      <td>${escapeHtml(d.name)}</td>
+      <td class="right">${money.format(num(d.amount))}</td>
+      <td><button class="mini" data-remove-emp-ded="${d.id}">Remove</button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="4" class="empty">No individual deductions yet.</td></tr>';
+}
+
+/* ── Audit log ── */
+function renderAudit() {
+  q('#auditRows').innerHTML = (state.auditLog || []).map(a =>
+    `<tr>
+      <td class="time">${formatAgo(a.time)}</td>
+      <td class="actor">${escapeHtml(a.actor)}</td>
+      <td class="action">${escapeHtml(a.action)}</td>
+    </tr>`
+  ).join('') || '<tr><td colspan="3" class="empty">No audit entries yet.</td></tr>';
+}
+
+/* ═══════════════════════════════════════════════════
+   CSV / DOWNLOAD HELPERS
+   ═══════════════════════════════════════════════════ */
+function parseCsv(text) {
+  const rows = text.trim().split(/\r?\n/).filter(Boolean).map(line =>
+    line.split(',').map(c => c.trim().replace(/^"|"$/g, ''))
+  );
+  if (!rows.length) return [];
+  const header = rows[0].map(h => h.toLowerCase().replace(/\s+/g, ''));
+  const hasHeader = header.some(h => ['name', 'employee', 'salary', 'advance', 'krapin', 'bankaccount'].includes(h));
+
+  const nameIx = header.findIndex(h => ['name', 'employee', 'employeename', 'fullname'].includes(h));
+  const salaryIx = header.findIndex(h => ['salary', 'basicsalary', 'basicpay', 'grosssalary'].includes(h));
+  const advanceIx = header.findIndex(h => ['advance', 'salaryadvance', 'loan', 'deduction'].includes(h));
+  const kraIx = header.findIndex(h => ['krapin', 'pin', 'kra'].includes(h));
+  const bankIx = header.findIndex(h => ['bankaccount', 'account', 'accountnumber', 'bankacc', 'bank'].includes(h));
+  const nssfIx = header.findIndex(h => ['nssf'].includes(h));
+  const shaIx = header.findIndex(h => ['sha'].includes(h));
+
+  const data = hasHeader ? rows.slice(1) : rows;
+
+  // Validation: count invalid rows
+  const validRows = [];
+  const errors = [];
+  data.forEach((row, i) => {
+    const name = row[nameIx >= 0 ? nameIx : 0];
+    const salary = num(row[salaryIx >= 0 ? salaryIx : 1]);
+    if (!name || salary <= 0) {
+      errors.push(`Row ${i + (hasHeader ? 2 : 1)}: missing or invalid name/salary`);
+      return;
+    }
+    validRows.push({
+      id: id(),
+      name: name,
+      kraPin: row[kraIx >= 0 ? kraIx : 2] || '',
+      nssf: row[nssfIx >= 0 ? nssfIx : 3] || '',
+      sha: row[shaIx >= 0 ? shaIx : 4] || '',
+      bankAccount: row[bankIx >= 0 ? bankIx : 5] || '',
+      salary: salary,
+      advance: num(row[advanceIx >= 0 ? advanceIx : 2])
+    });
+  });
+
+  if (errors.length) {
+    toast(`Imported ${validRows.length} employees. ${errors.length} rows skipped: ${errors.slice(0, 3).join(', ')}`);
+  }
+  return validRows;
+}
+
+function download(name, text) {
+  const blob = new Blob([text], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function csvCell(v) {
+  const s = String(v ?? '');
+  return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
+
+/* ── Deduction report download ── */
+function downloadDeductionReport(key) {
+  let label = key;
+  let rows = ['employee,kraPin,nssf,sha,amount'];
+  if (key.startsWith('custom:')) {
+    const d = (state.customDeductions || []).find(x => x.id === key.split(':')[1]);
+    if (!d) { toast('Deductible not found.'); return; }
+    label = d.name;
+    rows.push(...state.employees.map(e =>
+      [e.name, e.kraPin, e.nssf, e.sha, num(d.amount)].map(csvCell).join(',')
+    ));
+  } else {
+    rows.push(...state.employees.map(e => {
+      const r = employeeRun(e);
+      const amount = key === 'paye' ? r.paye
+        : key === 'nssf' ? r.nssf
+        : key === 'sha' ? r.sha
+        : key === 'housing' ? r.housingEmployee + r.housingEmployer
+        : key === 'advance' ? r.advance : 0;
+      return [e.name, e.kraPin, e.nssf, e.sha, amount].map(csvCell).join(',');
+    }));
+  }
+  download(`payrollke-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-report.csv`, rows.join('\n'));
+  toast(`${label} report downloaded.`);
+  audit(`Downloaded ${label} report`);
+}
+
+/* ── Bank payment export ── */
+function downloadBankExport() {
+  const rows = ['employee,bankAccount,payableAmount,grossPay'];
+  state.employees.forEach(e => {
+    const r = employeeRun(e);
+    rows.push([e.name, e.bankAccount || '', r.net, r.gross].map(csvCell).join(','));
+  });
+  download(`payrollke-bank-payment-${state.settings.period.toLowerCase().replace(/\s+/g, '-')}.csv`, rows.join('\n'));
+  toast('Bank payment file downloaded.');
+  audit('Exported bank payment file');
+}
+
+/* ── Full company data backup ── */
+function downloadFullBackup() {
+  const data = JSON.stringify(state, null, 2);
+  download(`payrollke-backup-${state.settings.period.toLowerCase().replace(/\s+/g, '-')}.json`, data);
+  toast('Full company data backup downloaded.');
+  audit('Downloaded full company data backup');
+}
+
+/* ═══════════════════════════════════════════════════
+   PDF PAYSIP GENERATION (jsPDF)
+   ═══════════════════════════════════════════════════ */
+function generatePayslipPdf(employee) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const r = employeeRun(employee);
+  const s = state.settings;
+  const lineH = 8;
+  let y = 20;
+
+  function text(str, x, fontSize, bold) {
+    doc.setFont('helvetica', bold ? 'bold' : 'normal');
+    doc.setFontSize(fontSize);
+    doc.text(str, x, y);
+  }
+
+  // Header
+  text(s.companyName, 20, 16, true);
+  y += lineH + 2;
+  text('PAYSLIP', 20, 12, true);
+  text(`Period: ${s.period}`, 120, 11, false);
+  y += lineH + 4;
+
+  // Employee details
+  text(`Employee: ${employee.name}`, 20, 11, false);
+  text(`KRA PIN: ${employee.kraPin || 'N/A'}`, 120, 11, false);
+  y += lineH;
+  text(`NSSF: ${employee.nssf || 'N/A'}`, 20, 11, false);
+  text(`SHA: ${employee.sha || 'N/A'}`, 120, 11, false);
+  y += lineH + 6;
+
+  // Divider
+  doc.setDrawColor(17, 97, 73);
+  doc.line(20, y, 190, y);
+  y += lineH;
+
+  // Earnings
+  text('EARNINGS', 20, 11, true);
+  y += lineH;
+  text('Basic Salary', 20, 10, false);
+  text(money.format(employee.salary), 190, 10, false);
+  doc.setFillColor(247, 251, 250);
+  doc.rect(120, y - 4.5, 70, 7, 'F');
+  doc.text(money.format(employee.salary), 190, y, { align: 'right' });
+  y += lineH;
+
+  y += lineH + 4;
+  text('DEDUCTIONS', 20, 11, true);
+  y += lineH;
+
+  function deductionLine(label, amount) {
+    doc.setFillColor(255, 255, 255);
+    text(label, 20, 10, false);
+    doc.text(money.format(amount), 190, y, { align: 'right' });
+    y += lineH;
+  }
+
+  deductionLine('PAYE', r.paye);
+  deductionLine('NSSF', r.nssf);
+  deductionLine('SHA', r.sha);
+  deductionLine('Housing Levy', r.housingEmployee);
+  deductionLine('Pension', r.pension);
+  deductionLine('Salary Advance', r.advance);
+  if (r.totalCustom > 0) deductionLine('Custom Deductions', r.totalCustom);
+
+  y += lineH + 4;
+  doc.setDrawColor(17, 97, 73);
+  doc.line(20, y, 190, y);
+  y += lineH + 2;
+
+  // Net pay
+  doc.setFillColor(217, 239, 231);
+  doc.rect(20, y - 4, 170, 10, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.text(`NET PAY: ${money.format(r.net)}`, 20, y + 3);
+
+  // Footer
+  y = 280;
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(8);
+  doc.text('Generated by PayrollKE — Kenya Payroll Cockpit', 20, y);
+
+  const filename = `payslip-${employee.name.replace(/\s+/g, '-').toLowerCase()}-${s.period.toLowerCase().replace(/\s+/g, '-')}.pdf`;
+  doc.save(filename);
+  toast(`Payslip PDF downloaded for ${employee.name}.`);
+  audit(`Downloaded PDF payslip for ${employee.name}`);
+}
+
+/* ── Bulk ZIP download ── */
+async function downloadAllPayslipsZip() {
+  const zip = new JSZip();
+  const folder = zip.folder('payslips-' + state.settings.period.toLowerCase().replace(/\s+/g, '-'));
+
+  for (const emp of state.employees) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const r = employeeRun(emp);
+    const s = state.settings;
+    const lineH = 8;
+    let y = 20;
+
+    function text(str, x, fontSize, bold) {
+      doc.setFont('helvetica', bold ? 'bold' : 'normal');
+      doc.setFontSize(fontSize);
+      doc.text(str, x, y);
+    }
+
+    text(s.companyName, 20, 16, true);
+    y += lineH + 2;
+    text('PAYSLIP', 20, 12, true);
+    text(`Period: ${s.period}`, 120, 11, false);
+    y += lineH + 4;
+    text(`Employee: ${emp.name}`, 20, 11, false);
+    text(`KRA PIN: ${emp.kraPin || 'N/A'}`, 120, 11, false);
+    y += lineH;
+    text(`NSSF: ${emp.nssf || 'N/A'}`, 20, 11, false);
+    text(`SHA: ${emp.sha || 'N/A'}`, 120, 11, false);
+    y += lineH + 6;
+    doc.setDrawColor(17, 97, 73);
+    doc.line(20, y, 190, y);
+    y += lineH;
+    text('EARNINGS', 20, 11, true);
+    y += lineH;
+    doc.text(money.format(emp.salary), 190, y, { align: 'right' });
+    y += lineH + 4;
+    text('DEDUCTIONS', 20, 11, true);
+    y += lineH;
+    function deductionLine(label, amount) {
+      doc.text(label, 20, y, { font: 'normal', size: 10 });
+      doc.text(money.format(amount), 190, y, { align: 'right' });
+      y += lineH;
+    }
+    deductionLine('PAYE', r.paye);
+    deductionLine('NSSF', r.nssf);
+    deductionLine('SHA', r.sha);
+    deductionLine('Housing Levy', r.housingEmployee);
+    deductionLine('Pension', r.pension);
+    deductionLine('Salary Advance', r.advance);
+    if (r.totalCustom > 0) deductionLine('Custom Deductions', r.totalCustom);
+    y += lineH + 4;
+    doc.setDrawColor(17, 97, 73);
+    doc.line(20, y, 190, y);
+    y += lineH + 2;
+    doc.setFillColor(217, 239, 231);
+    doc.rect(20, y - 4, 170, 10, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.text(`NET PAY: ${money.format(r.net)}`, 20, y + 3);
+    y = 280;
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(8);
+    doc.text('Generated by PayrollKE', 20, y);
+
+    const pdfData = doc.output('blob');
+    folder.file(`payslip-${emp.name.replace(/\s+/g, '-')}.pdf`, pdfData);
+  }
+
+  const content = await zip.generateAsync({ type: 'blob' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(content);
+  a.download = `payslips-${state.settings.period.toLowerCase().replace(/\s+/g, '-')}.zip`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('All payslips downloaded as ZIP.');
+  audit('Downloaded bulk payslip ZIP');
+}
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════ */
+function toast(m) {
+  const e = q('#toast');
+  e.textContent = m;
+  e.classList.add('show');
+  setTimeout(() => e.classList.remove('show'), 2400);
+}
+
+/* ═══════════════════════════════════════════════════
+   TAB NAVIGATION
+   ═══════════════════════════════════════════════════ */
+function showTab(tab) {
+  qa('[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  qa('.screen').forEach(s => s.classList.toggle('active', s.id === tab));
+  const titles = {
+    dashboard: ['Dashboard', 'Benchmarked payroll workspace'],
+    employees: ['Employees', 'Upload and maintain staff data'],
+    payroll: ['Payroll Run', 'Calculate and review payroll'],
+    advances: ['Advances &amp; History', 'Manage salary advance deductions and history'],
+    payslips: ['Payslips', 'Employee payslip access'],
+    reports: ['Reports &amp; Exports', 'Statutory and payment exports'],
+    audit: ['Audit Log', 'Compliance and activity tracking'],
+    settings: ['Settings', 'Company and rule configuration']
+  };
+  const t = titles[tab];
+  q('#screenTitle').innerHTML = t ? t[0] : tab;
+  q('#screenEyebrow').textContent = t ? t[1] : '';
+  renderAll();
+}
+
+qa('[data-tab]').forEach(btn => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
+
+/* ═══════════════════════════════════════════════════
+   LOGIN
+   ═══════════════════════════════════════════════════ */
+q('#loginBtn').addEventListener('click', () => {
+  const user = q('#loginUser').value.trim().toLowerCase();
+  const pass = q('#loginPass').value;
+  const users = {
+    admin: { password: 'admin', role: 'admin' },
+    hr: { password: 'hr123', role: 'hr' },
+    viewer: { password: 'view', role: 'viewer' }
+  };
+  const found = users[user];
+  if (found && found.password === pass) {
+    state.role = found.role;
+    q('#loginOverlay').style.display = 'none';
+    audit(`Logged in as ${found.role}`);
+    renderAll();
+  } else {
+    toast('Invalid username or password.');
+  }
+});
+
+/* Allow Enter key on login */
+q('#loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') q('#loginBtn').click(); });
+q('#loginUser').addEventListener('keydown', e => { if (e.key === 'Enter') q('#loginBtn').click(); });
+
+/* ═══════════════════════════════════════════════════
+   EVENT HANDLERS
+   ═══════════════════════════════════════════════════ */
+
+/* Tab clicks */
+// Already handled above
+
+/* Payroll form */
+q('#payrollForm').addEventListener('submit', e => {
+  e.preventDefault();
+  renderPayrollPreview();
+  toast('Payroll recalculated.');
+  audit('Payroll recalculated for ' + (state.employees.find(x => x.id === selectedId)?.name || 'unknown'));
+});
+
+q('#saveEmployee').addEventListener('click', () => {
+  const e = state.employees.find(x => x.id === selectedId);
+  if (!e) return;
+  e.kraPin = f.kraPin.value;
+  e.salary = num(f.basicSalary.value);
+  e.advance = num(f.salaryAdvance.value);
+  state.approved = false;
+  state.locked = false;
+  renderAll();
+  toast('Employee payroll details saved.');
+  audit(`Updated payroll details for ${e.name}`);
+});
+
+f.employeeSelect.addEventListener('change', () => {
+  selectedId = f.employeeSelect.value;
+  syncSelectedToForm();
+  renderAll();
+});
+
+f.payslipSelect.addEventListener('change', renderPayslips);
+
+[f.kraPin, f.basicSalary, f.allowances, f.reimbursements, f.bonus, f.pension, f.salaryAdvance, f.resident].forEach(x => {
+  x.addEventListener('input', renderPayrollPreview);
+  x.addEventListener('change', renderPayrollPreview);
+});
+
+/* Employee rows inline edit */
+q('#employeeRows').addEventListener('input', e => {
+  const row = e.target.closest('tr');
+  if (!row) return;
+  const emp = state.employees.find(x => x.id === row.dataset.id);
+  if (!emp) return;
+  const field = e.target.dataset.field;
+  if (['salary', 'advance'].includes(field)) emp[field] = num(e.target.value);
+  else emp[field] = e.target.value;
+  state.approved = false;
+  state.locked = false;
+  if (emp.id === selectedId) syncSelectedToForm();
+  renderAll();
+});
+
+q('#employeeRows').addEventListener('click', e => {
+  if (e.target.dataset.action !== 'use') return;
+  selectedId = e.target.closest('tr').dataset.id;
+  syncSelectedToForm();
+  renderAll();
+  showTab('payroll');
+});
+
+/* Add employee */
+q('#addEmployee').addEventListener('click', () => {
+  const e = { id: id(), name: 'New Employee', kraPin: '', nssf: '', sha: '', bankAccount: '', salary: 30000, advance: 0 };
+  state.employees.push(e);
+  selectedId = e.id;
+  syncSelectedToForm();
+  renderAll();
+  toast('Employee added.');
+  audit('Added new employee: New Employee');
+});
+
+/* CSV upload */
+q('#csvUpload').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const imported = parseCsv(await file.text());
+  if (!imported.length) {
+    toast('No valid employees found. Check the CSV format.');
+    return;
+  }
+  state.employees = imported;
+  selectedId = state.employees[0].id;
+  state.approved = false;
+  state.locked = false;
+  syncSelectedToForm();
+  renderAll();
+  toast(`${imported.length} employees imported.`);
+  audit(`Imported ${imported.length} employees from CSV`);
+});
+
+/* Download template */
+q('#downloadTemplate').addEventListener('click', () =>
+  download('payrollke-employee-template.csv',
+    'name,salary,advance,kraPin,bankAccount,nssf,sha\n' +
+    'Amina Otieno,30000,0,A012345678Z,0123456789,NSSF001,SHA001\n' +
+    'Brian Mwangi,55000,5000,P000000001A,1234567890,NSSF002,SHA002\n'
+  )
+);
+
+/* Clear advances */
+q('#clearAdvances').addEventListener('click', () => {
+  state.employees.forEach(e => e.advance = 0);
+  state.approved = false;
+  renderAll();
+  toast('All salary advances cleared.');
+  audit('Cleared all salary advances');
+});
+
+/* Payslip list clicks */
+q('#payslipList').addEventListener('click', e => {
+  if (!e.target.dataset.payslip) return;
+  f.payslipSelect.value = e.target.dataset.payslip;
+  renderPayslips();
+});
+
+/* Settings form */
+q('#settingsForm').addEventListener('submit', e => {
+  e.preventDefault();
+  state.settings = {
+    companyName: q('#companyName').value,
+    period: q('#payrollPeriod').value,
+    shaRate: num(q('#shaRate').value),
+    housingRate: num(q('#housingRate').value),
+    nssfRate: num(q('#nssfRate').value),
+    nssfCap: num(q('#nssfCap').value)
+  };
+  state.approved = false;
+  renderAll();
+  toast('Settings saved.');
+  audit('Updated payroll settings');
+});
+
+/* Add custom deduction (global) */
+q('#addCustomDeduction').addEventListener('click', () => {
+  const name = q('#customDeductionName').value.trim();
+  const amount = num(q('#customDeductionAmount').value);
+  if (!name || amount <= 0) { toast('Enter a deductible name and amount.'); return; }
+  state.customDeductions.push({ id: id(), name, amount });
+  q('#customDeductionName').value = '';
+  q('#customDeductionAmount').value = 0;
+  state.approved = false;
+  renderAll();
+  toast('Deductible added.');
+  audit(`Added global deductible: ${name} (${money.format(amount)})`);
+});
+
+/* Remove custom deduction */
+q('#customDeductionList').addEventListener('click', e => {
+  const removeId = e.target.dataset.removeDeduction;
+  if (!removeId) return;
+  state.customDeductions = state.customDeductions.filter(d => d.id !== removeId);
+  state.approved = false;
+  renderAll();
+  toast('Deductible removed.');
+});
+
+/* Add per-employee deduction */
+q('#addEmployeeDeduction').addEventListener('click', () => {
+  const empId = f.employeeDeductionSelect.value;
+  const name = q('#employeeDeductionName').value.trim();
+  const amount = num(q('#employeeDeductionAmount').value);
+  if (!empId || !name || amount <= 0) { toast('Select an employee, enter a name and amount.'); return; }
+  state.employeeDeductions.push({ id: id(), employeeId: empId, name, amount });
+  q('#employeeDeductionName').value = '';
+  q('#employeeDeductionAmount').value = 0;
+  state.approved = false;
+  renderAll();
+  toast('Individual deductible added.');
+  const emp = state.employees.find(e => e.id === empId);
+  audit(`Added individual deductible for ${emp?.name}: ${name} (${money.format(amount)})`);
+});
+
+/* Remove per-employee deduction */
+q('#employeeDeductionRows').addEventListener('click', e => {
+  const removeId = e.target.dataset.removeEmpDed;
+  if (!removeId) return;
+  state.employeeDeductions = state.employeeDeductions.filter(d => d.id !== removeId);
+  state.approved = false;
+  renderAll();
+  toast('Individual deductible removed.');
+});
+
+/* Reports download clicks */
+q('#reportsList').addEventListener('click', e => {
+  if (!e.target.dataset.deduct) return;
+  downloadDeductionReport(e.target.dataset.deduct);
+});
+
+/* Run payroll */
+q('#runPayroll').addEventListener('click', () => {
+  state.approved = false;
+  state.locked = false;
+  renderAll();
+  toast('Payroll run refreshed for all employees.');
+  audit('Refreshed payroll run');
+});
+
+/* Approve */
+q('#approve').addEventListener('click', () => {
+  state.approved = true;
+  renderAll();
+  toast('Payroll approved.');
+  audit('Payroll approved');
+});
+
+/* Lock */
+q('#lock').addEventListener('click', () => {
+  if (!state.approved) { toast('Approve payroll before locking.'); return; }
+  state.locked = true;
+  renderAll();
+  toast('Payroll period locked.');
+  audit('Payroll period locked');
+});
+
+/* Export CSV (fixed icon — now an <a> tag with download) */
+q('#exportCsv').addEventListener('click', e => {
+  const rows = ['name,gross,paye,nssf,sha,housing,advance,net'];
+  state.employees.forEach(e => {
+    const r = employeeRun(e);
+    rows.push([e.name, r.gross, r.paye, r.nssf, r.sha, r.housingEmployee, r.advance, r.net].join(','));
+  });
+  download('payrollke-payroll-export.csv', rows.join('\n'));
+  toast('Payroll CSV exported.');
+  audit('Exported payroll CSV');
+});
+
+/* PDF payslip — single from payroll preview */
+q('#downloadPdf').addEventListener('click', () => {
+  const emp = state.employees.find(e => e.id === selectedId) || state.employees[0];
+  if (emp) generatePayslipPdf(emp);
+});
+
+/* PDF payslip — single from payslip browser */
+q('#downloadSinglePdf').addEventListener('click', () => {
+  const emp = state.employees.find(e => e.id === f.payslipSelect.value) || state.employees[0];
+  if (emp) generatePayslipPdf(emp);
+});
+
+/* Bulk ZIP download */
+q('#downloadAllPdf').addEventListener('click', () => downloadAllPayslipsZip());
+
+/* Dashboard bulk download */
+q('#downloadZip').addEventListener('click', () => downloadAllPayslipsZip());
+
+/* Bank export from dashboard */
+q('#exportBank').addEventListener('click', () => downloadBankExport());
+
+/* Bank export from reports */
+q('#exportBankReport').addEventListener('click', () => downloadBankExport());
+
+/* Full backup */
+q('#backupAll').addEventListener('click', () => downloadFullBackup());
+
+/* Employer split toggle */
+q('#employerSplit').addEventListener('click', () => {
+  showEmployerSplit = !showEmployerSplit;
+  q('#employerSplit').textContent = showEmployerSplit ? 'Hide Employer Split' : 'Show Employer Split';
+  renderPayrollPreview();
+});
+
+/* Clear audit */
+q('#clearAudit').addEventListener('click', () => {
+  state.auditLog = [];
+  renderAll();
+  toast('Audit log cleared.');
+});
+
+/* Switch role */
+q('#switchRole').addEventListener('click', () => {
+  state.role = q('#currentUserRole').value;
+  renderAll();
+  toast(`Switched to ${state.role} role.`);
+  audit(`Switched role to ${state.role}`);
+});
+
+/* ═══════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════ */
+if (!selectedId && state.employees[0]) selectedId = state.employees[0].id;
+syncSelectedToForm();
+renderAll();
 </script>
 </body>
 </html>
-
