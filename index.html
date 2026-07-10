@@ -121,10 +121,9 @@ td input{min-height:36px;width:100%}
     <p>Kenya Payroll SaaS &mdash; by Optimum Prime Solutions</p>
     <div class="fields">
       <label>Username<input id="loginUser" placeholder="admin or hr"></label>
-      <label>Password<input id="loginPass" type="password" placeholder="password"></label>
     </div>
     <button class="primary" type="button" id="loginBtn" style="width:100%;margin-top:14px">Sign In</button>
-    <p style="margin-top:16px;font-size:12px;color:var(--muted)">Admin: admin / admin &middot; HR: hr / hr123 &middot; Viewer: viewer / view</p>
+    <p style="margin-top:16px;font-size:12px;color:var(--muted)">Just enter your username: admin, hr, or viewer</p>
   </div>
 </div>
 
@@ -235,8 +234,8 @@ td input{min-height:36px;width:100%}
           <table>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Back / Leave Name</th>
+                <th style="min-width:180px">Name</th>
+                <th>Bank Name</th>
                 <th>ID</th>
                 <th>KRA PIN</th>
                 <th>Department</th>
@@ -549,9 +548,9 @@ const defaultState = {
   departments: ['Accounts', 'Sales', 'IT'],
   customDeductions: [],
   employees: [
-    { id:id(), name:'Amina Otieno', backLeaveName:'Amina O.', empId:'EMP001', kraPin:'A012345678Z', department:'Accounts', jobGrade:'G7', bankAccount:'0123456789', basicSalary:30000, houseAllowance:5000, transportAllowance:3000, otherAllowance:0, helb:0, advance:0, active:true },
-    { id:id(), name:'Brian Mwangi', backLeaveName:'Brian M.', empId:'EMP002', kraPin:'P000000001A', department:'Sales', jobGrade:'G5', bankAccount:'1234567890', basicSalary:55000, houseAllowance:10000, transportAllowance:5000, otherAllowance:2000, helb:4000, advance:5000, active:true },
-    { id:id(), name:'Faith Njeri', backLeaveName:'Faith N.', empId:'EMP003', kraPin:'P000000002B', department:'IT', jobGrade:'G4', bankAccount:'9876543210', basicSalary:85000, houseAllowance:15000, transportAllowance:8000, otherAllowance:5000, helb:5000, advance:7000, active:true }
+    { id:id(), name:'Amina Otieno', bankName:'Equity Bank', empId:'EMP001', kraPin:'A012345678Z', department:'Accounts', jobGrade:'G7', bankAccount:'0123456789', basicSalary:30000, houseAllowance:5000, transportAllowance:3000, otherAllowance:0, helb:0, advance:0, active:true },
+    { id:id(), name:'Brian Mwangi', bankName:'KCB Bank', empId:'EMP002', kraPin:'P000000001A', department:'Sales', jobGrade:'G5', bankAccount:'1234567890', basicSalary:55000, houseAllowance:10000, transportAllowance:5000, otherAllowance:2000, helb:4000, advance:5000, active:true },
+    { id:id(), name:'Faith Njeri', bankName:'Absa Bank', empId:'EMP003', kraPin:'P000000002B', department:'IT', jobGrade:'G4', bankAccount:'9876543210', basicSalary:85000, houseAllowance:15000, transportAllowance:8000, otherAllowance:5000, helb:5000, advance:7000, active:true }
   ],
   employeeDeductions: [],
   advanceHistory: [
@@ -625,7 +624,7 @@ function load() {
     data.auditLog = Array.isArray(data.auditLog) ? data.auditLog : [];
     data.role = data.role || 'admin';
     // Backfill new fields on existing data
-    data.employees.forEach(e => { if (!e.hasOwnProperty('backLeaveName')) e.backLeaveName = ''; });
+    data.employees.forEach(e => { if (!e.hasOwnProperty('bankName')) e.bankName = ''; });
     return data;
   } catch { return structuredClone(defaultState); }
 }
@@ -870,7 +869,7 @@ function renderEmployees() {
     const r = employeeRun(e);
     return `<tr data-id="${e.id}">
       <td><input data-field="name" value="${escapeHtml(e.name)}"></td>
-      <td><input data-field="backLeaveName" value="${escapeHtml(e.backLeaveName||'')}" placeholder="Back/leave name"></td>
+      <td><input data-field="bankName" value="${escapeHtml(e.bankName||'')}" placeholder="e.g. KCB, Equity"></td>
       <td><input data-field="empId" value="${escapeHtml(e.empId||'')}" placeholder="EMP001"></td>
       <td><input data-field="kraPin" value="${escapeHtml(e.kraPin)}"></td>
       <td><input data-field="department" value="${escapeHtml(e.department||'')}"></td>
@@ -1125,7 +1124,7 @@ function parseCsv(text) {
   const bankIx = header.findIndex(h => ['bankaccount','account','accountnumber','bankacc','bank'].includes(h));
   const deptIx = header.findIndex(h => ['department','dept'].includes(h));
   const helbIx = header.findIndex(h => ['helb','helbamount'].includes(h));
-  const backLeaveIx = header.findIndex(h => ['backleavename','leavename','backname','leavenamefull'].includes(h));
+  const bankNameIx = header.findIndex(h => ['bankname','bank','banknamecol'].includes(h));
   const data = hasHeader ? rows.slice(1) : rows;
   const validRows = [];
   const errors = [];
@@ -1139,7 +1138,7 @@ function parseCsv(text) {
       jobGrade:row[4]||'G7', bankAccount:row[bankIx>=0?bankIx:5]||'',
       basicSalary:salary, houseAllowance:0, transportAllowance:0, otherAllowance:0,
       helb:num(row[helbIx>=0?helbIx:6]), advance:num(row[advanceIx>=0?advanceIx:2]),
-      backLeaveName:row[backLeaveIx>=0?backLeaveIx:-1]||'', active:true
+      bankName:row[bankNameIx>=0?bankNameIx:-1]||'', active:true
     });
   });
   if (errors.length) toast(`Imported ${validRows.length}. ${errors.length} rows skipped.`);
@@ -1186,10 +1185,10 @@ function downloadDeductionReport(key) {
 
 /* ── Bank payment export ── */
 function downloadBankExport() {
-  const rows = ['employee,backLeaveName,bankAccount,department,payableAmount,grossPay'];
+  const rows = ['employee,bankName,bankAccount,department,payableAmount,grossPay'];
   state.employees.filter(e=>e.active).forEach(e => {
     const r = employeeRun(e);
-    rows.push([e.name, e.backLeaveName||'', e.bankAccount||'', e.department||'', r.net, r.gross].map(csvCell).join(','));
+    rows.push([e.name, e.bankName||'', e.bankAccount||'', e.department||'', r.net, r.gross].map(csvCell).join(','));
   });
   download(`easypay-bank-payment-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.join('\n'));
   toast('Bank payment file downloaded.');
@@ -1198,10 +1197,10 @@ function downloadBankExport() {
 
 /* ── KRA P10 Return ── */
 function downloadP10() {
-  const rows = ['employeeName,backLeaveName,kraPin,grossPay,taxableIncome,paye,personalRelief,netPaye,empId,department'];
+  const rows = ['employeeName,bankName,kraPin,grossPay,taxableIncome,paye,personalRelief,netPaye,empId,department'];
   state.employees.filter(e=>e.active).forEach(e => {
     const r = employeeRun(e);
-    rows.push([e.name, e.backLeaveName||'', e.kraPin, r.gross, r.taxablePay, r.paye, 2400, r.paye, e.empId||'', e.department||''].map(csvCell).join(','));
+    rows.push([e.name, e.bankName||'', e.kraPin, r.gross, r.taxablePay, r.paye, 2400, r.paye, e.empId||'', e.department||''].map(csvCell).join(','));
   });
   download(`easypay-kra-p10-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.join('\n'));
   toast('KRA P10 return downloaded.');
@@ -1259,7 +1258,7 @@ function generatePayslipPdf(employee) {
   txt(`Period: ${s.period}`, 120, 11, false);
   y += lh + 4;
   txt(`Employee: ${employee.name}`, 20, 11, false);
-  if (employee.backLeaveName) { txt(`Back/Leave Name: ${employee.backLeaveName}`, 120, 11, false); }
+  if (employee.bankName) { txt(`Bank: ${employee.bankName}`, 120, 11, false); }
   txt(`ID: ${employee.empId || 'N/A'}`, 120, 11, false);
   y += lh;
   txt(`KRA PIN: ${employee.kraPin || 'N/A'}`, 20, 11, false);
@@ -1395,23 +1394,16 @@ qa('[data-tab]').forEach(btn => btn.addEventListener('click', () => showTab(btn.
    ═══════════════════════════════════════════════════ */
 q('#loginBtn').addEventListener('click', () => {
   const user = q('#loginUser').value.trim().toLowerCase();
-  const pass = q('#loginPass').value;
-  const users = {
-    admin: { password:'admin', role:'admin' },
-    hr: { password:'hr123', role:'hr' },
-    viewer: { password:'view', role:'viewer' }
-  };
-  const found = users[user];
-  if (found && found.password === pass) {
-    state.role = found.role;
+  const roles = { admin:'admin', hr:'hr', viewer:'viewer' };
+  if (roles[user]) {
+    state.role = roles[user];
     q('#loginOverlay').style.display = 'none';
-    audit(`Logged in as ${found.role}`);
+    audit(`Logged in as ${roles[user]}`);
     renderAll();
   } else {
-    toast('Invalid username or password.');
+    toast('Invalid username. Use: admin, hr, or viewer');
   }
 });
-q('#loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') q('#loginBtn').click(); });
 q('#loginUser').addEventListener('keydown', e => { if (e.key === 'Enter') q('#loginBtn').click(); });
 
 /* ═══════════════════════════════════════════════════
@@ -1495,7 +1487,7 @@ q('#employeeRows').addEventListener('click', e => {
 
 /* Add employee */
 q('#addEmployee').addEventListener('click', () => {
-  const e = { id:id(), name:'New Employee', backLeaveName:'', empId:`EMP${String(state.employees.length+1).padStart(3,'0')}`,
+  const e = { id:id(), name:'New Employee', bankName:'', empId:`EMP${String(state.employees.length+1).padStart(3,'0')}`,
     kraPin:'', department:state.departments[0]||'General', jobGrade:'G7', bankAccount:'',
     basicSalary:30000, houseAllowance:0, transportAllowance:0, otherAllowance:0, helb:0, advance:0, active:true };
   state.employees.push(e);
@@ -1525,9 +1517,9 @@ q('#csvUpload').addEventListener('change', async e => {
 /* Download template */
 q('#downloadTemplate').addEventListener('click', () =>
   download('easypay-employee-template.csv',
-    'name,backLeaveName,salary,advance,kraPin,bankAccount,department,helb\n' +
-    'Amina Otieno,Amina O.,30000,0,A012345678Z,0123456789,Accounts,0\n' +
-    'Brian Mwangi,Brian M.,55000,5000,P000000001A,1234567890,Sales,4000\n'
+    'name,bankName,salary,advance,kraPin,bankAccount,department,helb\n' +
+    'Amina Otieno,Equity Bank,30000,0,A012345678Z,0123456789,Accounts,0\n' +
+    'Brian Mwangi,KCB Bank,55000,5000,P000000001A,1234567890,Sales,4000\n'
   )
 );
 
@@ -1661,10 +1653,10 @@ q('#lock').addEventListener('click', () => {
 
 /* Export CSV */
 q('#exportCsv').addEventListener('click', () => {
-  const rows = ['name,backLeaveName,empId,department,gross,paye,nssf,sha,helb,advance,net'];
+  const rows = ['name,bankName,empId,department,gross,paye,nssf,sha,helb,advance,net'];
   state.employees.filter(e=>e.active).forEach(e => {
     const r = employeeRun(e);
-    rows.push([e.name, e.backLeaveName||'', e.empId||'', e.department||'', r.gross, r.paye, r.nssfEmployee, r.sha, r.helb, r.advance, r.net].join(','));
+    rows.push([e.name, e.bankName||'', e.empId||'', e.department||'', r.gross, r.paye, r.nssfEmployee, r.sha, r.helb, r.advance, r.net].join(','));
   });
   download('easypay-payroll-export.csv', rows.join('\n'));
   toast('Payroll CSV exported.');
