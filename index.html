@@ -1,113 +1,163 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>EasyPay — Kenya Payroll SaaS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
-:root{--ink:#17211f;--muted:#63736f;--line:#dfe8e5;--paper:#f7fbfa;--panel:#fff;--green:#116149;--green2:#d9efe7;--gold:#b9831d;--blue:#255f8e;--red:#b94646;--bg:#eef4f2;--shadow:0 18px 45px rgba(25,48,43,.08)}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;color:var(--ink);background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+:root{
+  --ink:#141e1c;--muted:#5a6b67;--line:#d4e0dd;--paper:#f4f9f7;--panel:#fff;
+  --green:#0d5a3f;--green2:#d2efe4;--green3:#0a7a56;--gold:#c48d1e;--gold2:#fef5d9;
+  --blue:#1f5c8a;--blue2:#e3eef8;--red:#b33a3a;--red2:#fde8e8;--bg:#edf3f1;
+  --shadow:0 8px 30px rgba(15,40,35,.07);--shadow-lg:0 18px 50px rgba(15,40,35,.1);
+  --radius:10px;--radius-sm:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;color:var(--ink);background:var(--bg);font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
-.side{display:flex;flex-direction:column;gap:22px;padding:24px;color:#f7fffc;background:#153b32}
+button{cursor:pointer;border:none;background:none}
+/* ── LAYOUT ── */
+.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+.side{display:flex;flex-direction:column;gap:20px;padding:22px 20px;color:#f0faf7;background:linear-gradient(175deg,#0e4a3a 0%,#0d5a3f 40%,#0a3e2e 100%);border-right:1px solid rgba(255,255,255,.06)}
 .brand{display:flex;align-items:center;gap:12px}
-.mark{display:grid;width:42px;height:42px;place-items:center;border-radius:8px;color:#153b32;background:#f3c969;font-weight:900;font-size:22px}
-.brand span{display:block;color:#c5d8d2;font-size:13px}
-.role-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:999px;background:var(--gold);color:#fff;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:4px}
-.nav{display:grid;gap:6px}
-.nav button{min-height:40px;border:1px solid transparent;border-radius:8px;color:#effaf6;background:transparent;text-align:left;padding:0 12px;font-size:14px}
-.nav .active,.nav button:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.1)}
-.period{margin-top:auto;padding:14px;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:rgba(255,255,255,.08)}
+.mark{display:grid;width:44px;height:44px;place-items:center;border-radius:10px;color:#0d5a3f;background:linear-gradient(135deg,#f3c969,#e8a820);font-weight:900;font-size:24px;box-shadow:0 2px 8px rgba(243,201,105,.3)}
+.brand span{display:block;color:#b8d5ce;font-size:12.5px;line-height:1.5}
+.role-badge{display:inline-block;font-size:9.5px;padding:3px 10px;border-radius:999px;background:var(--gold);color:#fff;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:6px}
+.nav{display:grid;gap:4px}
+.nav button{min-height:38px;border:1px solid transparent;border-radius:var(--radius-sm);color:#e0f5ef;background:transparent;text-align:left;padding:0 14px;font-size:13.5px;font-weight:500;transition:all .2s}
+.nav .active,.nav button:hover{border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.1);color:#fff}
+.period{margin-top:auto;padding:14px 12px;border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-sm);background:rgba(255,255,255,.06)}
 .period span,.period strong{display:block}
-.period span{color:#c5d8d2;font-size:13px}
-.period strong{margin:4px 0 14px}
-.main{padding:28px;overflow-y:auto;max-height:100vh}
+.period span{color:#b8d5ce;font-size:12px}
+.period strong{margin:4px 0 12px;color:#fff;font-size:15px}
+.period button{width:100%}
+.main{padding:28px 32px;overflow-y:auto;max-height:100vh}
+/* ── HEADER ── */
 .top,.panel-head,.actions,.form-actions{display:flex;align-items:center}
 .top,.panel-head{justify-content:space-between;gap:16px}
-.top{margin-bottom:20px}
+.top{margin-bottom:22px}
 .top h1,.panel h2{margin:0}
-.top h1{font-size:34px}
-.panel h2{font-size:18px}
-.eyebrow{margin:0 0 5px;color:var(--muted);font-size:12px;font-weight:800;letter-spacing:0;text-transform:uppercase}
+.top h1{font-size:30px;font-weight:800;letter-spacing:-.3px}
+.panel h2{font-size:17px;font-weight:700}
+.eyebrow{margin:0 0 4px;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
 .actions,.form-actions{gap:10px;flex-wrap:wrap}
-.primary,.secondary,.icon,.mini,.dangerBtn,.ghost{min-height:40px;border-radius:8px;border:1px solid transparent;padding:0 14px;font-weight:750}
-.primary{color:#fff;background:var(--green)}
-.secondary{color:var(--green);border-color:var(--line);background:#fff}
-.side .secondary{color:var(--green2);border-color:rgba(255,255,255,.28);background:transparent}
-.dangerBtn{color:#fff;background:var(--red)}
-.icon{width:42px;padding:0;color:var(--green);border-color:var(--line);background:#fff;font-size:20px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
-.mini{min-height:32px;padding:0 10px;font-size:13px;color:var(--green);border-color:var(--line);background:#fff}
-.ghost{color:var(--muted);border-color:var(--line);background:#fff}
-.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
-.metric,.panel{border:1px solid var(--line);border-radius:8px;background:var(--panel);box-shadow:var(--shadow)}
-.metric{padding:16px}
-.metric span,.employeeStrip span{display:block;color:var(--muted);font-size:13px}
-.metric strong{display:block;margin-top:6px;font-size:22px}
+/* ── BUTTONS ── */
+.primary,.secondary,.icon,.mini,.dangerBtn,.ghost{border-radius:var(--radius-sm);padding:0 14px;font-weight:700;font-size:13.5px;transition:all .2s}
+.primary{color:#fff;background:var(--green);min-height:40px}
+.primary:hover{background:var(--green3);box-shadow:0 4px 14px rgba(13,90,63,.25)}
+.secondary{color:var(--green);border:1px solid var(--line);background:#fff;min-height:40px}
+.secondary:hover{border-color:var(--green);background:var(--green2)}
+.side .secondary{color:#d0ede6;border-color:rgba(255,255,255,.25);background:transparent;min-height:36px}
+.side .secondary:hover{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.08)}
+.dangerBtn{color:#fff;background:var(--red);min-height:40px}
+.dangerBtn:hover{background:#a02e2e}
+.icon{width:40px;height:40px;padding:0;color:var(--green);border:1px solid var(--line);background:#fff;font-size:20px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:var(--radius-sm)}
+.icon:hover{border-color:var(--green);background:var(--green2)}
+.mini{min-height:34px;padding:0 12px;font-size:12.5px;color:var(--green);border:1px solid var(--line);background:#fff;font-weight:600}
+.mini:hover{border-color:var(--green);background:var(--green2)}
+.ghost{color:var(--muted);border:1px solid var(--line);background:#fff;min-height:34px;font-weight:600}
+.ghost:hover{background:var(--paper)}
+/* ── CARDS ── */
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.metric,.panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow)}
+.metric{padding:18px;transition:transform .2s,box-shadow .2s}
+.metric:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.metric span,.employeeStrip span{display:block;color:var(--muted);font-size:12.5px;font-weight:500}
+.metric strong{display:block;margin-top:6px;font-size:22px;font-weight:800;color:var(--ink)}
+.metric.gross strong{color:var(--green)}
+.metric.net strong{color:var(--blue)}
+.metric.paye strong{color:var(--red)}
+.metric.advance strong{color:var(--gold)}
+/* ── SCREENS ── */
 .screen{display:none}
 .screen.active{display:block}
 .grid{display:grid;grid-template-columns:1.08fr .92fr;gap:16px}
 .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.panel{padding:18px}
+.panel{padding:20px}
 .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
-label{display:grid;gap:7px;color:var(--muted);font-size:13px;font-weight:700}
-input,select,textarea{width:100%;min-height:42px;border:1px solid var(--line);border-radius:8px;color:var(--ink);background:var(--paper);padding:0 12px}
-input:focus,select:focus,textarea:focus{border-color:var(--green);outline:3px solid rgba(17,97,73,.12)}
+label{display:grid;gap:7px;color:var(--muted);font-size:12.5px;font-weight:700}
+input,select,textarea{width:100%;min-height:40px;border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--ink);background:var(--paper);padding:0 12px;font-size:13.5px;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--green);outline:none;box-shadow:0 0 0 3px rgba(13,90,63,.1)}
+/* ── TOGGLE ── */
 .toggle{display:flex;grid-template-columns:none;align-items:center;gap:8px;color:var(--ink)}
-.toggle input{width:18px;min-height:18px}
-.pill{display:inline-flex;align-items:center;justify-content:center;min-width:72px;border-radius:999px;color:#7b5a0c;background:#fff2c9;padding:7px 10px;text-align:center;font-size:13px;font-weight:800}
+.toggle input{width:18px;min-height:18px;accent-color:var(--green)}
+/* ── PILLS ── */
+.pill{display:inline-flex;align-items:center;justify-content:center;min-width:72px;border-radius:999px;color:#7b5a0c;background:#fff2c9;padding:6px 12px;text-align:center;font-size:12.5px;font-weight:700}
 .pill.ok{color:#0f563f;background:var(--green2)}
 .pill.bad{color:#fff;background:var(--red)}
-.employeeStrip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0;padding:12px;border-radius:8px;background:#f4f8f6}
+.pill.draft{color:var(--muted);background:#f0f4f2}
+/* ── EMPLOYEE STRIP ── */
+.employeeStrip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0;padding:14px;border-radius:var(--radius-sm);background:#f2f7f5}
+/* ── LINE ITEMS ── */
 .lines,.reports,.stack{display:grid;gap:9px}
-.line{display:flex;justify-content:space-between;gap:12px;min-height:34px;border-bottom:1px solid #edf2f0;color:var(--muted);align-items:center}
-.line strong{color:var(--ink)}
-.line.net{margin-top:8px;border:0;color:var(--green);font-size:19px;font-weight:850}
+.line{display:flex;justify-content:space-between;gap:12px;min-height:34px;border-bottom:1px solid #edf2f0;color:var(--muted);align-items:center;font-size:13.5px}
+.line strong{color:var(--ink);font-weight:700}
+.line.net{margin-top:8px;border:0;color:var(--green);font-size:18px;font-weight:800}
 .line.net strong{color:var(--green)}
-.report,.check{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;min-height:48px;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
-.report span,.check span{display:block;color:var(--muted);font-size:12px}
-.table-wrap{overflow:auto;margin-top:16px;border:1px solid var(--line);border-radius:8px}
+/* ── REPORT CARD ── */
+.report,.check{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;min-height:48px;border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 14px;transition:border-color .2s}
+.report:hover,.check:hover{border-color:var(--green)}
+.report span,.check span{display:block;color:var(--muted);font-size:11.5px}
+/* ── TABLE ── */
+.table-wrap{overflow:auto;margin-top:16px;border:1px solid var(--line);border-radius:var(--radius)}
 table{width:100%;border-collapse:collapse;min-width:1200px}
-th,td{padding:11px 12px;border-bottom:1px solid #edf2f0;text-align:left;font-size:14px;white-space:nowrap}
-th{color:var(--muted);background:#f7fbfa;font-size:12px;text-transform:uppercase}
+th,td{padding:11px 14px;border-bottom:1px solid #edf2f0;text-align:left;font-size:13.5px;white-space:nowrap}
+th{color:var(--muted);background:#f4f9f7;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
 td input{min-height:36px;width:100%}
 .right{text-align:right}
-.upload{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:16px;padding:14px;border:1px dashed #a8beb8;border-radius:8px;background:#f7fbfa}
+/* ── UPLOAD ── */
+.upload{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:16px;padding:14px;border:1px dashed #a8beb8;border-radius:var(--radius-sm);background:#f4f9f7}
+/* ── EMPTY ── */
 .empty{padding:24px;text-align:center;color:var(--muted)}
-.notes ul{margin:16px 0 0;padding-left:18px;color:var(--muted)}
-.notes li+li{margin-top:8px}
+/* ── CHART ── */
 .miniChart{display:grid;gap:8px}
 .bar{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;color:var(--muted);font-size:13px}
 .bar i{display:block;height:10px;border-radius:999px;background:var(--green)}
 .bench{border-left:4px solid var(--green);padding-left:12px;color:var(--muted)}
-.toast{position:fixed;right:20px;bottom:20px;transform:translateY(12px);opacity:0;pointer-events:none;max-width:360px;border-radius:8px;color:white;background:#17211f;padding:12px 14px;transition:180ms ease;z-index:9999}
+/* ── TOAST ── */
+.toast{position:fixed;right:24px;bottom:24px;transform:translateY(12px);opacity:0;pointer-events:none;max-width:380px;border-radius:var(--radius);color:#fff;background:#141e1c;padding:14px 16px;transition:180ms ease;z-index:9999;font-size:13.5px;font-weight:500}
 .toast.show{transform:translateY(0);opacity:1}
-.audit-entry{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #edf2f0;font-size:13px}
-.audit-entry .time{color:var(--muted);min-width:140px}
+/* ── AUDIT ── */
+.audit-entry{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #edf2f0;font-size:13px}
+.audit-entry .time{color:var(--muted);min-width:150px}
 .audit-entry .actor{color:var(--ink);font-weight:700;min-width:100px}
 .audit-entry .action{color:var(--ink);flex:1}
-.login-overlay{position:fixed;inset:0;background:var(--bg);z-index:10000;display:flex;align-items:center;justify-content:center}
-.login-box{background:#fff;border-radius:12px;padding:40px;box-shadow:var(--shadow);width:380px;text-align:center}
-.login-box h2{margin:0 0 8px;font-size:24px}
-.login-box p{color:var(--muted);margin:0 0 20px;font-size:14px}
-.login-box .fields{grid-template-columns:1fr}
+/* ── LOGIN ── */
+.login-overlay{position:fixed;inset:0;background:linear-gradient(145deg,#0e4a3a,#0d5a3f,#0a3e2e);z-index:10000;display:flex;align-items:center;justify-content:center}
+.login-box{background:#fff;border-radius:16px;padding:48px;box-shadow:var(--shadow-lg);width:400px;text-align:center;animation:fadeUp .3s ease}
+.login-box .mark{margin:0 auto 18px}
+.login-box h2{margin:0 0 8px;font-size:26px;font-weight:800}
+.login-box p{color:var(--muted);margin:0 0 24px;font-size:14px}
+.login-box .fields{grid-template-columns:1fr;gap:12px}
+.login-box .fields label{font-size:12px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+/* ── SEARCH ── */
 .search-bar{display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .search-bar input{max-width:320px}
 .search-bar select{max-width:160px}
-.plan-card{border:1px solid var(--line);border-radius:8px;padding:18px;text-align:center;background:#fff}
+/* ── PLANS ── */
+.plan-card{border:1px solid var(--line);border-radius:var(--radius);padding:22px;text-align:center;background:#fff;transition:transform .2s,box-shadow .2s}
+.plan-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
 .plan-card.popular{border-color:var(--green);box-shadow:var(--shadow)}
-.plan-card h3{margin:0;font-size:18px}
+.plan-card h3{margin:0;font-size:18px;font-weight:700}
 .plan-card .price{font-size:28px;font-weight:900;color:var(--green);margin:8px 0}
 .plan-card ul{list-style:none;padding:0;text-align:left;font-size:13px}
-.plan-card ul li{padding:4px 0;border-bottom:1px solid #f0f4f2}
-.stat-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--green2);color:var(--green);font-size:12px;font-weight:700}
+.plan-card ul li{padding:5px 0;border-bottom:1px solid #f0f4f2}
+/* ── STAT BADGE ── */
+.stat-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:var(--green2);color:var(--green);font-size:11.5px;font-weight:700}
 .toggle-active{display:flex;align-items:center;gap:8px}
 .toggle-active .toggle-label{font-size:13px;color:var(--muted)}
-@media(max-width:1050px){.app{grid-template-columns:1fr}.side{min-height:auto}.nav{grid-template-columns:repeat(7,minmax(120px,1fr));overflow-x:auto}.period{margin-top:0}.grid,.two,.three{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
+/* ── P9 TABLE ── */
+.p9-table th{font-size:11px}
+.p9-table td{font-size:13px}
+.p9-table .cumulative{font-weight:700;color:var(--green)}
+.p9-table .monthly-payee{font-weight:700;color:var(--blue)}
+/* ── RESPONSIVE ── */
+@media(max-width:1050px){.app{grid-template-columns:1fr}.side{min-height:auto;border-right:none}.nav{grid-template-columns:repeat(7,minmax(120px,1fr));overflow-x:auto;padding-bottom:8px}.period{margin-top:0}.grid,.two,.three{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.main,.side{padding:18px}.top{align-items:flex-start;flex-direction:column}.metrics,.fields,.employeeStrip,.upload{grid-template-columns:1fr}.bar{grid-template-columns:1fr}}
 </style>
 </head>
@@ -116,14 +166,18 @@ td input{min-height:36px;width:100%}
 <!-- ═══════════════ LOGIN OVERLAY ═══════════════ -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
-    <div class="mark" style="margin:0 auto 16px">E</div>
+    <div class="mark">E</div>
     <h2>EasyPay</h2>
     <p>Kenya Payroll SaaS &mdash; by Optimum Prime Solutions</p>
     <div class="fields">
-      <label>Username<input id="loginUser" placeholder="admin or hr"></label>
+      <label>Username<input id="loginUser" placeholder="e.g. admin"></label>
+      <label>Password<input id="loginPass" type="password" placeholder="Your password"></label>
     </div>
-    <button class="primary" type="button" id="loginBtn" style="width:100%;margin-top:14px">Sign In</button>
-    <p style="margin-top:16px;font-size:12px;color:var(--muted)">Just enter your username: admin, hr, or viewer</p>
+    <button class="primary" type="button" id="loginBtn" style="width:100%;margin-top:16px;font-size:15px">Sign In</button>
+    <p style="margin-top:18px;font-size:11.5px;color:var(--muted);line-height:1.6">
+      <strong>Admin:</strong> admin / admin<br>
+      <strong>HR:</strong> hr / hr123
+    </p>
   </div>
 </div>
 
@@ -143,6 +197,7 @@ td input{min-height:36px;width:100%}
       <button data-tab="employees" type="button">Employees</button>
       <button data-tab="payroll" type="button">Payroll Run</button>
       <button data-tab="payrollHistory" type="button">Payroll History</button>
+      <button data-tab="p9form" type="button" class="admin-only">Annual P9 Form</button>
       <button data-tab="advances" type="button">Advances &amp; History</button>
       <button data-tab="payslips" type="button">Payslips</button>
       <button data-tab="reports" type="button">Reports &amp; Exports</button>
@@ -172,15 +227,15 @@ td input{min-height:36px;width:100%}
 
     <!-- Metrics bar -->
     <section class="metrics">
-      <article class="metric"><span>Gross Pay</span><strong id="grossMetric">KES 0.00</strong></article>
-      <article class="metric"><span>Net Pay</span><strong id="netMetric">KES 0.00</strong></article>
-      <article class="metric"><span>PAYE</span><strong id="payeMetric">KES 0.00</strong></article>
-      <article class="metric"><span>Salary Advances</span><strong id="advanceMetric">KES 0.00</strong></article>
+      <article class="metric gross"><span>Gross Pay</span><strong id="grossMetric">KES 0.00</strong></article>
+      <article class="metric net"><span>Net Pay</span><strong id="netMetric">KES 0.00</strong></article>
+      <article class="metric paye"><span>PAYE</span><strong id="payeMetric">KES 0.00</strong></article>
+      <article class="metric advance"><span>Salary Advances</span><strong id="advanceMetric">KES 0.00</strong></article>
     </section>
 
     <!-- ── DASHBOARD ── -->
     <section id="dashboard" class="screen active">
-      <div class="three">
+      <div class="grid">
         <article class="panel">
           <div class="panel-head">
             <div><p class="eyebrow">Readiness</p><h2>Payroll Checklist</h2></div>
@@ -200,6 +255,7 @@ td input{min-height:36px;width:100%}
             <button class="mini" type="button" id="exportBank" style="text-align:left">&#x2B06; Export Bank Payment File</button>
             <button class="mini" type="button" id="exportP10" style="text-align:left">&#x2B06; Export KRA P10 Return</button>
             <button class="mini" type="button" id="exportTally" style="text-align:left">&#x2B06; Export TallyPrime Journal</button>
+            <button class="mini" type="button" id="exportP9" style="text-align:left">&#x2B06; Download Annual P9 Form</button>
           </div>
         </article>
       </div>
@@ -209,26 +265,22 @@ td input{min-height:36px;width:100%}
     <section id="employees" class="screen">
       <section class="panel">
         <div class="panel-head">
-          <div><p class="eyebrow">Employee master</p><h2>Manage Employees</h2></div>
+          <div><p class="eyebrow">Employee Master</p><h2>Manage Employees</h2></div>
           <div class="actions">
-            <button class="secondary" type="button" id="downloadTemplate">Download Template</button>
+            <button class="mini" type="button" id="downloadTemplate">Download Template</button>
             <button class="primary" type="button" id="addEmployee">Add Employee</button>
           </div>
         </div>
-        <div class="search-bar">
-          <input type="text" id="searchEmployees" placeholder="Search by name, KRA PIN, or ID..." style="max-width:320px">
-          <select id="filterDepartment">
-            <option value="">All Departments</option>
-          </select>
-          <select id="filterStatus">
-            <option value="">All Statuses</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
+        <div class="search-bar" style="margin-top:14px">
+          <input id="searchEmployees" placeholder="Search by name, KRA PIN, or ID..." type="text">
+          <select id="filterDepartment"><option>All Departments</option></select>
+          <select id="filterStatus"><option>All Statuses</option><option>Active</option><option>Inactive</option></select>
         </div>
         <div class="upload">
-          <label>CSV file<input type="file" id="csvUpload" accept=".csv,text/csv"></label>
-          <span class="pill ok">name, salary, advance</span>
+          <label class="mini" style="min-height:40px;display:inline-flex;align-items:center;justify-content:center">
+            CSV file <input id="csvUpload" type="file" accept=".csv" style="display:none">
+          </label>
+          <span class="ghost">name, bankName, salary, advance</span>
         </div>
         <div class="table-wrap">
           <table>
@@ -259,50 +311,29 @@ td input{min-height:36px;width:100%}
             <input type="text" id="newDeptName" placeholder="New department name" style="max-width:240px">
             <button class="mini" type="button" id="addDept">Add Department</button>
           </div>
-          <div id="deptList" class="reports"></div>
+          <div id="deptList" class="stack"></div>
         </div>
       </section>
     </section>
 
     <!-- ── PAYROLL RUN ── -->
     <section id="payroll" class="screen">
-      <section class="grid">
-        <form class="panel" id="payrollForm">
-          <div class="panel-head">
-            <div><p class="eyebrow">Calculator</p><h2>Employee Pay</h2></div>
-            <label class="toggle"><input type="checkbox" id="resident" checked>Resident</label>
+      <section class="panel">
+        <div class="panel-head"><div><p class="eyebrow">Calculator</p><h2>Payroll Preview</h2></div></div>
+        <div class="employeeStrip" id="employeeStrip"></div>
+        <div class="lines" id="lines"></div>
+        <div class="actions" style="margin-top:16px">
+          <button class="mini" type="button" id="employerSplit">Show Employer Split</button>
+          <label class="toggle"><input type="checkbox" id="roundToggle"> Round to nearest whole KES</label>
+        </div>
+        <div id="employerSplitPanel" style="display:none;margin-top:16px">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Employee</th><th class="right">PAYE</th><th class="right">NSSF (emp)</th><th class="right">SHA (emp)</th><th class="right">Housing (emp)</th><th class="right">HELB</th><th class="right">NSSF (er)</th><th class="right">SHA (er)</th><th class="right">Housing (er)</th><th class="right">Total Employer</th></tr></thead>
+              <tbody id="empSplitPreview"></tbody>
+            </table>
           </div>
-          <div class="fields">
-            <label>Employee<select id="employeeSelect"></select></label>
-            <label>KRA PIN<input id="kraPin"></label>
-            <label>Basic salary<input id="basicSalary" type="number" min="0"></label>
-            <label>House allowance<input id="houseAllowance" type="number" min="0" value="0"></label>
-            <label>Transport allowance<input id="transportAllowance" type="number" min="0" value="0"></label>
-            <label>Other allowances<input id="otherAllowance" type="number" min="0" value="0"></label>
-            <label>Pension contribution<input id="pension" type="number" min="0" value="0"></label>
-            <label>HELB deduction<input id="helb" type="number" min="0" value="0"></label>
-            <label>Salary advance<input id="salaryAdvance" type="number" min="0"></label>
-          </div>
-          <div class="form-actions">
-            <button class="primary" type="submit">Calculate</button>
-            <button class="secondary" type="button" id="saveEmployee">Save to Employee</button>
-          </div>
-        </form>
-        <section class="panel">
-          <div class="panel-head">
-            <div><p class="eyebrow">Preview</p><h2>Payslip</h2></div>
-            <span class="pill" id="slipStatus">Draft</span>
-          </div>
-          <div class="employeeStrip">
-            <div><span>Employee</span><strong id="slipName"></strong></div>
-            <div><span>KRA PIN</span><strong id="slipPin"></strong></div>
-          </div>
-          <div class="lines" id="lines"></div>
-          <div class="actions" style="margin-top:14px">
-            <button class="mini" type="button" id="downloadPdf">Download PDF Payslip</button>
-            <button class="mini ghost" type="button" id="employerSplit">Show Employer Split</button>
-          </div>
-        </section>
+        </div>
       </section>
     </section>
 
@@ -314,6 +345,43 @@ td input{min-height:36px;width:100%}
           <table>
             <thead><tr><th>Period</th><th>Status</th><th class="right">Gross</th><th class="right">PAYE</th><th class="right">NSSF</th><th class="right">SHA</th><th class="right">Net</th><th>Action</th></tr></thead>
             <tbody id="payrollHistoryRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- ── ANNUAL P9 FORM ── -->
+    <section id="p9form" class="screen">
+      <section class="panel">
+        <div class="panel-head">
+          <div><p class="eyebrow">KRA Annual Tax</p><h2>Annual P9 Form</h2></div>
+          <div class="actions">
+            <select id="p9Year" style="max-width:120px">
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+            </select>
+            <button class="mini" type="button" id="downloadP9Csv">Download P9 CSV</button>
+            <button class="mini" type="button" id="downloadP9Pdf">Download P9 PDF</button>
+          </div>
+        </div>
+        <p style="color:var(--muted);font-size:13px;margin:8px 0 16px">Monthly PAYE breakdown per employee with cumulative annual totals. Use <strong>Payroll History</strong> to add monthly data, or <strong>Run Payroll</strong> to generate the current month.</p>
+        <div id="p9EmployeeSelector" style="margin-bottom:14px">
+          <select id="p9EmployeeSelect" style="max-width:280px"></select>
+        </div>
+        <div class="table-wrap">
+          <table class="p9-table">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th class="right">Gross Pay</th>
+                <th class="right">Taxable Pay</th>
+                <th class="right">PAYE (Monthly)</th>
+                <th class="right cumulative">Cumulative PAYE</th>
+                <th class="right monthly-payee">Monthly Payee</th>
+              </tr>
+            </thead>
+            <tbody id="p9Rows"></tbody>
+            <tfoot id="p9Footer"></tfoot>
           </table>
         </div>
       </section>
@@ -338,7 +406,12 @@ td input{min-height:36px;width:100%}
         </article>
         <article class="panel">
           <div class="panel-head"><div><p class="eyebrow">History</p><h2>Advance Repayment History</h2></div></div>
-          <div class="reports" id="advanceHistory"></div>
+          <div id="advanceHistoryList" class="stack" style="max-height:380px;overflow:auto"></div>
+          <div class="actions" style="margin-top:14px">
+            <input id="newAdvanceEmp" placeholder="Employee name" style="max-width:180px">
+            <input id="newAdvanceAmount" placeholder="Amount KES" type="number" style="max-width:120px">
+            <button class="mini" type="button" id="addAdvance">Add Advance</button>
+          </div>
         </article>
       </section>
     </section>
@@ -347,20 +420,17 @@ td input{min-height:36px;width:100%}
     <section id="payslips" class="screen">
       <section class="grid">
         <article class="panel">
-          <div class="panel-head"><div><p class="eyebrow">Employee portal</p><h2>Payslip Browser</h2></div></div>
-          <label>Select employee<select id="payslipSelect"></select></label>
-          <div class="lines" id="payslipBrowser"></div>
+          <div class="panel-head"><div><p class="eyebrow">Individual</p><h2>Payslip Browser</h2></div></div>
+          <div id="payslipPreview" class="lines"></div>
           <div class="actions" style="margin-top:14px">
-            <button class="mini" type="button" id="downloadSinglePdf">Download PDF</button>
+            <button class="primary" type="button" id="downloadPayslipPdf">Download Payslip PDF</button>
           </div>
         </article>
         <article class="panel">
-          <div class="panel-head">
-            <div><p class="eyebrow">Delivery</p><h2>Ready Payslips</h2></div>
-          </div>
-          <div class="reports" id="payslipList"></div>
+          <div class="panel-head"><div><p class="eyebrow">Bulk</p><h2>Download All Payslips</h2></div></div>
+          <p class="eyebrow" style="margin-top:8px">Select period and download all payslips as a ZIP archive.</p>
           <div class="actions" style="margin-top:14px">
-            <button class="mini" type="button" id="downloadAllPdf">Download All PDFs (ZIP)</button>
+            <button class="primary" type="button" id="downloadAllPayslips">Download All as ZIP</button>
           </div>
         </article>
       </section>
@@ -398,161 +468,148 @@ td input{min-height:36px;width:100%}
     <section id="pricing" class="screen">
       <section class="panel">
         <div class="panel-head"><div><p class="eyebrow">Plans</p><h2>Subscription Plans</h2></div></div>
-        <div class="three" style="margin-top:18px">
-          <div class="plan-card">
-            <h3>Starter</h3>
-            <div class="price">KES 999<span style="font-size:14px;font-weight:400;color:var(--muted)">/month</span></div>
-            <ul>
-              <li>Up to 10 employees</li>
-              <li>PAYE, NSSF, SHA calculations</li>
-              <li>CSV exports</li>
-              <li>Email payslips</li>
-            </ul>
-          </div>
-          <div class="plan-card popular">
-            <h3>Growth</h3>
-            <div class="price">KES 2,499<span style="font-size:14px;font-weight:400;color:var(--muted)">/month</span></div>
-            <ul>
-              <li>Up to 50 employees</li>
-              <li>All Starter features</li>
-              <li>PDF payslips + bulk ZIP</li>
-              <li>KRA P10 + TallyPrime exports</li>
-              <li>Priority support</li>
-            </ul>
-          </div>
-          <div class="plan-card">
-            <h3>Business</h3>
-            <div class="price">KES 4,999<span style="font-size:14px;font-weight:400;color:var(--muted)">/month</span></div>
-            <ul>
-              <li>Up to 200 employees</li>
-              <li>All Growth features</li>
-              <li>Dedicated account manager</li>
-              <li>Custom integrations</li>
-              <li>Multi-company support</li>
-            </ul>
-          </div>
-        </div>
-        <div class="bench" style="margin-top:18px">
-          <strong>100% KRA Compliant</strong> &mdash; Under 5 min payroll run &mdash; 2024 Finance Act rates &mdash; 24/7 Data Security
-        </div>
       </section>
+      <div class="three" style="margin-top:16px">
+        <div class="plan-card">
+          <h3>Starter</h3>
+          <div class="price">KES 2,500<span style="font-size:14px;color:var(--muted);font-weight:400">/mo</span></div>
+          <ul>
+            <li>Up to 10 employees</li>
+            <li>Monthly payroll run</li>
+            <li>PDF payslips</li>
+            <li>KRA P10 export</li>
+            <li>Email support</li>
+          </ul>
+        </div>
+        <div class="plan-card popular">
+          <div class="stat-badge" style="margin-bottom:8px">Most Popular</div>
+          <h3>Growth</h3>
+          <div class="price">KES 7,500<span style="font-size:14px;color:var(--muted);font-weight:400">/mo</span></div>
+          <ul>
+            <li>Up to 50 employees</li>
+            <li>Annual P9 forms</li>
+            <li>Bulk payslip ZIP</li>
+            <li>Bank payment export</li>
+            <li>Audit log & roles</li>
+            <li>Priority support</li>
+          </ul>
+        </div>
+        <div class="plan-card">
+          <h3>Business</h3>
+          <div class="price">KES 15,000<span style="font-size:14px;color:var(--muted);font-weight:400">/mo</span></div>
+          <ul>
+            <li>Unlimited employees</li>
+            <li>All Growth features</li>
+            <li>TallyPrime journal</li>
+            <li>Full backup & restore</li>
+            <li>Dedicated account manager</li>
+            <li>Custom integrations</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <!-- ── AUDIT LOG ── -->
-    <section id="audit" class="screen admin-only">
+    <section id="audit" class="screen">
       <section class="panel">
         <div class="panel-head">
           <div><p class="eyebrow">Compliance</p><h2>Audit Log</h2></div>
-          <button class="mini ghost" type="button" id="clearAudit">Clear Log</button>
+          <button class="dangerBtn" type="button" id="clearAudit" style="min-height:34px">Clear Log</button>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Time</th><th>Actor</th><th>Action</th></tr></thead>
-            <tbody id="auditRows"></tbody>
-          </table>
-        </div>
+        <div id="auditLog" style="max-height:500px;overflow:auto"></div>
       </section>
     </section>
 
     <!-- ── SETTINGS ── -->
     <section id="settings" class="screen">
-      <section class="grid">
-        <form class="panel" id="settingsForm">
-          <div class="panel-head"><div><p class="eyebrow">Company</p><h2>Company Profile</h2></div></div>
-          <div class="fields">
-            <label>Company name<input id="companyName"></label>
-            <label>KRA PIN<input id="kraPinCompany"></label>
-            <label>County<input id="companyCounty"></label>
-            <label>Payroll period<input id="payrollPeriod"></label>
-            <label>Payroll frequency<select id="payrollFrequency"><option value="monthly">Monthly</option><option value="semi-monthly">Semi-Monthly</option></select></label>
-            <label>SHA rate %<input id="shaRate" type="number" step="0.01"></label>
-            <label>NSSF Tier I cap<input id="nssfCap1" type="number"></label>
-            <label>NSSF Tier II cap<input id="nssfCap2" type="number"></label>
-          </div>
-          <button class="primary" type="submit">Save Settings</button>
-        </form>
-        <article class="panel">
-          <div class="panel-head"><div><p class="eyebrow">Global deductions</p><h2>Add Deductible</h2></div></div>
-          <div class="fields">
-            <label>Deduction name<input id="customDeductionName" placeholder="SACCO, welfare, uniform"></label>
-            <label>Amount per employee<input id="customDeductionAmount" type="number" min="0" value="0"></label>
-          </div>
-          <button class="primary" type="button" id="addCustomDeduction">Add Deductible</button>
-          <div class="reports" id="customDeductionList" style="margin-top:16px"></div>
-        </article>
-      </section>
-      <section class="panel" style="margin-top:16px">
-        <div class="panel-head">
-          <div><p class="eyebrow">Per employee</p><h2>Individual Deductibles</h2></div>
-          <button class="mini" type="button" id="addEmployeeDeduction">Add Deduction</button>
-        </div>
+      <section class="panel">
+        <div class="panel-head"><div><p class="eyebrow">Company</p><h2>Company Profile</h2></div></div>
         <div class="fields">
-          <label>Employee<select id="employeeDeductionSelect"></select></label>
-          <label>Deduction name<input id="employeeDeductionName" placeholder="SACCO, loan, etc."></label>
-          <label>Amount<input id="employeeDeductionAmount" type="number" min="0" value="0"></label>
-        </div>
-        <div class="table-wrap" style="margin-top:14px">
-          <table>
-            <thead><tr><th>Employee</th><th>Deduction</th><th class="right">Amount</th><th>Action</th></tr></thead>
-            <tbody id="employeeDeductionRows"></tbody>
-          </table>
+          <label>Company Name<input id="companyName"></label>
+          <label>KRA PIN<input id="kraPinCompany" placeholder="A012345678Z"></label>
+          <label>County<input id="companyCounty" placeholder="Nairobi"></label>
+          <label>Period<input id="periodInput"></label>
+          <label>SHA Rate (%)<input id="shaRateInput" type="number"></label>
+          <label>SHA Employer Rate (%)<input id="shaEmployerRateInput" type="number"></label>
+          <label>Pension Rate (%)<input id="pensionRateInput" type="number"></label>
+          <label><span>Round to nearest KES</span><div class="toggle"><input type="checkbox" id="roundToggleSettings"><span class="toggle-label">Yes / No</span></div></label>
         </div>
       </section>
       <section class="panel" style="margin-top:16px">
-        <div class="panel-head"><div><p class="eyebrow">Access</p><h2>User Roles</h2></div></div>
-        <div class="bench" style="margin:0 0 12px">
-          <strong>Admin</strong> &mdash; full access to all features, audit log, settings.<br>
-          <strong>HR</strong> &mdash; payroll runs, employee data, reports.<br>
-          <strong>Viewer</strong> &mdash; read-only dashboard and payslips.
+        <div class="panel-head"><div><p class="eyebrow">Global</p><h2>Custom Deductibles</h2></div></div>
+        <div class="actions" style="margin-bottom:14px">
+          <input id="newDedName" placeholder="Deduction name" style="max-width:180px">
+          <input id="newDedAmount" placeholder="Amount KES" type="number" style="max-width:120px">
+          <button class="mini" type="button" id="addDed">Add Deductible</button>
         </div>
-        <div class="fields">
-          <label>Role<select id="currentUserRole"><option value="admin">Admin</option><option value="hr">HR</option><option value="viewer">Viewer</option></select></label>
+        <div id="dedList" class="stack"></div>
+      </section>
+      <section class="panel" style="margin-top:16px">
+        <div class="panel-head"><div><p class="eyebrow">Per employee</p><h2>Individual Deductibles</h2></div></div>
+        <div class="actions" style="margin-bottom:14px">
+          <select id="dedEmployee" style="max-width:180px"></select>
+          <input id="dedName" placeholder="Name" style="max-width:160px">
+          <input id="dedAmount" placeholder="Amount" type="number" style="max-width:100px">
+          <button class="mini" type="button" id="addEmpDed">Add</button>
         </div>
-        <button class="secondary" type="button" id="switchRole">Switch Role</button>
+        <div id="empDedList" class="stack"></div>
+      </section>
+      <section class="panel" style="margin-top:16px">
+        <div class="panel-head"><div><p class="eyebrow">Access</p><h2>Switch Role</h2></div></div>
+        <div class="toggle-active" style="margin-top:8px">
+          <select id="currentUserRole" style="max-width:140px">
+            <option value="admin">Admin</option>
+            <option value="hr">HR</option>
+            <option value="viewer">Viewer</option>
+          </select>
+          <button class="mini" type="button" id="switchRole">Switch</button>
+        </div>
       </section>
     </section>
 
   </section>
 </main>
 
-<!-- Toast -->
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
 <script>
-/* ═══════════════════════════════════════════════════════════════════════════════
-   EasyPay — Kenya Payroll SaaS (Merged Prototype)
-   Best of PayrollKE + EasyPay
-   ═══════════════════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════ */
+const q  = sel => document.querySelector(sel);
+const qa = sel => Array.from(document.querySelectorAll(sel));
+const id = () => Math.random().toString(36).slice(2,10);
+const escHtml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const num = v => (parseFloat(String(v).replace(/,/g,'')) || 0);
+const money = new Intl.NumberFormat('en-KE',{style:'currency',currency:'KES',minimumFractionDigits:2});
+const csvCell = v => typeof v === 'string' && v.includes(',') ? `"${v.replace(/"/g,'""')}"` : String(v);
+const download = (name, body) => {
+  const a = document.createElement('a');
+  a.download = name; a.href = URL.createObjectURL(new Blob([body],{type:'text/csv'}));
+  a.click();
+};
+let toastTimer;
+function toast(msg) {
+  clearTimeout(toastTimer);
+  let t = q('#toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add('show');
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
 
-const q = s => document.querySelector(s);
-const qa = s => Array.from(document.querySelectorAll(s));
-const money = new Intl.NumberFormat('en-KE', { style:'currency', currency:'KES', minimumFractionDigits:2, maximumFractionDigits:2 });
-
-function id() { return Math.random().toString(36).slice(2) + Date.now().toString(36); }
-
-/* ── Default state ── */
-const defaultState = {
-  settings: {
-    companyName: 'EasyPay Demo Ltd',
-    kraPin: 'P051234567A',
-    county: 'Nairobi',
-    period: 'July 2026',
-    frequency: 'monthly',
-    shaRate: 2.75,
-    nssfCap1: 7000,
-    nssfCap2: 36000
-  },
-  approved: false,
-  locked: false,
+/* ═══════════════════════════════════════════════════
+   PERSISTENCE
+   ═══════════════════════════════════════════════════ */
+const DEFAULTS = {
+  settings: { companyName:'Your Company Ltd', kraPin:'', county:'Nairobi', period:'July 2026',
+    shaRate:2.75, shaEmployerRate:2.75, pensionRate:0, round:false },
   role: 'admin',
   departments: ['Accounts', 'Sales', 'IT'],
   customDeductions: [],
+  employeeDeductions: [],
   employees: [
     { id:id(), name:'Amina Otieno', bankName:'Equity Bank', empId:'EMP001', kraPin:'A012345678Z', department:'Accounts', jobGrade:'G7', bankAccount:'0123456789', basicSalary:30000, houseAllowance:5000, transportAllowance:3000, otherAllowance:0, helb:0, advance:0, active:true },
     { id:id(), name:'Brian Mwangi', bankName:'KCB Bank', empId:'EMP002', kraPin:'P000000001A', department:'Sales', jobGrade:'G5', bankAccount:'1234567890', basicSalary:55000, houseAllowance:10000, transportAllowance:5000, otherAllowance:2000, helb:4000, advance:5000, active:true },
     { id:id(), name:'Faith Njeri', bankName:'Absa Bank', empId:'EMP003', kraPin:'P000000002B', department:'IT', jobGrade:'G4', bankAccount:'9876543210', basicSalary:85000, houseAllowance:15000, transportAllowance:8000, otherAllowance:5000, helb:5000, advance:7000, active:true }
   ],
-  employeeDeductions: [],
   advanceHistory: [
     { employeeId:null, period:'June 2026', type:'issued', amount:5000, note:'Mid-month advance' },
     { employeeId:null, period:'June 2026', type:'repayment', amount:2000, note:'Payroll deduction' },
@@ -563,98 +620,60 @@ const defaultState = {
     { period:'June 2026', status:'locked', gross:165000, paye:22100, nssf:9180, sha:4537.50, net:115000 },
     { period:'May 2026', status:'locked', gross:168000, paye:22800, nssf:9180, sha:4620, net:116000 }
   ],
+  /* P9 history: per-employee per-month snapshots */
+  p9History: [
+    /* Each entry: { period, employeeId, gross, taxablePay, paye, nssf, sha, housingEmployee, helb, advance } */
+  ],
   auditLog: [
     { time:new Date().toISOString(), actor:'System', action:'EasyPay initialized' }
   ]
 };
 
-let state = load();
-let selectedId = state.employees[0]?.id;
-let showEmployerSplit = false;
-
-/* ── PAYE — Finance Act 2024 ── */
-const payeBands = [
-  { limit:24000, rate:.1 },
-  { limit:8333, rate:.25 },
-  { limit:467667, rate:.3 },
-  { limit:300000, rate:.325 },
-  { limit:Infinity, rate:.35 }
-];
-
-/* ── NSSF — New Act (Tier I + Tier II) ── */
-function calcNssf(gross) {
-  const s = state.settings;
-  const cap1 = num(s.nssfCap1);
-  const cap2 = num(s.nssfCap2);
-  const tier1 = Math.min(gross, cap1) * 0.06;
-  const tier2 = Math.min(Math.max(gross - cap1, 0), cap2 - cap1) * 0.06;
-  return { employee: tier1 + tier2, employer: tier1 + tier2 };
-}
-
-/* ── DOM refs ── */
-const f = {
-  employeeSelect: q('#employeeSelect'),
-  payslipSelect: q('#payslipSelect'),
-  employeeDeductionSelect: q('#employeeDeductionSelect'),
-  kraPin: q('#kraPin'),
-  basicSalary: q('#basicSalary'),
-  houseAllowance: q('#houseAllowance'),
-  transportAllowance: q('#transportAllowance'),
-  otherAllowance: q('#otherAllowance'),
-  pension: q('#pension'),
-  helb: q('#helb'),
-  salaryAdvance: q('#salaryAdvance'),
-  resident: q('#resident')
-};
-
-/* ═══════════════════════════════════════════════════
-   PERSISTENCE
-   ═══════════════════════════════════════════════════ */
+function save() { localStorage.setItem('easypay', JSON.stringify(state)); }
 function load() {
   try {
-    const saved = JSON.parse(localStorage.getItem('easypay-state'));
-    const data = saved || structuredClone(defaultState);
-    data.settings = { ...defaultState.settings, ...(data.settings || {}) };
-    data.customDeductions = Array.isArray(data.customDeductions) ? data.customDeductions : [];
-    data.employeeDeductions = Array.isArray(data.employeeDeductions) ? data.employeeDeductions : [];
-    data.employees = Array.isArray(data.employees) ? data.employees : structuredClone(defaultState.employees);
-    data.departments = Array.isArray(data.departments) ? data.departments : [...defaultState.departments];
-    data.advanceHistory = Array.isArray(data.advanceHistory) ? data.advanceHistory : [];
-    data.payrollHistory = Array.isArray(data.payrollHistory) ? data.payrollHistory : [];
-    data.auditLog = Array.isArray(data.auditLog) ? data.auditLog : [];
-    data.role = data.role || 'admin';
-    // Backfill new fields on existing data
-    data.employees.forEach(e => { if (!e.hasOwnProperty('bankName')) e.bankName = ''; });
-    return data;
-  } catch { return structuredClone(defaultState); }
+    const d = JSON.parse(localStorage.getItem('easypay'));
+    Object.assign(d.settings, DEFAULTS.settings, d.settings || {});
+    d.departments = Array.isArray(d.departments) ? d.departments : [...DEFAULTS.departments];
+    d.customDeductions = Array.isArray(d.customDeductions) ? d.customDeductions : [];
+    d.employeeDeductions = Array.isArray(d.employeeDeductions) ? d.employeeDeductions : [];
+    d.employees = Array.isArray(d.employees) ? d.employees : [...DEFAULTS.employees];
+    d.advanceHistory = Array.isArray(d.advanceHistory) ? d.advanceHistory : [];
+    d.payrollHistory = Array.isArray(d.payrollHistory) ? d.payrollHistory : [];
+    d.p9History = Array.isArray(d.p9History) ? d.p9History : [];
+    d.auditLog = Array.isArray(d.auditLog) ? d.auditLog : [];
+    d.role = d.role || 'admin';
+    d.approved = d.approved || false;
+    d.locked = d.locked || false;
+    // Backfill new fields
+    d.employees.forEach(e => { if (!e.hasOwnProperty('bankName')) e.bankName = ''; });
+    return d;
+  } catch { return structuredClone(DEFAULTS); }
 }
 
-function save() {
-  localStorage.setItem('easypay-state', JSON.stringify(state));
-}
+let state = load();
+let selectedId = state.employees[0]?.id;
 
+/* ═══════════════════════════════════════════════════
+   AUDIT
+   ═══════════════════════════════════════════════════ */
 function audit(action) {
-  state.auditLog.unshift({
-    time: new Date().toISOString(),
-    actor: state.role === 'admin' ? 'Admin' : state.role === 'hr' ? 'HR' : 'Viewer',
-    action
-  });
-  if (state.auditLog.length > 500) state.auditLog.length = 500;
+  state.auditLog.unshift({ time:new Date().toISOString(), actor: state.role || 'admin', action });
+  save();
 }
 
 /* ═══════════════════════════════════════════════════
-   HELPERS
+   PAYROLL ENGINE
    ═══════════════════════════════════════════════════ */
-function num(v) { return Math.max(0, Number(v || 0)); }
-function escapeHtml(v) { return String(v ?? '').replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c])); }
-function formatAgo(iso) {
-  const d = new Date(iso);
-  return d.toLocaleDateString('en-KE', { day:'numeric', month:'short', year:'numeric' }) + ' ' +
-         d.toLocaleTimeString('en-KE', { hour:'2-digit', minute:'2-digit' });
-}
-
-function calcPaye(taxable, resident = true) {
-  if (!resident) return taxable * .3;
+const payeBands = [
+  { limit:24000, rate:0.10 },
+  { limit:8333, rate:0.25 },
+  { limit:13889, rate:0.30 },
+  { limit:20000, rate:0.325 },
+  { limit:Infinity, rate:0.35 }
+];
+function calcPaye(taxable, resident=true) {
+  if (!resident) return taxable * 0.3;
   let left = taxable, tax = 0;
   for (const b of payeBands) {
     if (left <= 0) break;
@@ -665,9 +684,15 @@ function calcPaye(taxable, resident = true) {
   return Math.max(0, tax - 2400);
 }
 
-/* ═══════════════════════════════════════════════════
-   PAYROLL ENGINE (EasyPay rates + HELB)
-   ═══════════════════════════════════════════════════ */
+function calcNssf(gross) {
+  const tier1 = Math.min(gross, 25000);
+  const tier2 = Math.max(0, Math.min(gross - 25000, 25000));
+  const tier3 = Math.max(0, gross - 50000);
+  const employee = tier1 * 0.06 + tier2 * 0.06;
+  const employer = tier1 * 0.06 + tier2 * 0.06;
+  return { employee: Math.min(employee, 3600), employer: Math.min(employer, 3600), tier1: Math.min(tier1, 25000), tier2: Math.min(tier2, 25000), tier3 };
+}
+
 function payroll(input) {
   const s = state.settings;
   const basic = num(input.basicSalary ?? input.salary ?? 0);
@@ -677,37 +702,24 @@ function payroll(input) {
   const pension = num(input.pension);
   const helb = num(input.helb);
   const advance = num(input.advance ?? input.salaryAdvance);
-
-  // Global custom deductions
-  const globalCustom = state.customDeductions || [];
-  const globalTotal = globalCustom.reduce((sum, d) => sum + num(d.amount), 0);
-
-  // Per-employee custom deductions
-  const empCustom = (state.employeeDeductions || []).filter(d => d.employeeId === (input.employeeId || selectedId));
-  const empCustomBreakdown = empCustom.map(d => ({ name: d.name, amount: num(d.amount) }));
-  const empCustomTotal = empCustom.reduce((sum, d) => sum + num(d.amount), 0);
-
   const gross = basic + houseAllowance + transportAllowance + otherAllowance;
   const nssf = calcNssf(gross);
-  const nssfEmployee = nssf.employee;
-  const nssfEmployer = nssf.employer;
   const sha = gross * (num(s.shaRate) / 100);
-  const shaEmployer = gross * (num(s.shaRate) / 100);
   const housingEmployee = gross * 0.015;
   const housingEmployer = gross * 0.015;
-  const taxablePay = Math.max(0, gross - nssfEmployee - Math.min(pension, 30000) - sha - housingEmployee);
+  const taxablePay = Math.max(0, gross - nssf.employee - Math.min(pension, 30000) - sha - housingEmployee);
   const paye = calcPaye(taxablePay, input.resident !== false);
-  const net = gross - (paye + nssfEmployee + sha + housingEmployee + pension + helb + advance + globalTotal + empCustomTotal);
-
+  const globalCustom = (state.customDeductions || []).reduce((sum, d) => sum + num(d.amount), 0);
+  const empCustom = (state.employeeDeductions || []).filter(d => d.employeeId === (input.employeeId || selectedId));
+  const empCustomTotal = empCustom.reduce((sum, d) => sum + num(d.amount), 0);
+  const net = gross - (paye + nssf.employee + sha + housingEmployee + pension + helb + advance + globalCustom + empCustomTotal);
   return {
-    gross, nssfEmployee, nssfEmployer, sha, shaEmployer,
+    gross, nssfEmployee: nssf.employee, nssfEmployer: nssf.employer, sha,
     housingEmployee, housingEmployer, taxablePay, paye,
-    pension, helb, advance,
-    globalCustomTotal: globalTotal, empCustomBreakdown, empCustomTotal,
-    totalCustom: globalTotal + empCustomTotal,
+    pension, helb, advance, globalCustom, empCustomTotal,
     net,
-    statEmployee: paye + nssfEmployee + sha + housingEmployee + helb,
-    statEmployer: nssfEmployer + shaEmployer + housingEmployer
+    statEmployee: paye + nssf.employee + sha + housingEmployee + helb,
+    statEmployer: nssf.employer + sha * 2 + housingEmployee * 2 // employer sha + housing
   };
 }
 
@@ -718,44 +730,69 @@ function employeeRun(e) {
 }
 
 function totals() {
-  return state.employees.filter(e => e.active).reduce((a, e) => {
-    const r = employeeRun(e);
-    a.gross += r.gross; a.net += r.net; a.paye += r.paye; a.advance += r.advance;
-    a.nssf += r.nssfEmployee; a.nssfEmployer += r.nssfEmployer;
-    a.sha += r.sha; a.shaEmployer += r.shaEmployer;
-    a.housingEmployee += r.housingEmployee; a.housingEmployer += r.housingEmployer;
-    a.helb += r.helb; a.totalCustom += r.totalCustom;
-    return a;
-  }, { gross:0, net:0, paye:0, advance:0, nssf:0, nssfEmployer:0, sha:0, shaEmployer:0, housingEmployee:0, housingEmployer:0, helb:0, totalCustom:0 });
-}
-
-function currentInput() {
+  const active = state.employees.filter(e=>e.active);
+  const runs = active.map(e => employeeRun(e));
+  const sum = (key) => runs.reduce((a,r) => a + (r[key]||0), 0);
   return {
-    basicSalary: f.basicSalary.value, houseAllowance: f.houseAllowance.value,
-    transportAllowance: f.transportAllowance.value, otherAllowance: f.otherAllowance.value,
-    pension: f.pension.value, helb: f.helb.value,
-    salaryAdvance: f.salaryAdvance.value, resident: f.resident.checked
+    gross: sum('gross'), paye: sum('paye'), nssf: sum('nssfEmployee'),
+    nssfEmployer: sum('nssfEmployer'), sha: sum('sha'),
+    housingEmployee: sum('housingEmployee'), housingEmployer: sum('housingEmployer'),
+    helb: sum('helb'), advance: sum('advance'), net: sum('net'),
+    active: active.length
   };
 }
 
-function syncSelectedToForm() {
-  const e = state.employees.find(x => x.id === selectedId) || state.employees[0];
-  if (!e) return;
-  selectedId = e.id;
-  f.employeeSelect.value = e.id;
-  f.kraPin.value = e.kraPin || '';
-  f.basicSalary.value = e.basicSalary;
-  f.houseAllowance.value = e.houseAllowance || 0;
-  f.transportAllowance.value = e.transportAllowance || 0;
-  f.otherAllowance.value = e.otherAllowance || 0;
-  f.pension.value = 0;
-  f.helb.value = e.helb || 0;
-  f.salaryAdvance.value = e.advance;
+/* ═══════════════════════════════════════════════════
+   RENDERING
+   ═══════════════════════════════════════════════════ */
+const TABS = {
+  dashboard:['Readiness','Dashboard'],
+  employees:['Upload and maintain staff data','Employees'],
+  payroll:['Preview payroll before approval','Payroll Run'],
+  payrollHistory:['Review past payroll runs','Payroll History'],
+  p9form:['KRA annual tax form per employee','Annual P9 Form'],
+  advances:['Manage salary advances','Advances & History'],
+  payslips:['Download individual or bulk payslips','Payslips'],
+  reports:['Statutory returns and finance exports','Reports & Exports'],
+  pricing:['Plans and pricing','Pricing'],
+  audit:['Compliance and audit trail','Audit Log'],
+  settings:['Company profile and roles','Settings']
+};
+
+function showTab(t) {
+  qa('.screen').forEach(s => s.classList.remove('active'));
+  q('#' + t).classList.add('active');
+  qa('[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+  const t2 = TABS[t];
+  q('#screenTitle').textContent = t2 ? t2[1] : t;
+  q('#screenEyebrow').textContent = t2 ? t2[0] : '';
+  renderAll();
 }
 
-/* ═══════════════════════════════════════════════════
-   RENDER ALL
-   ═══════════════════════════════════════════════════ */
+qa('[data-tab]').forEach(btn => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
+
+/* ── Login ── */
+q('#loginBtn').addEventListener('click', () => {
+  const user = q('#loginUser').value.trim().toLowerCase();
+  const pass = q('#loginPass').value;
+  const users = {
+    admin: { password:'admin', role:'admin' },
+    hr: { password:'hr123', role:'hr' }
+  };
+  const found = users[user];
+  if (found && found.password === pass) {
+    state.role = found.role;
+    q('#loginOverlay').style.display = 'none';
+    audit(`Logged in as ${found.role}`);
+    renderAll();
+  } else {
+    toast('Invalid username or password.');
+  }
+});
+q('#loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') q('#loginBtn').click(); });
+q('#loginUser').addEventListener('keydown', e => { if (e.key === 'Enter') q('#loginPass').focus(); });
+
+/* ── Render all ── */
 function renderAll() {
   const t = totals();
   q('#grossMetric').textContent = money.format(t.gross);
@@ -763,201 +800,275 @@ function renderAll() {
   q('#payeMetric').textContent = money.format(t.paye);
   q('#advanceMetric').textContent = money.format(t.advance);
   q('#periodLabel').textContent = state.settings.period;
+  q('#statusPill').textContent = state.locked ? 'Locked' : state.approved ? 'Approved' : 'Draft';
+  q('#statusPill').className = 'pill ' + (state.locked ? 'ok' : state.approved ? 'draft' : 'bad');
   q('#roleBadge').textContent = state.role;
-  renderSelects();
+  // Access control
+  qa('.admin-only').forEach(b => b.style.display = state.role === 'admin' ? '' : 'none');
+  renderChecklist(t);
+  renderVariance(t);
+  renderEmployeeRows();
   renderPayrollPreview();
-  renderEmployees();
+  renderPayrollHistory();
+  renderP9();
   renderAdvances();
   renderPayslips();
   renderReports();
-  renderDashboard();
-  renderPayrollHistory();
   renderSettings();
   renderAudit();
-  renderDepartments();
-  applyRoleRestrictions();
   save();
 }
 
-function applyRoleRestrictions() {
-  const isAdmin = state.role === 'admin';
-  const isViewer = state.role === 'viewer';
-  qa('.admin-only').forEach(el => el.style.display = isAdmin ? '' : 'none');
-  if (isViewer) {
-    q('#lock').style.display = 'none';
-    q('#approve').style.display = 'none';
-    q('#runPayroll').style.display = 'none';
-    q('#addEmployee').style.display = 'none';
-    q('#addCustomDeduction').style.display = 'none';
-    q('#addEmployeeDeduction').style.display = 'none';
-    q('#addDept').style.display = 'none';
-  } else {
-    ['lock','approve','runPayroll','addEmployee','addCustomDeduction','addEmployeeDeduction','addDept'].forEach(i => { q('#'+i).style.display = ''; });
-  }
+function renderChecklist(t) {
+  const missingKRA = state.employees.filter(e=>e.active && !e.kraPin).length;
+  const activeAdvances = state.employees.filter(e=>e.active && e.advance > 0).length;
+  const items = [
+    ['Employees loaded',`${t.active} active employee records`, t.active > 0 ? 'ok' : 'bad'],
+    ['KRA PINs complete',`${missingKRA} missing details`, missingKRA === 0 ? 'ok' : 'bad'],
+    ['Salary advances reviewed',`${activeAdvances} active advances`, activeAdvances === 0 ? 'ok' : 'bad'],
+    ['Payroll approved', state.approved ? 'Approved' : 'Awaiting approval', state.approved ? 'ok' : 'bad'],
+    ['Period locked', state.locked ? 'Locked' : 'Still editable', state.locked ? 'ok' : 'bad']
+  ];
+  q('#checklist').innerHTML = items.map(([a,b,c]) =>
+    `<div class="check"><div><strong>${escHtml(a)}</strong><span>${escHtml(b)}</span></div><span class="pill ${c}">${c === 'ok' ? 'OK' : c === 'draft' ? 'Draft' : 'Open'}</span></div>`
+  ).join('');
 }
 
-/* ── Selects ── */
-function renderSelects() {
-  const options = state.employees.filter(e => e.active).map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('');
-  f.employeeSelect.innerHTML = options;
-  f.payslipSelect.innerHTML = options;
-  f.employeeDeductionSelect.innerHTML = options;
-  f.employeeSelect.value = selectedId;
-  f.payslipSelect.value = selectedId;
+function renderVariance(t) {
+  const maxVal = Math.max(t.gross, t.paye + t.nssf + t.sha + t.housingEmployee + t.helb, t.advance, 1);
+  q('#varianceChart').innerHTML = [
+    ['Gross', t.gross, 'var(--green)'],
+    ['Net', t.net, 'var(--blue)'],
+    ['Statutory', t.paye + t.nssf + t.sha + t.housingEmployee + t.helb, 'var(--red)'],
+    ['Advances', t.advance, 'var(--gold)']
+  ].map(([label,val,color]) => {
+    const pct = Math.round(val / maxVal * 100);
+    return `<div class="bar"><span>${label}</span><i style="background:${color};width:${pct}%"></i><strong>${money.format(val)}</strong></div>`;
+  }).join('');
+}
+
+let showEmployerSplit = false;
+
+/* ── Employee rows ── */
+function renderEmployeeRows() {
+  const search = (q('#searchEmployees').value || '').toLowerCase();
+  const deptFilter = q('#filterDepartment').value;
+  const statusFilter = q('#filterStatus').value;
+  const filtered = state.employees.filter(e => {
+    if (search && !e.name.toLowerCase().includes(search) && !(e.kraPin||'').toLowerCase().includes(search) && !(e.empId||'').toLowerCase().includes(search)) return false;
+    if (deptFilter !== 'All Departments' && e.department !== deptFilter) return false;
+    if (statusFilter === 'Active' && !e.active) return false;
+    if (statusFilter === 'Inactive' && e.active) return false;
+    return true;
+  });
+  q('#employeeRows').innerHTML = filtered.length ? filtered.map(e => {
+    const r = employeeRun(e);
+    return `<tr data-id="${e.id}" class="${e.id === selectedId ? 'selected-row' : ''}">
+      <td><input data-field="name" value="${escHtml(e.name)}" style="min-width:140px"></td>
+      <td><input data-field="bankName" value="${escHtml(e.bankName||'')}" placeholder="e.g. KCB, Equity"></td>
+      <td><input data-field="empId" value="${escHtml(e.empId||'')}" placeholder="EMP001"></td>
+      <td><input data-field="kraPin" value="${escHtml(e.kraPin)}"></td>
+      <td><input data-field="department" value="${escHtml(e.department||'')}"></td>
+      <td><input data-field="jobGrade" value="${escHtml(e.jobGrade||'')}" placeholder="G7"></td>
+      <td><input data-field="bankAccount" value="${escHtml(e.bankAccount||'')}" placeholder="Acc. no."></td>
+      <td><input data-field="basicSalary" value="${e.basicSalary}" type="number"></td>
+      <td><input data-field="helb" value="${e.helb}" type="number"></td>
+      <td><input data-field="advance" value="${e.advance}" type="number"></td>
+      <td class="right">${money.format(r.net)}</td>
+      <td><span class="toggle-active"><input type="checkbox" data-active="${e.id}" ${e.active?'checked':''}><span class="toggle-label">${e.active?'Active':'Inactive'}</span></span></td>
+      <td><button class="dangerBtn mini" data-deactivate="${e.id}">Deactivate</button> <button class="mini" data-use="${e.id}">Use</button></td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="13" class="empty">No employees match your search.</td></tr>';
 }
 
 /* ── Payroll preview ── */
 function renderPayrollPreview() {
-  const emp = state.employees.find(e => e.id === selectedId) || state.employees[0];
-  if (!emp) return;
-  const input = currentInput();
-  input.employeeId = selectedId;
-  const r = payroll(input);
-  q('#slipName').textContent = emp.name;
-  q('#slipPin').textContent = f.kraPin.value || 'Missing PIN';
-  q('#slipStatus').textContent = state.approved ? 'Approved' : 'Draft';
-  q('#slipStatus').className = 'pill ' + (state.approved ? 'ok' : '');
-
-  const rows = [
-    ['Basic salary', r.gross - (num(input.houseAllowance)||0) - (num(input.transportAllowance)||0) - (num(input.otherAllowance)||0)],
-    ['House allowance', num(input.houseAllowance)],
-    ['Transport allowance', num(input.transportAllowance)],
-    ['Other allowances', num(input.otherAllowance)],
+  q('#employeeStrip').innerHTML = state.employees.filter(e=>e.active).map(e =>
+    `<div><strong>${escHtml(e.name)}</strong><span>${e.department} &middot; ${e.empId}</span></div>`
+  ).join('') || '<p class="empty">No active employees.</p>';
+  const e = state.employees.find(e => e.id === selectedId);
+  if (!e) { q('#lines').innerHTML = '<p class="empty">Select an employee.</p>'; return; }
+  const r = employeeRun(e);
+  const lines = [
     ['Gross pay', r.gross],
-    ['', ''],
-    ['PAYE', -r.paye],
-    ['NSSF employee (Tier I + II)', -r.nssfEmployee],
-    ['SHA employee (2.75%)', -r.sha],
-    ['Housing levy employee (1.5%)', -r.housingEmployee],
-    ['Pension contribution', -r.pension],
-    ['HELB', -r.helb],
-    ['Salary advance', -r.advance],
-    ...r.empCustomBreakdown.map(d => [d.name, -d.amount]),
-    ['Total deductions', -(r.paye + r.nssfEmployee + r.sha + r.housingEmployee + r.pension + r.helb + r.advance + r.totalCustom)]
+    ['PAYE', r.paye],
+    ['NSSF (employee)', r.nssfEmployee],
+    ['SHA', r.sha],
+    ['Housing levy', r.housingEmployee],
+    ['HELB', r.helb],
+    ['Pension', r.pension],
+    ['Salary advance', r.advance],
+    ['Custom deductions', r.globalCustom + r.empCustomTotal]
   ];
+  q('#lines').innerHTML = lines.map(([label,val]) =>
+    `<div class="line"><span>${escHtml(label)}</span><strong>${money.format(val)}</strong></div>`
+  ).join('') + `<div class="line net"><span>Net pay</span><strong>${money.format(r.net)}</strong></div>`;
 
   if (showEmployerSplit) {
-    rows.push(['',''], ['EMPLOYER CONTRIBUTIONS','']);
-    rows.push(['NSSF employer (Tier I + II)', -r.nssfEmployer]);
-    rows.push(['SHA employer (2.75%)', -r.shaEmployer]);
-    rows.push(['Housing levy employer (1.5%)', -r.housingEmployer]);
-    rows.push(['Total employer cost', -(r.nssfEmployer + r.shaEmployer + r.housingEmployer + r.gross)]);
+    q('#employerSplitPanel').style.display = '';
+    const rows = state.employees.filter(e2=>e2.active).map(e2 => {
+      const r2 = employeeRun(e2);
+      return `<tr><td>${escHtml(e2.name)}</td>
+        <td class="right">${money.format(r2.paye)}</td>
+        <td class="right">${money.format(r2.nssfEmployee)}</td>
+        <td class="right">${money.format(r2.sha)}</td>
+        <td class="right">${money.format(r2.housingEmployee)}</td>
+        <td class="right">${money.format(r2.helb)}</td>
+        <td class="right">${money.format(r2.nssfEmployer)}</td>
+        <td class="right">${money.format(r2.sha)}</td>
+        <td class="right">${money.format(r2.housingEmployer)}</td>
+        <td class="right" style="font-weight:700;color:var(--green)">${money.format(r2.statEmployer)}</td></tr>`;
+    });
+    q('#empSplitPreview').innerHTML = rows.join('');
   }
-
-  q('#lines').innerHTML = [
-    ...rows.map(([l, a]) => {
-      if (l === '' && a === '') return `<div class="line" style="justify-content:center;font-weight:700;color:var(--muted)">—</div>`;
-      return `<div class="line"><span>${escapeHtml(l)}</span><strong>${money.format(a)}</strong></div>`;
-    }),
-    `<div class="line net"><span>Net pay</span><strong>${money.format(r.net)}</strong></div>`
-  ].join('');
+  syncSelectedToForm();
 }
 
-/* ── Employees table ── */
-function renderEmployees() {
-  const search = (q('#searchEmployees')?.value || '').toLowerCase();
-  const deptFilter = q('#filterDepartment')?.value || '';
-  const statusFilter = q('#filterStatus')?.value || '';
-  const filtered = state.employees.filter(e => {
-    if (search && !(e.name.toLowerCase().includes(search) || (e.empId||'').toLowerCase().includes(search) || (e.kraPin||'').toLowerCase().includes(search))) return false;
-    if (deptFilter && e.department !== deptFilter) return false;
-    if (statusFilter === 'active' && !e.active) return false;
-    if (statusFilter === 'inactive' && e.active) return false;
-    return true;
+function syncSelectedToForm() {
+  const e = state.employees.find(e2 => e2.id === selectedId);
+  if (!e) return;
+  q('#companyName').value = state.settings.companyName;
+  q('#kraPinCompany').value = state.settings.kraPin || '';
+  q('#companyCounty').value = state.settings.county || '';
+  q('#periodInput').value = state.settings.period;
+  q('#shaRateInput').value = state.settings.shaRate;
+  q('#shaEmployerRateInput').value = state.settings.shaEmployerRate;
+  q('#pensionRateInput').value = state.settings.pensionRate;
+  q('#roundToggle').checked = state.settings.round;
+  q('#roundToggleSettings').checked = state.settings.round;
+}
+
+/* ── Payroll history ── */
+function renderPayrollHistory() {
+  q('#payrollHistoryRows').innerHTML = (state.payrollHistory || []).map(h =>
+    `<tr>
+      <td>${escHtml(h.period)}</td>
+      <td><span class="pill ${h.status === 'locked' ? 'ok' : h.status === 'approved' ? 'draft' : 'bad'}">${escHtml(h.status)}</span></td>
+      <td class="right">${money.format(h.gross)}</td>
+      <td class="right">${money.format(h.paye)}</td>
+      <td class="right">${money.format(h.nssf)}</td>
+      <td class="right">${money.format(h.sha)}</td>
+      <td class="right">${money.format(h.net)}</td>
+      <td><button class="mini" data-view-history="${escHtml(h.period)}">View</button></td>
+    </tr>`
+  ).join('') || '<tr><td colspan="8" class="empty">No payroll history yet.</td></tr>';
+}
+
+/* ── Annual P9 Form ── */
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function renderP9() {
+  const year = q('#p9Year').value;
+  const empSelect = q('#p9EmployeeSelect');
+  // Populate employee selector
+  empSelect.innerHTML = state.employees.filter(e=>e.active).map(e =>
+    `<option value="${e.id}">${escHtml(e.name)}</option>`
+  ).join('');
+  const selectedEmpId = empSelect.value || state.employees.filter(e=>e.active)[0]?.id;
+  if (!selectedEmpId) { q('#p9Rows').innerHTML = '<tr><td colspan="6" class="empty">No active employees.</td></tr>'; return; }
+  const emp = state.employees.find(e => e.id === selectedEmpId);
+  if (!emp) return;
+  // Build P9 data: use p9History first, then fill from payrollHistory
+  const empHistory = (state.p9History || []).filter(h => h.employeeId === emp.id);
+  const periodMap = {};
+  empHistory.forEach(h => { periodMap[h.period] = h; });
+  // Also try to extract from payroll history (aggregate level)
+  (state.payrollHistory || []).forEach(h => {
+    const p = h.period.toLowerCase();
+    MONTHS.forEach((m,i) => {
+      if (p.includes(m.toLowerCase())) {
+        const key = `${m} ${year}`;
+        if (!periodMap[key]) {
+          // Distribute aggregate totals evenly across months if not already stored
+          // This is a fallback; ideally each month has its own snapshot
+          periodMap[key] = {
+            period: key, employeeId: emp.id,
+            gross: h.gross / Math.max(state.employees.filter(e2=>e2.active).length, 1),
+            taxablePay: (h.gross - h.nssf - h.sha) / Math.max(state.employees.filter(e2=>e2.active).length, 1),
+            paye: h.paye / Math.max(state.employees.filter(e2=>e2.active).length, 1),
+            nssf: h.nssf / Math.max(state.employees.filter(e2=>e2.active).length, 1),
+            sha: h.sha / Math.max(state.employees.filter(e2=>e2.active).length, 1),
+            housingEmployee: 0, helb: emp.helb || 0, advance: emp.advance || 0
+          };
+        }
+      }
+    });
   });
-  q('#employeeRows').innerHTML = filtered.map(e => {
-    const r = employeeRun(e);
-    return `<tr data-id="${e.id}">
-      <td><input data-field="name" value="${escapeHtml(e.name)}"></td>
-      <td><input data-field="bankName" value="${escapeHtml(e.bankName||'')}" placeholder="e.g. KCB, Equity"></td>
-      <td><input data-field="empId" value="${escapeHtml(e.empId||'')}" placeholder="EMP001"></td>
-      <td><input data-field="kraPin" value="${escapeHtml(e.kraPin)}"></td>
-      <td><input data-field="department" value="${escapeHtml(e.department||'')}"></td>
-      <td><input data-field="jobGrade" value="${escapeHtml(e.jobGrade||'')}" placeholder="G7"></td>
-      <td><input data-field="bankAccount" value="${escapeHtml(e.bankAccount||'')}" placeholder="Acc. no."></td>
-      <td><input class="right" data-field="basicSalary" type="number" min="0" value="${e.basicSalary}"></td>
-      <td><input class="right" data-field="helb" type="number" min="0" value="${e.helb||0}"></td>
-      <td><input class="right" data-field="advance" type="number" min="0" value="${e.advance}"></td>
-      <td class="right"><strong>${money.format(r.net)}</strong></td>
-      <td><span class="pill ${e.active ? 'ok' : 'bad'}">${e.active ? 'Active' : 'Inactive'}</span>
-          <button class="mini" data-action="${e.active ? 'deactivate' : 'activate'}" style="margin-left:4px">${e.active ? 'Deactivate' : 'Activate'}</button></td>
-      <td><button class="mini" data-action="use">Use</button></td>
-    </tr>`;
-  }).join('') || '<tr><td colspan="13" class="empty">No employees found.</td></tr>';
 
-  // Update department filter
-  const deptSelect = q('#filterDepartment');
-  if (deptSelect) {
-    const currentVal = deptSelect.value;
-    deptSelect.innerHTML = '<option value="">All Departments</option>' +
-      state.departments.map(d => `<option value="${d}" ${d===currentVal?'selected':''}>${escapeHtml(d)}</option>`).join('');
-  }
+  const rows = [];
+  let cumulativePaye = 0;
+  let totalGross = 0, totalTaxable = 0, totalPaye = 0;
+  MONTHS.forEach(m => {
+    const key = `${m} ${year}`;
+    const data = periodMap[key];
+    const gross = data ? data.gross : 0;
+    const taxable = data ? data.taxablePay : 0;
+    const paye = data ? data.paye : 0;
+    cumulativePaye += paye;
+    totalGross += gross;
+    totalTaxable += taxable;
+    totalPaye += paye;
+    rows.push({ month: m, gross, taxable, paye, cumulative: cumulativePaye, monthlyPayee: paye });
+  });
+
+  q('#p9Rows').innerHTML = rows.map(r =>
+    `<tr>
+      <td>${escHtml(r.month)}</td>
+      <td class="right">${money.format(r.gross)}</td>
+      <td class="right">${money.format(r.taxable)}</td>
+      <td class="right monthly-payee">${money.format(r.paye)}</td>
+      <td class="right cumulative">${money.format(r.cumulative)}</td>
+      <td class="right monthly-payee">${money.format(r.monthlyPayee)}</td>
+    </tr>`
+  ).join('');
+
+  q('#p9Footer').innerHTML = `<tr style="border-top:2px solid var(--line);font-weight:700">
+    <td>ANNUAL TOTAL</td>
+    <td class="right">${money.format(totalGross)}</td>
+    <td class="right">${money.format(totalTaxable)}</td>
+    <td class="right" style="color:var(--blue)">${money.format(totalPaye)}</td>
+    <td class="right cumulative" style="color:var(--green)">${money.format(cumulativePaye)}</td>
+    <td class="right" style="color:var(--blue)">${money.format(cumulativePaye)}</td>
+  </tr>`;
 }
 
-/* ── Departments ── */
-function renderDepartments() {
-  q('#deptList').innerHTML = state.departments.map(d =>
-    `<div class="report"><div><strong>${escapeHtml(d)}</strong><span>${state.employees.filter(e => e.department === d && e.active).length} active employees</span></div>
-    <button class="mini" data-remove-dept="${escapeHtml(d)}">Remove</button></div>`
-  ).join('') || '<div class="empty">No departments yet.</div>';
-}
+empSelect.addEventListener('change', () => { selectedId = empSelect.value; renderP9(); });
 
 /* ── Advances ── */
 function renderAdvances() {
-  q('#advanceRows').innerHTML = state.employees.filter(e=>e.active).map(e => {
-    const pct = e.basicSalary ? e.advance / e.basicSalary * 100 : 0;
-    const status = pct > 40 ? 'Review' : pct > 0 ? 'Active' : 'None';
+  const active = state.employees.filter(e=>e.active);
+  q('#advanceRows').innerHTML = active.map(e => {
+    const pct = e.basicSalary > 0 ? ((e.advance / e.basicSalary) * 100).toFixed(1) : '0';
     return `<tr>
-      <td>${escapeHtml(e.name)}</td>
+      <td>${escHtml(e.name)}</td>
       <td class="right">${money.format(e.basicSalary)}</td>
       <td class="right">${money.format(e.advance)}</td>
-      <td class="right">${pct.toFixed(1)}%</td>
-      <td><span class="pill ${pct > 40 ? 'bad' : pct > 0 ? 'ok' : ''}">${status}</span></td>
+      <td class="right">${pct}%</td>
+      <td><span class="pill ${e.advance > 0 ? 'bad' : 'ok'}">${e.advance > 0 ? 'Active' : 'None'}</span></td>
     </tr>`;
   }).join('');
-
-  const history = state.advanceHistory || [];
-  q('#advanceHistory').innerHTML = history.map(h => {
-    const emp = state.employees.find(e => e.id === h.employeeId);
-    const empName = emp ? emp.name : 'All employees';
-    const icon = h.type === 'issued' ? '&#x2B07;' : '&#x2B06;';
-    const colour = h.type === 'issued' ? 'var(--red)' : 'var(--green)';
-    return `<div class="report">
-      <div><strong>${empName}</strong><span>${escapeHtml(h.period)} &middot; ${h.type === 'issued' ? 'Issued' : 'Repaid'}</span></div>
-      <div style="color:${colour};font-weight:700">${icon} ${money.format(h.amount)}</div>
-    </div>`;
-  }).join('') || '<div class="empty">No advance history yet.</div>';
+  q('#advanceHistoryList').innerHTML = (state.advanceHistory || []).map(h =>
+    `<div class="report"><div><strong>${escHtml(h.period)}</strong><span>${escHtml(h.type === 'issued' ? 'Issued' : 'Repaid')} &middot; ${escHtml(h.note || '')}</span></div><strong>${money.format(h.amount)}</strong></div>`
+  ).join('') || '<p class="empty">No advance history.</p>';
 }
 
 /* ── Payslips ── */
 function renderPayslips() {
-  const emp = state.employees.find(e => e.id === f.payslipSelect.value) || state.employees[0];
-  if (!emp) return;
-  const r = employeeRun(emp);
-  q('#payslipBrowser').innerHTML = [
-    ['Basic salary', emp.basicSalary],
-    ['House allowance', emp.houseAllowance || 0],
-    ['Transport allowance', emp.transportAllowance || 0],
-    ['Other allowances', emp.otherAllowance || 0],
-    ['Gross pay', r.gross],
-    ['PAYE', -r.paye],
-    ['NSSF', -r.nssfEmployee],
-    ['SHA', -r.sha],
-    ['Housing levy', -r.housingEmployee],
-    ['Pension', -r.pension],
-    ['HELB', -r.helb],
-    ['Salary advance', -r.advance],
-    ...r.empCustomBreakdown.map(d => [d.name, -d.amount]),
-    ['Total deductions', -(r.paye + r.nssfEmployee + r.sha + r.housingEmployee + r.pension + r.helb + r.advance + r.totalCustom)],
-    ['Net pay', r.net]
-  ].map(([l, a], i, arr) => `<div class="line ${i === arr.length - 1 ? 'net' : ''}"><span>${escapeHtml(l)}</span><strong>${money.format(a)}</strong></div>`).join('');
-
-  q('#payslipList').innerHTML = state.employees.filter(e=>e.active).map(e =>
-    `<div class="report">
-      <div><strong>${escapeHtml(e.name)}</strong><span>${state.settings.period} payslip ready</span></div>
-      <button class="mini" data-payslip="${e.id}">View</button>
-    </div>`
-  ).join('');
+  const e = state.employees.find(e2 => e2.id === selectedId);
+  if (!e) { q('#payslipPreview').innerHTML = '<p class="empty">Select an employee.</p>'; return; }
+  const r = employeeRun(e);
+  const per = state.settings.period;
+  q('#payslipPreview').innerHTML = `
+    <div class="line"><strong>${escHtml(e.name)}</strong><span>${escHtml(e.empId)} &middot; ${escHtml(e.department)} &middot; ${escHtml(per)}</span></div>
+    <div class="line"><span>Gross</span><strong>${money.format(r.gross)}</strong></div>
+    <div class="line"><span>PAYE</span><strong>${money.format(r.paye)}</strong></div>
+    <div class="line"><span>NSSF</span><strong>${money.format(r.nssfEmployee)}</strong></div>
+    <div class="line"><span>SHA</span><strong>${money.format(r.sha)}</strong></div>
+    <div class="line"><span>Housing levy</span><strong>${money.format(r.housingEmployee)}</strong></div>
+    <div class="line"><span>HELB</span><strong>${money.format(r.helb)}</strong></div>
+    <div class="line"><span>Advance</span><strong>${money.format(r.advance)}</strong></div>
+    <div class="line net"><span>Net pay</span><strong>${money.format(r.net)}</strong></div>
+  `;
 }
 
 /* ── Reports ── */
@@ -972,90 +1083,39 @@ function renderReports() {
     ['advance', 'Salary advance recovery', t.advance, 'Internal deduction report']
   ];
   const customReports = (state.customDeductions || []).map(d =>
-    ['custom:' + d.id, d.name, num(d.amount) * state.employees.filter(e=>e.active).length, 'Custom deductible']
+    ['custom:' + d.id, d.name, num(d.amount) * state.employees.filter(e2=>e2.active).length, 'Custom deductible']
   );
   q('#reportsList').innerHTML = [...standardReports, ...customReports].map(([key, a, b, c]) =>
     `<div class="report">
-      <div><strong>${escapeHtml(a)}</strong><span>${escapeHtml(c)}</span></div>
+      <div><strong>${escHtml(a)}</strong><span>${escHtml(c)}</span></div>
       <div class="actions"><strong>${money.format(b)}</strong><button class="mini" data-deduct="${key}">Download</button></div>
     </div>`
   ).join('');
 
-  q('#bankList').innerHTML = state.employees.filter(e=>e.active).map(e => {
-    const r = employeeRun(e);
-    const acc = e.bankAccount || 'N/A';
+  q('#bankList').innerHTML = state.employees.filter(e2=>e2.active).map(e2 => {
+    const r2 = employeeRun(e2);
+    const acc = e2.bankAccount || 'N/A';
     return `<div class="report">
-      <div><strong>${escapeHtml(e.name)}</strong><span>Acc: ${escapeHtml(acc)} &middot; Net salary payable</span></div>
-      <strong>${money.format(r.net)}</strong>
+      <div><strong>${escHtml(e2.name)}</strong><span>Acc: ${escHtml(acc)} &middot; Net salary payable</span></div>
+      <strong>${money.format(r2.net)}</strong>
     </div>`;
   }).join('');
 
-  // Employer split table
-  q('#employerSplitRows').innerHTML = state.employees.filter(e=>e.active).map(e => {
-    const r = employeeRun(e);
+  q('#employerSplitRows').innerHTML = state.employees.filter(e2=>e2.active).map(e2 => {
+    const r2 = employeeRun(e2);
     return `<tr>
-      <td>${escapeHtml(e.name)}</td>
-      <td class="right">${money.format(r.paye)}</td>
-      <td class="right">${money.format(r.nssfEmployee)}</td>
-      <td class="right">${money.format(r.sha)}</td>
-      <td class="right">${money.format(r.helb)}</td>
-      <td class="right">${money.format(r.housingEmployee)}</td>
-      <td class="right">${money.format(r.nssfEmployer)}</td>
-      <td class="right">${money.format(r.shaEmployer)}</td>
-      <td class="right">${money.format(r.housingEmployer)}</td>
-      <td class="right" style="font-weight:700;color:var(--green)">${money.format(r.statEmployer)}</td>
+      <td>${escHtml(e2.name)}</td>
+      <td class="right">${money.format(r2.paye)}</td>
+      <td class="right">${money.format(r2.nssfEmployee)}</td>
+      <td class="right">${money.format(r2.sha)}</td>
+      <td class="right">${money.format(r2.helb)}</td>
+      <td class="right">${money.format(r2.housingEmployee)}</td>
+      <td class="right">${money.format(r2.nssfEmployer)}</td>
+      <td class="right">${money.format(r2.sha)}</td>
+      <td class="right">${money.format(r2.housingEmployer)}</td>
+      <td class="right" style="font-weight:700;color:var(--green)">${money.format(r2.statEmployer)}</td>
     </tr>`;
   }).join('');
-}
-
-/* ── Dashboard ── */
-function renderDashboard() {
-  const active = state.employees.filter(e => e.active);
-  const count = active.length;
-  const missing = active.filter(e => !e.kraPin || !e.department).length;
-  const advances = active.filter(e => num(e.advance) > 0).length;
-  q('#statusPill').textContent = state.locked ? 'Locked' : state.approved ? 'Approved' : 'Draft';
-  q('#statusPill').className = 'pill ' + (state.approved || state.locked ? 'ok' : '');
-
-  q('#checklist').innerHTML = [
-    ['Employees loaded', `${count} active employee records`, count > 0],
-    ['KRA PINs complete', `${missing} missing details`, missing === 0],
-    ['Salary advances reviewed', `${advances} active advances`, true],
-    ['Payroll approved', state.approved ? 'Ready for payment' : 'Awaiting approval', state.approved],
-    ['Period locked', state.locked ? 'No further edits' : 'Still editable', state.locked]
-  ].map(([a, b, ok]) =>
-    `<div class="check">
-      <div><strong>${a}</strong><span>${b}</span></div>
-      <span class="pill ${ok ? 'ok' : 'bad'}">${ok ? 'OK' : 'Open'}</span>
-    </div>`
-  ).join('');
-
-  const t = totals();
-  const max = Math.max(t.gross, t.net, t.paye + t.nssf + t.sha + t.housingEmployee + t.helb, t.advance, 1);
-  q('#varianceChart').innerHTML = [
-    ['Gross', t.gross],
-    ['Net', t.net],
-    ['Statutory', t.paye + t.nssf + t.sha + t.housingEmployee + t.helb],
-    ['Advances', t.advance]
-  ].map(([l, v]) =>
-    `<div class="bar"><span>${l}</span><i style="width:${Math.max(3, v / max * 100)}%"></i><strong>${money.format(v)}</strong></div>`
-  ).join('');
-}
-
-/* ── Payroll History ── */
-function renderPayrollHistory() {
-  q('#payrollHistoryRows').innerHTML = (state.payrollHistory || []).map(h =>
-    `<tr>
-      <td>${escapeHtml(h.period)}</td>
-      <td><span class="pill ${h.status === 'locked' ? 'ok' : h.status === 'approved' ? '' : 'bad'}">${h.status}</span></td>
-      <td class="right">${money.format(h.gross)}</td>
-      <td class="right">${money.format(h.paye)}</td>
-      <td class="right">${money.format(h.nssf)}</td>
-      <td class="right">${money.format(h.sha)}</td>
-      <td class="right">${money.format(h.net)}</td>
-      <td><button class="mini" data-view-history="${h.period}">View</button></td>
-    </tr>`
-  ).join('') || '<tr><td colspan="8" class="empty">No payroll history yet.</td></tr>';
 }
 
 /* ── Settings ── */
@@ -1063,132 +1123,117 @@ function renderSettings() {
   q('#companyName').value = state.settings.companyName;
   q('#kraPinCompany').value = state.settings.kraPin || '';
   q('#companyCounty').value = state.settings.county || '';
-  q('#payrollPeriod').value = state.settings.period;
-  q('#payrollFrequency').value = state.settings.frequency || 'monthly';
-  q('#shaRate').value = state.settings.shaRate;
-  q('#nssfCap1').value = state.settings.nssfCap1;
-  q('#nssfCap2').value = state.settings.nssfCap2;
+  q('#periodInput').value = state.settings.period;
+  q('#shaRateInput').value = state.settings.shaRate;
+  q('#shaEmployerRateInput').value = state.settings.shaEmployerRate;
+  q('#pensionRateInput').value = state.settings.pensionRate;
+  q('#roundToggle').checked = state.settings.round;
+  q('#roundToggleSettings').checked = state.settings.round;
+
+  q('#dedList').innerHTML = (state.customDeductions || []).map(d =>
+    `<div class="report"><div><strong>${escHtml(d.name)}</strong><span>Global deduction</span></div><strong>${money.format(num(d.amount))}</strong></div>`
+  ).join('') || '<p class="empty">No custom deductions.</p>';
+
+  // Per-employee deductions
+  const empSelect = q('#dedEmployee');
+  empSelect.innerHTML = state.employees.filter(e2=>e2.active).map(e2 =>
+    `<option value="${e2.id}">${escHtml(e2.name)}</option>`
+  ).join('');
+
+  q('#empDedList').innerHTML = (state.employeeDeductions || []).map(d => {
+    const emp = state.employees.find(e2 => e2.id === d.employeeId);
+    return `<div class="report"><div><strong>${escHtml(d.name)}</strong><span>${emp ? escHtml(emp.name) : 'Unknown'} &middot; Per-employee</span></div><strong>${money.format(num(d.amount))}</strong></div>`;
+  }).join('') || '<p class="empty">No individual deductions.</p>';
+
   q('#currentUserRole').value = state.role;
-  renderCustomDeductions();
-  renderEmployeeDeductions();
 }
 
-function renderCustomDeductions() {
-  const list = q('#customDeductionList');
-  if (!list) return;
-  list.innerHTML = (state.customDeductions || []).map(d =>
-    `<div class="report">
-      <div><strong>${escapeHtml(d.name)}</strong><span>${money.format(num(d.amount))} per employee</span></div>
-      <button class="mini" data-remove-deduction="${d.id}">Remove</button>
-    </div>`
-  ).join('') || '<div class="empty">No custom deductibles yet.</div>';
-}
-
-function renderEmployeeDeductions() {
-  q('#employeeDeductionRows').innerHTML = (state.employeeDeductions || []).map(d => {
-    const emp = state.employees.find(e => e.id === d.employeeId);
-    return `<tr data-ded-id="${d.id}">
-      <td>${escapeHtml(emp ? emp.name : 'Unknown')}</td>
-      <td>${escapeHtml(d.name)}</td>
-      <td class="right">${money.format(num(d.amount))}</td>
-      <td><button class="mini" data-remove-emp-ded="${d.id}">Remove</button></td>
-    </tr>`;
-  }).join('') || '<tr><td colspan="4" class="empty">No individual deductions yet.</td></tr>';
-}
-
-/* ── Audit log ── */
+/* ── Audit ── */
 function renderAudit() {
-  q('#auditRows').innerHTML = (state.auditLog || []).map(a =>
-    `<tr>
-      <td class="time">${formatAgo(a.time)}</td>
-      <td class="actor">${escapeHtml(a.actor)}</td>
-      <td class="action">${escapeHtml(a.action)}</td>
-    </tr>`
-  ).join('') || '<tr><td colspan="3" class="empty">No audit entries yet.</td></tr>';
+  q('#auditLog').innerHTML = (state.auditLog || []).map(a =>
+    `<div class="audit-entry"><span class="time">${new Date(a.time).toLocaleString('en-KE')}</span><span class="actor">${escHtml(a.actor)}</span><span class="action">${escHtml(a.action)}</span></div>`
+  ).join('') || '<p class="empty">No audit entries.</p>';
 }
 
-/* ═══════════════════════════════════════════════════
-   CSV / DOWNLOAD HELPERS
-   ═══════════════════════════════════════════════════ */
-function parseCsv(text) {
-  const rows = text.trim().split(/\r?\n/).filter(Boolean).map(line =>
-    line.split(',').map(c => c.trim().replace(/^"|"$/g, ''))
-  );
-  if (!rows.length) return [];
-  const header = rows[0].map(h => h.toLowerCase().replace(/\s+/g, ''));
-  const hasHeader = header.some(h => ['name','employee','salary','advance','krapin','bankaccount','department'].includes(h));
-  const nameIx = header.findIndex(h => ['name','employee','employeename','fullname'].includes(h));
-  const salaryIx = header.findIndex(h => ['salary','basicsalary','basicpay','grosssalary'].includes(h));
-  const advanceIx = header.findIndex(h => ['advance','salaryadvance','loan','deduction'].includes(h));
+/* ── CSV Import ── */
+function parseCSV(text) {
+  const lines = text.trim().split(/\r?\n/);
+  const rows = lines.map(l => {
+    const result = [];
+    let cur = '', inQuotes = false;
+    for (let i = 0; i < l.length; i++) {
+      const c = l[i];
+      if (c === '"') { if (inQuotes && l[i+1] === '"') { cur += '"'; i++; } else { inQuotes = !inQuotes; } continue; }
+      if (c === ',' && !inQuotes) { result.push(cur.trim()); cur = ''; continue; }
+      cur += c;
+    }
+    result.push(cur.trim());
+    return result;
+  });
+  if (rows.length < 1) return { employees: [], errors: ['Empty file'] };
+  const header = rows[0].map(h => h.toLowerCase().replace(/[\s_]/g,''));
+  const nameIx = header.findIndex(h => ['name','employeename','fullname'].includes(h));
+  const salaryIx = header.findIndex(h => ['salary','basicsalary','gross'].includes(h));
+  const advanceIx = header.findIndex(h => ['advance','salaryadvance','salaryadvance'].includes(h));
   const kraIx = header.findIndex(h => ['krapin','pin','kra'].includes(h));
-  const bankIx = header.findIndex(h => ['bankaccount','account','accountnumber','bankacc','bank'].includes(h));
+  const bankIx = header.findIndex(h => ['bankaccount','account','accountnumber','bankacc'].includes(h));
   const deptIx = header.findIndex(h => ['department','dept'].includes(h));
   const helbIx = header.findIndex(h => ['helb','helbamount'].includes(h));
-  const bankNameIx = header.findIndex(h => ['bankname','bank','banknamecol'].includes(h));
-  const data = hasHeader ? rows.slice(1) : rows;
+  const bankNameIx = header.findIndex(h => ['bankname','bank'].includes(h));
+  const data = rows.slice(1);
   const validRows = [];
   const errors = [];
   data.forEach((row, i) => {
     const name = row[nameIx >= 0 ? nameIx : 0];
     const salary = num(row[salaryIx >= 0 ? salaryIx : 1]);
-    if (!name || salary <= 0) { errors.push(`Row ${i+(hasHeader?2:1)}: missing name/salary`); return; }
+    if (!name || salary <= 0) { errors.push(`Row ${i+2}: missing name/salary`); return; }
     validRows.push({
-      id:id(), name, empId:`EMP${String(state.employees.length+validRows.length+1).padStart(3,'0')}`,
+      id:id(), name, bankName:row[bankNameIx>=0?bankNameIx:-1]||'', empId:`EMP${String(state.employees.length+validRows.length+1).padStart(3,'0')}`,
       kraPin:row[kraIx>=0?kraIx:2]||'', department:row[deptIx>=0?deptIx:3]||'General',
       jobGrade:row[4]||'G7', bankAccount:row[bankIx>=0?bankIx:5]||'',
       basicSalary:salary, houseAllowance:0, transportAllowance:0, otherAllowance:0,
-      helb:num(row[helbIx>=0?helbIx:6]), advance:num(row[advanceIx>=0?advanceIx:2]),
-      bankName:row[bankNameIx>=0?bankNameIx:-1]||'', active:true
+      helb:num(row[helbIx>=0?helbIx:6]), advance:num(row[advanceIx>=0?advanceIx:-1])||0, active:true
     });
   });
-  if (errors.length) toast(`Imported ${validRows.length}. ${errors.length} rows skipped.`);
-  return validRows;
+  return { employees: validRows, errors };
 }
 
-function download(name, text) {
-  const blob = new Blob([text], { type:'text/csv' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = name;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
-function csvCell(v) {
-  const s = String(v ?? '');
-  return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
-}
-
-/* ── Deduction report ── */
+/* ═══════════════════════════════════════════════════
+   EXPORTS
+   ═══════════════════════════════════════════════════ */
 function downloadDeductionReport(key) {
-  let label = key;
-  let rows = ['employee,kraPin,department,amount'];
-  if (key.startsWith('custom:')) {
-    const d = (state.customDeductions||[]).find(x => x.id === key.split(':')[1]);
-    if (!d) { toast('Deductible not found.'); return; }
-    label = d.name;
-    rows.push(...state.employees.filter(e=>e.active).map(e =>
-      [e.name, e.kraPin, e.department, num(d.amount)].map(csvCell).join(',')));
-  } else {
-    rows.push(...state.employees.filter(e=>e.active).map(e => {
-      const r = employeeRun(e);
-      const amount = key==='paye'?r.paye : key==='nssf'?r.nssfEmployee : key==='sha'?r.sha
-        : key==='housing'?r.housingEmployee+r.housingEmployer : key==='helb'?r.helb
-        : key==='advance'?r.advance : 0;
-      return [e.name, e.kraPin, e.department, amount].map(csvCell).join(',');
-    }));
-  }
-  download(`easypay-${label.toLowerCase().replace(/[^a-z0-9]+/g,'-')}-report.csv`, rows.join('\n'));
-  toast(`${label} report downloaded.`);
-  audit(`Downloaded ${label} report`);
+  let rows;
+  if (key === 'paye') rows = ['employee,kraPin,gross,taxable,paye'];
+  else if (key === 'nssf') rows = ['employee,kraPin,gross,tier1,tier2,tier3,nssfEmployee,nssfEmployer'];
+  else if (key === 'sha') rows = ['employee,kraPin,gross,sha'];
+  else if (key === 'housing') rows = ['employee,kraPin,gross,housingEmployee,housingEmployer'];
+  else if (key === 'helb') rows = ['employee,kraPin,gross,helb'];
+  else if (key === 'advance') rows = ['employee,kraPin,salary,advance,advancePct'];
+  else if (key.startsWith('custom:')) rows = ['employee,kraPin,gross,customAmount'];
+  else rows = ['employee,kraPin,gross'];
+
+  state.employees.filter(e2=>e2.active).forEach(e2 => {
+    const r2 = employeeRun(e2);
+    if (key === 'paye') rows.push([e2.name, e2.kraPin, r2.gross, r2.taxablePay, r2.paye].map(csvCell).join(','));
+    else if (key === 'nssf') rows.push([e2.name, e2.kraPin, r2.gross, r2.gross, 0, 0, r2.nssfEmployee, r2.nssfEmployer].map(csvCell).join(','));
+    else if (key === 'sha') rows.push([e2.name, e2.kraPin, r2.gross, r2.sha].map(csvCell).join(','));
+    else if (key === 'housing') rows.push([e2.name, e2.kraPin, r2.gross, r2.housingEmployee, r2.housingEmployer].map(csvCell).join(','));
+    else if (key === 'helb') rows.push([e2.name, e2.kraPin, r2.gross, r2.helb].map(csvCell).join(','));
+    else if (key === 'advance') rows.push([e2.name, e2.kraPin, r2.gross, r2.advance, e2.basicSalary > 0 ? ((r2.advance/e2.basicSalary)*100).toFixed(1) : 0].map(csvCell).join(','));
+    else if (key.startsWith('custom:')) rows.push([e2.name, e2.kraPin, r2.gross, r2.globalCustom].map(csvCell).join(','));
+    else rows.push([e2.name, e2.kraPin, r2.gross].map(csvCell).join(','));
+  });
+  download(`easypay-${key}-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.join('\n'));
+  toast(`Downloaded ${key} report.`);
+  audit(`Downloaded ${key} report`);
 }
 
 /* ── Bank payment export ── */
 function downloadBankExport() {
   const rows = ['employee,bankName,bankAccount,department,payableAmount,grossPay'];
-  state.employees.filter(e=>e.active).forEach(e => {
-    const r = employeeRun(e);
-    rows.push([e.name, e.bankName||'', e.bankAccount||'', e.department||'', r.net, r.gross].map(csvCell).join(','));
+  state.employees.filter(e2=>e2.active).forEach(e2 => {
+    const r2 = employeeRun(e2);
+    rows.push([e2.name, e2.bankName||'', e2.bankAccount||'', e2.department||'', r2.net, r2.gross].map(csvCell).join(','));
   });
   download(`easypay-bank-payment-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.join('\n'));
   toast('Bank payment file downloaded.');
@@ -1198,9 +1243,9 @@ function downloadBankExport() {
 /* ── KRA P10 Return ── */
 function downloadP10() {
   const rows = ['employeeName,bankName,kraPin,grossPay,taxableIncome,paye,personalRelief,netPaye,empId,department'];
-  state.employees.filter(e=>e.active).forEach(e => {
-    const r = employeeRun(e);
-    rows.push([e.name, e.bankName||'', e.kraPin, r.gross, r.taxablePay, r.paye, 2400, r.paye, e.empId||'', e.department||''].map(csvCell).join(','));
+  state.employees.filter(e2=>e2.active).forEach(e2 => {
+    const r2 = employeeRun(e2);
+    rows.push([e2.name, e2.bankName||'', e2.kraPin, r2.gross, r2.taxablePay, r2.paye, 2400, r2.paye, e2.empId||'', e2.department||''].map(csvCell).join(','));
   });
   download(`easypay-kra-p10-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.join('\n'));
   toast('KRA P10 return downloaded.');
@@ -1218,300 +1263,384 @@ function downloadTallyJournal() {
     [per,'Journal','NSSF Payable (Employee)', -t.nssf, `NSSF employee ${per}`],
     [per,'Journal','NSSF Payable (Employer)', -t.nssfEmployer, `NSSF employer ${per}`],
     [per,'Journal','SHA Payable (Employee)', -t.sha, `SHA employee ${per}`],
-    [per,'Journal','SHA Payable (Employer)', -t.shaEmployer, `SHA employer ${per}`],
+    [per,'Journal','SHA Payable (Employer)', -t.sha, `SHA employer ${per}`],
     [per,'Journal','Housing Levy Payable (Employee)', -t.housingEmployee, `Housing employee ${per}`],
     [per,'Journal','Housing Levy Payable (Employer)', -t.housingEmployer, `Housing employer ${per}`],
     [per,'Journal','HELB Payable', -t.helb, `HELB deduction ${per}`],
     [per,'Journal','Salary Advances Receivable', -t.advance, `Advance recovery ${per}`],
     [per,'Journal','Bank Payable', -t.net, `Net salary payment ${per}`]
   ];
-  download(`easypay-tally-journal-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.map(r => r.map(csvCell).join(',')).join('\n'));
+  download(`easypay-tally-journal-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.map(r2 => r2.map(csvCell).join(',')).join('\n'));
   toast('TallyPrime journal downloaded.');
   audit('Exported TallyPrime journal');
+}
+
+/* ── Annual P9 CSV Download ── */
+function downloadP9CSV() {
+  const year = q('#p9Year').value;
+  const rows = ['employeeName,month,grossPay,taxableIncome,monthlyPaye,cumulativePaye,annualPayee'];
+  state.employees.filter(e2=>e2.active).forEach(e2 => {
+    const empHistory = (state.p9History || []).filter(h => h.employeeId === e2.id);
+    const periodMap = {};
+    empHistory.forEach(h => { periodMap[h.period] = h; });
+    let cumulative = 0;
+    MONTHS.forEach(m => {
+      const key = `${m} ${year}`;
+      const data = periodMap[key];
+      const paye = data ? data.paye : 0;
+      cumulative += paye;
+      rows.push([e2.name, m, data?data.gross:0, data?data.taxablePay:0, paye, cumulative, cumulative].map(csvCell).join(','));
+    });
+  });
+  download(`easypay-annual-p9-${year}.csv`, rows.join('\n'));
+  toast(`Annual P9 for ${year} downloaded.`);
+  audit(`Downloaded Annual P9 for ${year}`);
+}
+
+/* ── Annual P9 PDF Download ── */
+function downloadP9PDF() {
+  const year = q('#p9Year').value;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4');
+  const lh = 7;
+  let y = 18;
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(16);
+  doc.text(`KENYA REVENUE AUTHORITY`, doc.internal.pageSize.width/2, y, { align:'center' });
+  y += lh;
+  doc.setFontSize(12);
+  doc.text(`EMPLOYER\'S MONTHLY RETURN OF DEDUCTIONS — P9 FORM`, doc.internal.pageSize.width/2, y, { align:'center' });
+  y += lh + 2;
+  doc.setFontSize(10);
+  doc.setFont('helvetica','normal');
+  doc.text(`Year: ${year}`, 20, y);
+  doc.text(`Employer: ${state.settings.companyName}`, 20, y + lh);
+  doc.text(`KRA PIN: ${state.settings.kraPin || 'N/A'}`, 20, y + lh*2);
+  y += lh * 3 + 4;
+
+  const colWidths = [45, 32, 32, 38, 40, 38];
+  const headers = ['Employee','Month','Gross Pay','Taxable','Monthly PAYE','Cumulative PAYE'];
+  const startX = 12;
+  let startY = y;
+
+  // Header row
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(9);
+  let x = startX;
+  headers.forEach((h, i) => {
+    doc.text(h, x, startY);
+    x += colWidths[i];
+  });
+  startY += 2;
+  doc.setDrawColor(180);
+  doc.line(startX, startY, startX + colWidths.reduce((a,b)=>a+b,0), startY);
+  startY += lh;
+
+  // Data rows
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(8.5);
+  let totalPages = 1;
+  state.employees.filter(e2=>e2.active).forEach(e2 => {
+    const empHistory = (state.p9History || []).filter(h => h.employeeId === e2.id);
+    const periodMap = {};
+    empHistory.forEach(h => { periodMap[h.period] = h; });
+    let cumulative = 0;
+
+    MONTHS.forEach(m => {
+      const key = `${m} ${year}`;
+      const data = periodMap[key];
+      const paye = data ? data.paye : 0;
+      cumulative += paye;
+
+      // Check if new page needed
+      if (startY > doc.internal.pageSize.height - 20) {
+        doc.addPage();
+        startY = 15;
+        totalPages++;
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(9);
+        x = startX;
+        headers.forEach((h, i) => { doc.text(h, x, startY); x += colWidths[i]; });
+        startY += 2;
+        doc.setDrawColor(180);
+        doc.line(startX, startY, startX + colWidths.reduce((a,b)=>a+b,0), startY);
+        startY += lh;
+        doc.setFont('helvetica','normal');
+        doc.setFontSize(8.5);
+      }
+
+      x = startX;
+      doc.text(e2.name.substring(0, 20), x, startY);
+      x += colWidths[0];
+      doc.text(m, x, startY);
+      x += colWidths[1];
+      doc.text(data ? money.format(data.gross) : '—', x, startY, { align:'right' });
+      x += colWidths[2];
+      doc.text(data ? money.format(data.taxablePay) : '—', x, startY, { align:'right' });
+      x += colWidths[3];
+      doc.text(paye > 0 ? money.format(paye) : '—', x, startY, { align:'right' });
+      x += colWidths[4];
+      doc.text(cumulative > 0 ? money.format(cumulative) : '—', x, startY, { align:'right' });
+      startY += lh;
+    });
+
+    // Total row
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(8.5);
+    x = startX;
+    doc.text(`${e2.name} — TOTAL`, x, startY);
+    x += colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3];
+    doc.text(money.format(cumulative), x, startY, { align:'right' });
+    x += colWidths[4];
+    doc.text(money.format(cumulative), x, startY, { align:'right' });
+    startY += lh + 4;
+    doc.setFont('helvetica','normal');
+  });
+
+  // Annual summary
+  if (startY > doc.internal.pageSize.height - 30) {
+    doc.addPage();
+    startY = 15;
+  }
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(11);
+  doc.text('ANNUAL PAYEE SUMMARY', 20, startY);
+  startY += lh;
+  doc.setFontSize(9);
+  doc.setFont('helvetica','normal');
+  let totalPayee = 0;
+  state.employees.filter(e2=>e2.active).forEach(e2 => {
+    const empHistory = (state.p9History || []).filter(h => h.employeeId === e2.id);
+    const total = empHistory.reduce((s,h) => s + (h.paye||0), 0);
+    totalPayee += total;
+    doc.text(`${e2.name} (KRA PIN: ${e2.kraPin}): Ksh ${money.format(total)}`, 20, startY);
+    startY += lh;
+  });
+  startY += lh;
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(10);
+  doc.text(`TOTAL ANNUAL PAYEE: Ksh ${money.format(totalPayee)}`, 20, startY);
+
+  doc.save(`easypay-annual-p9-${year}.pdf`);
+  toast(`Annual P9 PDF for ${year} downloaded.`);
+  audit(`Downloaded Annual P9 PDF for ${year}`);
 }
 
 /* ── Full backup ── */
 function downloadFullBackup() {
   const data = JSON.stringify(state, null, 2);
-  download(`easypay-backup-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.json`, data);
-  toast('Full company data backup downloaded.');
-  audit('Downloaded full company data backup');
+  download(`easypay-full-backup-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.json`, data);
+  toast('Full company backup downloaded.');
+  audit('Downloaded full company backup');
 }
 
-/* ═══════════════════════════════════════════════════
-   PDF PAYSIP GENERATION (jsPDF)
-   ═══════════════════════════════════════════════════ */
-function generatePayslipPdf(employee) {
+/* ── Payslip PDF ── */
+function downloadPayslipPDF() {
+  const e = state.employees.find(e2 => e2.id === selectedId);
+  if (!e) { toast('Select an employee first.'); return; }
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  const r = employeeRun(employee);
-  const s = state.settings;
-  let y = 20;
-  const lh = 8;
-
-  function txt(str, x, fs, bold) { doc.setFont('helvetica', bold?'bold':'normal'); doc.setFontSize(fs); doc.text(str, x, y); }
-
-  // Header
-  txt(s.companyName, 20, 16, true);
-  y += lh + 2;
-  txt('PAYSLIP', 20, 12, true);
-  txt(`Period: ${s.period}`, 120, 11, false);
+  const doc = new jsPDF('p','mm','a4');
+  const lh = 7; let y = 20;
+  function txt(text, x, size, bold) {
+    doc.setFont('helvetica', bold ? 'bold' : 'normal');
+    doc.setFontSize(size);
+    doc.text(text, x, y);
+  }
+  txt('PAYSLIP', 20, 14, true);
+  txt(`Period: ${state.settings.period}`, 120, 11, false);
   y += lh + 4;
-  txt(`Employee: ${employee.name}`, 20, 11, false);
-  if (employee.bankName) { txt(`Bank: ${employee.bankName}`, 120, 11, false); }
-  txt(`ID: ${employee.empId || 'N/A'}`, 120, 11, false);
+  txt(`Employee: ${e.name}`, 20, 11, false);
+  if (e.bankName) { txt(`Bank: ${e.bankName}`, 120, 11, false); }
+  txt(`ID: ${e.empId || 'N/A'}`, 120, 11, false);
   y += lh;
-  txt(`KRA PIN: ${employee.kraPin || 'N/A'}`, 20, 11, false);
-  txt(`Dept: ${employee.department || 'N/A'}`, 120, 11, false);
-  y += lh + 6;
-
-  doc.setDrawColor(17,97,73);
-  doc.line(20, y, 190, y);
+  txt(`KRA PIN: ${e.kraPin || 'N/A'}`, 20, 11, false);
+  txt(`Dept: ${e.department || 'N/A'}`, 120, 11, false);
   y += lh;
-
-  txt('EARNINGS', 20, 11, true);
-  y += lh;
-  doc.text('Basic Salary', 20, y);
-  doc.text(money.format(employee.basicSalary), 190, y, {align:'right'});
-  y += lh;
-  if (employee.houseAllowance) { doc.text('House Allowance', 20, y); doc.text(money.format(employee.houseAllowance), 190, y, {align:'right'}); y += lh; }
-  if (employee.transportAllowance) { doc.text('Transport Allowance', 20, y); doc.text(money.format(employee.transportAllowance), 190, y, {align:'right'}); y += lh; }
-  if (employee.otherAllowance) { doc.text('Other Allowances', 20, y); doc.text(money.format(employee.otherAllowance), 190, y, {align:'right'}); y += lh; }
-  y += lh + 4;
-
-  txt('DEDUCTIONS', 20, 11, true);
-  y += lh;
-  function ded(label, amount) { doc.text(label, 20, y); doc.text(money.format(amount), 190, y, {align:'right'}); y += lh; }
-  ded('PAYE', r.paye);
-  ded('NSSF (Tier I + II)', r.nssfEmployee);
-  ded('SHA (2.75%)', r.sha);
-  ded('Housing Levy (1.5%)', r.housingEmployee);
-  if (r.pension) ded('Pension', r.pension);
-  if (r.helb) ded('HELB', r.helb);
-  if (r.advance) ded('Salary Advance', r.advance);
-  if (r.totalCustom > 0) ded('Custom Deductions', r.totalCustom);
-
-  y += lh + 4;
-  doc.setDrawColor(17,97,73);
-  doc.line(20, y, 190, y);
-  y += lh + 2;
-  doc.setFillColor(217,239,231);
-  doc.rect(20, y-4, 170, 10, 'F');
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(13);
-  doc.text(`NET PAY: ${money.format(r.net)}`, 20, y+3);
-
-  y = 280;
-  doc.setFont('helvetica','italic');
-  doc.setFontSize(8);
-  doc.text('Generated by EasyPay — Optimum Prime Solutions', 20, y);
-
-  doc.save(`payslip-${employee.name.replace(/\s+/g,'-').toLowerCase()}-${s.period.toLowerCase().replace(/\s+/g,'-')}.pdf`);
-  toast(`Payslip PDF downloaded for ${employee.name}.`);
-  audit(`Downloaded PDF payslip for ${employee.name}`);
+  txt(`Bank Acc: ${e.bankAccount || 'N/A'}`, 20, 11, false);
+  txt(`Grade: ${e.jobGrade || 'N/A'}`, 120, 11, false);
+  y += lh + 8;
+  const r = employeeRun(e);
+  const lines = [
+    ['Gross pay', r.gross],
+    ['PAYE', -r.paye],
+    ['NSSF (employee)', -r.nssfEmployee],
+    ['SHA', -r.sha],
+    ['Housing levy', -r.housingEmployee],
+    ['HELB', -r.helb],
+    ['Salary advance', -r.advance],
+    ['Custom deductions', -(r.globalCustom + r.empCustomTotal)]
+  ];
+  lines.forEach(([label, val]) => {
+    doc.setFont('helvetica','normal'); doc.setFontSize(11);
+    doc.text(label, 20, y);
+    doc.text((val < 0 ? '-' : '') + money.format(Math.abs(val)), 170, y, { align:'right' });
+    y += lh;
+  });
+  y += 4;
+  doc.setFont('helvetica','bold'); doc.setFontSize(13);
+  doc.text('Net pay', 20, y);
+  doc.text(money.format(r.net), 170, y, { align:'right' });
+  doc.save(`easypay-payslip-${e.name.replace(/\s+/g,'-')}-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.pdf`);
+  toast('Payslip PDF downloaded.');
+  audit(`Downloaded payslip PDF for ${e.name}`);
 }
 
-/* ── Bulk ZIP ── */
-async function downloadAllPayslipsZip() {
+/* ── Bulk payslip ZIP ── */
+async function downloadPayslipZIP() {
   const zip = new JSZip();
-  const folder = zip.folder('payslips-' + state.settings.period.toLowerCase().replace(/\s+/g,'-'));
-  for (const emp of state.employees.filter(e=>e.active)) {
+  const folder = zip.folder('payslips');
+  for (const e of state.employees.filter(e2=>e2.active)) {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    const r = employeeRun(emp);
-    const s = state.settings;
-    let y = 20; const lh = 8;
-    function txt(str,x,fs,b){ doc.setFont('helvetica',b?'bold':'normal'); doc.setFontSize(fs); doc.text(str,x,y); }
-    txt(s.companyName,20,16,true); y+=lh+2;
-    txt('PAYSLIP',20,12,true); txt(`Period: ${s.period}`,120,11,false); y+=lh+4;
-    txt(`Employee: ${emp.name}`,20,11,false); y+=lh;
-    doc.setDrawColor(17,97,73); doc.line(20,y,190,y); y+=lh;
-    txt('EARNINGS',20,11,true); y+=lh;
-    doc.text(money.format(emp.basicSalary),190,y,{align:'right'}); y+=lh;
-    y+=lh+4;
-    txt('DEDUCTIONS',20,11,true); y+=lh;
-    function ded(l,a){ doc.text(l,20,y); doc.text(money.format(a),190,y,{align:'right'}); y+=lh; }
-    ded('PAYE',r.paye); ded('NSSF',r.nssfEmployee); ded('SHA',r.sha);
-    ded('Housing Levy',r.housingEmployee);
-    if(r.helb) ded('HELB',r.helb);
-    if(r.advance) ded('Advance',r.advance);
-    y+=lh+4;
-    doc.setDrawColor(17,97,73); doc.line(20,y,190,y); y+=lh+2;
-    doc.setFillColor(217,239,231); doc.rect(20,y-4,170,10,'F');
+    const doc = new jsPDF('p','mm','a4');
+    const lh = 7; let y = 20;
+    function txt(text, x, size, bold) {
+      doc.setFont('helvetica', bold ? 'bold' : 'normal');
+      doc.setFontSize(size);
+      doc.text(text, x, y);
+    }
+    txt('PAYSLIP', 20, 14, true);
+    txt(`Period: ${state.settings.period}`, 120, 11, false);
+    y += lh + 4;
+    txt(`Employee: ${e.name}`, 20, 11, false);
+    if (e.bankName) { txt(`Bank: ${e.bankName}`, 120, 11, false); }
+    txt(`ID: ${e.empId || 'N/A'}`, 120, 11, false);
+    y += lh;
+    txt(`KRA PIN: ${e.kraPin || 'N/A'}`, 20, 11, false);
+    txt(`Dept: ${e.department || 'N/A'}`, 120, 11, false);
+    y += lh + 8;
+    const r = employeeRun(e);
+    const lines = [
+      ['Gross pay', r.gross],
+      ['PAYE', -r.paye],
+      ['NSSF (employee)', -r.nssfEmployee],
+      ['SHA', -r.sha],
+      ['Housing levy', -r.housingEmployee],
+      ['HELB', -r.helb],
+      ['Salary advance', -r.advance],
+      ['Custom deductions', -(r.globalCustom + r.empCustomTotal)]
+    ];
+    lines.forEach(([label, val]) => {
+      doc.setFont('helvetica','normal'); doc.setFontSize(11);
+      doc.text(label, 20, y);
+      doc.text((val < 0 ? '-' : '') + money.format(Math.abs(val)), 170, y, { align:'right' });
+      y += lh;
+    });
+    y += 4;
     doc.setFont('helvetica','bold'); doc.setFontSize(13);
-    doc.text(`NET PAY: ${money.format(r.net)}`,20,y+3);
-    const pdfData = doc.output('blob');
-    folder.file(`payslip-${emp.name.replace(/\s+/g,'-')}.pdf`, pdfData);
+    doc.text('Net pay', 20, y);
+    doc.text(money.format(r.net), 170, y, { align:'right' });
+    folder.file(`payslip-${e.name.replace(/\s+/g,'-')}.pdf`, doc.output('blob'));
   }
-  const content = await zip.generateAsync({type:'blob'});
+  const blob = await zip.generateAsync({ type:'blob' });
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(content);
-  a.download = `payslips-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.zip`;
-  a.click();
-  URL.revokeObjectURL(a.href);
+  a.download = `easypay-payslips-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.zip`;
+  a.href = URL.createObjectURL(blob); a.click();
   toast('All payslips downloaded as ZIP.');
   audit('Downloaded bulk payslip ZIP');
 }
 
 /* ═══════════════════════════════════════════════════
-   TOAST
-   ═══════════════════════════════════════════════════ */
-function toast(m) {
-  const e = q('#toast');
-  e.textContent = m;
-  e.classList.add('show');
-  setTimeout(() => e.classList.remove('show'), 2400);
-}
-
-/* ═══════════════════════════════════════════════════
-   TAB NAVIGATION
-   ═══════════════════════════════════════════════════ */
-function showTab(tab) {
-  qa('[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-  qa('.screen').forEach(s => s.classList.toggle('active', s.id === tab));
-  const titles = {
-    dashboard: ['Dashboard','Kenya payroll cockpit by Optimum Prime Solutions'],
-    employees: ['Employees','Upload and maintain staff data'],
-    payroll: ['Payroll Run','Calculate and review payroll'],
-    payrollHistory: ['Payroll History','View past payroll runs'],
-    advances: ['Advances &amp; History','Manage salary advance deductions and history'],
-    payslips: ['Payslips','Employee payslip access'],
-    reports: ['Reports &amp; Exports','Statutory and payment exports'],
-    pricing: ['Pricing','Subscription plans'],
-    audit: ['Audit Log','Compliance and activity tracking'],
-    settings: ['Settings','Company and rule configuration']
-  };
-  const t = titles[tab];
-  q('#screenTitle').innerHTML = t ? t[0] : tab;
-  q('#screenEyebrow').textContent = t ? t[1] : '';
-  renderAll();
-}
-
-qa('[data-tab]').forEach(btn => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
-
-/* ═══════════════════════════════════════════════════
-   LOGIN
-   ═══════════════════════════════════════════════════ */
-q('#loginBtn').addEventListener('click', () => {
-  const user = q('#loginUser').value.trim().toLowerCase();
-  const roles = { admin:'admin', hr:'hr', viewer:'viewer' };
-  if (roles[user]) {
-    state.role = roles[user];
-    q('#loginOverlay').style.display = 'none';
-    audit(`Logged in as ${roles[user]}`);
-    renderAll();
-  } else {
-    toast('Invalid username. Use: admin, hr, or viewer');
-  }
-});
-q('#loginUser').addEventListener('keydown', e => { if (e.key === 'Enter') q('#loginBtn').click(); });
-
-/* ═══════════════════════════════════════════════════
    EVENT HANDLERS
    ═══════════════════════════════════════════════════ */
 
-/* Search / filter */
-q('#searchEmployees').addEventListener('input', renderEmployees);
-q('#filterDepartment').addEventListener('change', renderEmployees);
-q('#filterStatus').addEventListener('change', renderEmployees);
-
-/* Payroll form */
-q('#payrollForm').addEventListener('submit', e => {
-  e.preventDefault();
-  renderPayrollPreview();
-  toast('Payroll recalculated.');
-  audit('Payroll recalculated for ' + (state.employees.find(x=>x.id===selectedId)?.name || 'unknown'));
-});
-
-q('#saveEmployee').addEventListener('click', () => {
-  const e = state.employees.find(x => x.id === selectedId);
-  if (!e) return;
-  e.kraPin = f.kraPin.value;
-  e.basicSalary = num(f.basicSalary.value);
-  e.advance = num(f.salaryAdvance.value);
-  e.helb = num(f.helb.value);
-  state.approved = false;
-  state.locked = false;
-  renderAll();
-  toast('Employee payroll details saved.');
-  audit(`Updated payroll details for ${e.name}`);
-});
-
-f.employeeSelect.addEventListener('change', () => {
-  selectedId = f.employeeSelect.value;
-  syncSelectedToForm();
-  renderAll();
-});
-
-f.payslipSelect.addEventListener('change', renderPayslips);
-
-[f.kraPin, f.basicSalary, f.houseAllowance, f.transportAllowance, f.otherAllowance, f.pension, f.helb, f.salaryAdvance, f.resident].forEach(x => {
-  x.addEventListener('input', renderPayrollPreview);
-  x.addEventListener('change', renderPayrollPreview);
-});
-
-/* Employee rows inline edit */
+/* Employee inline edit */
 q('#employeeRows').addEventListener('input', e => {
-  const row = e.target.closest('tr');
-  if (!row) return;
-  const emp = state.employees.find(x => x.id === row.dataset.id);
+  const tr = e.target.closest('tr');
+  if (!tr) return;
+  const emp = state.employees.find(e2 => e2.id === tr.dataset.id);
   if (!emp) return;
   const field = e.target.dataset.field;
-  if (['basicSalary','advance','helb'].includes(field)) emp[field] = num(e.target.value);
-  else emp[field] = e.target.value;
-  state.approved = false;
-  state.locked = false;
-  if (emp.id === selectedId) syncSelectedToForm();
+  if (!field) return;
+  if (field === 'basicSalary' || field === 'helb' || field === 'advance') {
+    emp[field] = num(e.target.value);
+  } else {
+    emp[field] = e.target.value;
+  }
   renderAll();
 });
 
+/* Use employee */
 q('#employeeRows').addEventListener('click', e => {
-  const action = e.target.dataset.action;
-  if (action === 'deactivate' || action === 'activate') {
-    const emp = state.employees.find(x => x.id === e.target.closest('tr').dataset.id);
-    if (emp) {
-      emp.active = action === 'activate';
-      toast(`${emp.name} ${action === 'activate' ? 'activated' : 'deactivated'}.`);
-      audit(`${emp.name} ${action === 'activate' ? 'activated' : 'deactivated'}`);
-      renderAll();
-    }
-    return;
-  }
-  if (action === 'use') {
-    selectedId = e.target.closest('tr').dataset.id;
-    syncSelectedToForm();
+  const useId = e.target.dataset.use;
+  if (useId) {
+    selectedId = useId;
     renderAll();
     showTab('payroll');
+    return;
+  }
+  const deactivateId = e.target.dataset.deactivate;
+  if (deactivateId) {
+    const emp = state.employees.find(e2 => e2.id === deactivateId);
+    if (emp) { emp.active = false; renderAll(); toast(`${emp.name} deactivated.`); audit(`Deactivated ${emp.name}`); }
+    return;
+  }
+  const activeToggle = e.target.querySelector('[data-active]');
+  if (!activeToggle && e.target.dataset.active !== undefined) {
+    const emp = state.employees.find(e2 => e2.id === e.target.dataset.active);
+    if (emp) { emp.active = !emp.active; renderAll(); toast(`${emp.name} ${emp.active ? 'activated' : 'deactivated'}.`); audit(`${emp.active ? 'Activated' : 'Deactivated'} ${emp.name}`); }
+  }
+  const historyBtn = e.target.dataset.viewHistory;
+  if (historyBtn) {
+    const h = state.payrollHistory.find(h2 => h2.period === historyBtn);
+    if (h) {
+      showTab('dashboard');
+      toast(`Viewing ${h.period} payroll — Gross: ${money.format(h.gross)}, Net: ${money.format(h.net)}`);
+    }
   }
 });
 
-/* Add employee */
-q('#addEmployee').addEventListener('click', () => {
-  const e = { id:id(), name:'New Employee', bankName:'', empId:`EMP${String(state.employees.length+1).padStart(3,'0')}`,
-    kraPin:'', department:state.departments[0]||'General', jobGrade:'G7', bankAccount:'',
-    basicSalary:30000, houseAllowance:0, transportAllowance:0, otherAllowance:0, helb:0, advance:0, active:true };
-  state.employees.push(e);
-  selectedId = e.id;
-  syncSelectedToForm();
+/* Settings */
+q('#companyName').addEventListener('input', e => { state.settings.companyName = e.target.value; save(); });
+q('#kraPinCompany').addEventListener('input', e => { state.settings.kraPin = e.target.value; save(); });
+q('#companyCounty').addEventListener('input', e => { state.settings.county = e.target.value; save(); });
+q('#periodInput').addEventListener('input', e => { state.settings.period = e.target.value; renderAll(); });
+q('#shaRateInput').addEventListener('input', e => { state.settings.shaRate = num(e.target.value); renderAll(); });
+q('#shaEmployerRateInput').addEventListener('input', e => { state.settings.shaEmployerRate = num(e.target.value); renderAll(); });
+q('#pensionRateInput').addEventListener('input', e => { state.settings.pensionRate = num(e.target.value); renderAll(); });
+q('#roundToggle').addEventListener('change', e => { state.settings.round = e.target.checked; renderAll(); });
+q('#roundToggleSettings').addEventListener('change', e => { state.settings.round = e.target.checked; renderAll(); });
+
+/* Custom deductions */
+q('#addDed').addEventListener('click', () => {
+  const name = q('#newDedName').value.trim();
+  const amount = num(q('#newDedAmount').value);
+  if (!name || amount <= 0) { toast('Enter name and amount.'); return; }
+  state.customDeductions.push({ id:id(), name, amount });
+  q('#newDedName').value = '';
+  q('#newDedAmount').value = '';
   renderAll();
-  toast('Employee added.');
-  audit('Added new employee: ' + e.name);
+  toast(`Added deduction: ${name}`);
+  audit(`Added custom deduction: ${name}`);
+});
+
+/* Per-employee deductions */
+q('#addEmpDed').addEventListener('click', () => {
+  const empId = q('#dedEmployee').value;
+  const name = q('#dedName').value.trim();
+  const amount = num(q('#dedAmount').value);
+  if (!name || amount <= 0) { toast('Enter name and amount.'); return; }
+  state.employeeDeductions.push({ id:id(), employeeId: empId, name, amount });
+  q('#dedName').value = '';
+  q('#dedAmount').value = '';
+  renderAll();
+  toast(`Added deduction for ${name}.`);
+  audit(`Added per-employee deduction: ${name}`);
 });
 
 /* CSV upload */
-q('#csvUpload').addEventListener('change', async e => {
+q('#csvUpload').addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
-  const imported = parseCsv(await file.text());
-  if (!imported.length) { toast('No valid employees found.'); return; }
-  state.employees = imported;
-  selectedId = state.employees[0].id;
-  state.approved = false;
-  state.locked = false;
-  syncSelectedToForm();
-  renderAll();
-  toast(`${imported.length} employees imported.`);
-  audit(`Imported ${imported.length} employees from CSV`);
+  file.text().then(t => {
+    const result = parseCSV(t);
+    if (result.employees.length) {
+      state.employees = result.employees;
+      toast(`Imported ${result.employees.length} employees.`);
+      audit(`CSV import: ${result.employees.length} employees`);
+    }
+    if (result.errors.length) toast(result.errors.join('; '));
+    renderAll();
+  });
 });
 
 /* Download template */
@@ -1525,100 +1654,76 @@ q('#downloadTemplate').addEventListener('click', () =>
 
 /* Clear advances */
 q('#clearAdvances').addEventListener('click', () => {
-  state.employees.forEach(e => e.advance = 0);
-  state.approved = false;
+  state.employees.forEach(e2 => e2.advance = 0);
   renderAll();
-  toast('All salary advances cleared.');
-  audit('Cleared all salary advances');
+  toast('All advances cleared.');
+  audit('Cleared all advances');
 });
 
-/* Payslip list clicks */
-q('#payslipList').addEventListener('click', e => {
-  if (!e.target.dataset.payslip) return;
-  f.payslipSelect.value = e.target.dataset.payslip;
-  renderPayslips();
-});
-
-/* Settings form */
-q('#settingsForm').addEventListener('submit', e => {
-  e.preventDefault();
-  state.settings = {
-    companyName: q('#companyName').value,
-    kraPin: q('#kraPinCompany').value,
-    county: q('#companyCounty').value,
-    period: q('#payrollPeriod').value,
-    frequency: q('#payrollFrequency').value,
-    shaRate: num(q('#shaRate').value),
-    nssfCap1: num(q('#nssfCap1').value),
-    nssfCap2: num(q('#nssfCap2').value)
-  };
-  state.approved = false;
+/* Add advance */
+q('#addAdvance').addEventListener('click', () => {
+  const name = q('#newAdvanceEmp').value.trim();
+  const amount = num(q('#newAdvanceAmount').value);
+  if (!name || amount <= 0) { toast('Enter name and amount.'); return; }
+  const emp = state.employees.find(e2 => e2.name.toLowerCase() === name.toLowerCase());
+  if (!emp) { toast('Employee not found.'); return; }
+  emp.advance = amount;
+  state.advanceHistory.unshift({ employeeId:emp.id, period:state.settings.period, type:'issued', amount, note:'Manual advance' });
+  q('#newAdvanceEmp').value = '';
+  q('#newAdvanceAmount').value = '';
   renderAll();
-  toast('Settings saved.');
-  audit('Updated company settings');
+  toast(`Advance added for ${name}.`);
+  audit(`Added advance: ${name} — Ksh ${money.format(amount)}`);
 });
 
-/* Add custom deduction (global) */
-q('#addCustomDeduction').addEventListener('click', () => {
-  const name = q('#customDeductionName').value.trim();
-  const amount = num(q('#customDeductionAmount').value);
-  if (!name || amount <= 0) { toast('Enter a deductible name and amount.'); return; }
-  state.customDeductions.push({ id:id(), name, amount });
-  q('#customDeductionName').value = '';
-  q('#customDeductionAmount').value = 0;
-  state.approved = false;
+/* Add employee */
+q('#addEmployee').addEventListener('click', () => {
+  const e = { id:id(), name:'New Employee', bankName:'', empId:`EMP${String(state.employees.length+1).padStart(3,'0')}`,
+    kraPin:'', department:state.departments[0]||'General', jobGrade:'G7', bankAccount:'',
+    basicSalary:30000, houseAllowance:0, transportAllowance:0, otherAllowance:0, helb:0, advance:0, active:true };
+  state.employees.push(e);
+  selectedId = e.id;
   renderAll();
-  toast('Deductible added.');
-  audit(`Added global deductible: ${name} (${money.format(amount)})`);
+  showTab('employees');
+  toast('New employee added.');
+  audit('Added new employee');
 });
 
-q('#customDeductionList').addEventListener('click', e => {
-  const removeId = e.target.dataset.removeDeduction;
-  if (!removeId) return;
-  state.customDeductions = state.customDeductions.filter(d => d.id !== removeId);
-  state.approved = false;
-  renderAll();
-  toast('Deductible removed.');
-});
+/* Search */
+q('#searchEmployees').addEventListener('input', () => renderEmployeeRows());
+q('#filterDepartment').addEventListener('change', () => renderEmployeeRows());
+q('#filterStatus').addEventListener('change', () => renderEmployeeRows());
 
-/* Add per-employee deduction */
-q('#addEmployeeDeduction').addEventListener('click', () => {
-  const empId = f.employeeDeductionSelect.value;
-  const name = q('#employeeDeductionName').value.trim();
-  const amount = num(q('#employeeDeductionAmount').value);
-  if (!empId || !name || amount <= 0) { toast('Select an employee, enter a name and amount.'); return; }
-  state.employeeDeductions.push({ id:id(), employeeId:empId, name, amount });
-  q('#employeeDeductionName').value = '';
-  q('#employeeDeductionAmount').value = 0;
-  state.approved = false;
-  renderAll();
-  toast('Individual deductible added.');
-  const emp = state.employees.find(e => e.id === empId);
-  audit(`Added individual deductible for ${emp?.name}: ${name} (${money.format(amount)})`);
-});
+/* Department filter */
+const deptSelect = q('#filterDepartment');
+function updateDeptFilter() {
+  deptSelect.innerHTML = '<option>All Departments</option>' + state.departments.map(d => `<option>${escHtml(d)}</option>`).join('');
+}
 
-q('#employeeDeductionRows').addEventListener('click', e => {
-  const removeId = e.target.dataset.removeEmpDed;
-  if (!removeId) return;
-  state.employeeDeductions = state.employeeDeductions.filter(d => d.id !== removeId);
-  state.approved = false;
-  renderAll();
-  toast('Individual deductible removed.');
-});
-
-/* Reports download clicks */
-q('#reportsList').addEventListener('click', e => {
-  if (!e.target.dataset.deduct) return;
-  downloadDeductionReport(e.target.dataset.deduct);
+/* Employer split toggle */
+q('#employerSplit').addEventListener('click', () => {
+  showEmployerSplit = !showEmployerSplit;
+  q('#employerSplit').textContent = showEmployerSplit ? 'Hide Employer Split' : 'Show Employer Split';
+  renderPayrollPreview();
 });
 
 /* Run payroll */
 q('#runPayroll').addEventListener('click', () => {
-  // Save current run to history
+  // Save current run to history (aggregate)
   const t = totals();
   state.payrollHistory.unshift({
     period: state.settings.period, status:'draft',
     gross:t.gross, paye:t.paye, nssf:t.nssf, sha:t.sha, net:t.net
+  });
+  // Also save per-employee snapshots for P9
+  state.employees.filter(e2=>e2.active).forEach(e2 => {
+    const r2 = employeeRun(e2);
+    state.p9History.unshift({
+      period: state.settings.period, employeeId: e2.id,
+      gross: r2.gross, taxablePay: r2.taxablePay, paye: r2.paye,
+      nssf: r2.nssfEmployee, sha: r2.sha, housingEmployee: r2.housingEmployee,
+      helb: r2.helb, advance: r2.advance
+    });
   });
   state.approved = false;
   state.locked = false;
@@ -1630,7 +1735,6 @@ q('#runPayroll').addEventListener('click', () => {
 /* Approve */
 q('#approve').addEventListener('click', () => {
   state.approved = true;
-  // Update latest history entry
   if (state.payrollHistory.length) {
     state.payrollHistory[0].status = 'approved';
   }
@@ -1654,28 +1758,14 @@ q('#lock').addEventListener('click', () => {
 /* Export CSV */
 q('#exportCsv').addEventListener('click', () => {
   const rows = ['name,bankName,empId,department,gross,paye,nssf,sha,helb,advance,net'];
-  state.employees.filter(e=>e.active).forEach(e => {
-    const r = employeeRun(e);
-    rows.push([e.name, e.bankName||'', e.empId||'', e.department||'', r.gross, r.paye, r.nssfEmployee, r.sha, r.helb, r.advance, r.net].join(','));
+  state.employees.filter(e2=>e2.active).forEach(e2 => {
+    const r2 = employeeRun(e2);
+    rows.push([e2.name, e2.bankName||'', e2.empId||'', e2.department||'', r2.gross, r2.paye, r2.nssfEmployee, r2.sha, r2.helb, r2.advance, r2.net].join(','));
   });
   download('easypay-payroll-export.csv', rows.join('\n'));
   toast('Payroll CSV exported.');
   audit('Exported payroll CSV');
 });
-
-/* PDF payslip */
-q('#downloadPdf').addEventListener('click', () => {
-  const emp = state.employees.find(e => e.id === selectedId) || state.employees[0];
-  if (emp) generatePayslipPdf(emp);
-});
-q('#downloadSinglePdf').addEventListener('click', () => {
-  const emp = state.employees.find(e => e.id === f.payslipSelect.value) || state.employees[0];
-  if (emp) generatePayslipPdf(emp);
-});
-
-/* Bulk ZIP */
-q('#downloadAllPdf').addEventListener('click', () => downloadAllPayslipsZip());
-q('#downloadZip').addEventListener('click', () => downloadAllPayslipsZip());
 
 /* Bank export */
 q('#exportBank').addEventListener('click', () => downloadBankExport());
@@ -1687,14 +1777,25 @@ q('#exportP10').addEventListener('click', () => downloadP10());
 /* TallyPrime */
 q('#exportTally').addEventListener('click', () => downloadTallyJournal());
 
+/* Annual P9 */
+q('#exportP9').addEventListener('click', () => downloadP9PDF());
+q('#downloadP9Csv').addEventListener('click', () => downloadP9CSV());
+q('#downloadP9Pdf').addEventListener('click', () => downloadP9PDF());
+
 /* Full backup */
 q('#backupAll').addEventListener('click', () => downloadFullBackup());
 
-/* Employer split toggle */
-q('#employerSplit').addEventListener('click', () => {
-  showEmployerSplit = !showEmployerSplit;
-  q('#employerSplit').textContent = showEmployerSplit ? 'Hide Employer Split' : 'Show Employer Split';
-  renderPayrollPreview();
+/* Payslip PDF */
+q('#downloadPayslipPdf').addEventListener('click', () => downloadPayslipPDF());
+
+/* Bulk ZIP */
+q('#downloadZip').addEventListener('click', () => downloadPayslipZIP());
+q('#downloadAllPayslips').addEventListener('click', () => downloadPayslipZIP());
+
+/* Deduction reports */
+q('#reportsList').addEventListener('click', e => {
+  if (!e.target.dataset.deduct) return;
+  downloadDeductionReport(e.target.dataset.deduct);
 });
 
 /* Clear audit */
@@ -1719,6 +1820,7 @@ q('#addDept').addEventListener('click', () => {
   if (state.departments.includes(name)) { toast('Department already exists.'); return; }
   state.departments.push(name);
   q('#newDeptName').value = '';
+  updateDeptFilter();
   renderAll();
   toast(`Department "${name}" added.`);
   audit(`Added department: ${name}`);
@@ -1728,6 +1830,7 @@ q('#deptList').addEventListener('click', e => {
   const removeId = e.target.dataset.removeDept;
   if (!removeId) return;
   state.departments = state.departments.filter(d => d !== removeId);
+  updateDeptFilter();
   renderAll();
   toast(`Department "${removeId}" removed.`);
 });
@@ -1735,6 +1838,7 @@ q('#deptList').addEventListener('click', e => {
 /* ═══════════════════════════════════════════════════
    INIT
    ═══════════════════════════════════════════════════ */
+updateDeptFilter();
 if (!selectedId && state.employees[0]) selectedId = state.employees[0].id;
 syncSelectedToForm();
 renderAll();
