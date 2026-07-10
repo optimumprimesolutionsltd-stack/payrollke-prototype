@@ -340,6 +340,7 @@ td input{min-height:36px;width:100%}
           <div class="panel-head"><div><p class="eyebrow">Quick Actions</p><h2>Backup &amp; Export</h2></div></div>
           <div class="stack">
             <button class="mini" type="button" id="backupAll" style="text-align:left">&#x2B06; Backup All Company Data</button>
+            <button class="mini ghost" type="button" id="downloadBlankTemplateDash" style="text-align:left">&#x2B06; Download Blank Template</button>
             <button class="mini" type="button" id="downloadZip" style="text-align:left">&#x2B06; Download Payslip ZIP</button>
             <button class="mini" type="button" id="exportBank" style="text-align:left">&#x2B06; Export Bank Payment File</button>
             <button class="mini" type="button" id="exportP10" style="text-align:left">&#x2B06; Export KRA P10 Return</button>
@@ -818,9 +819,44 @@ td input{min-height:36px;width:100%}
           <button class="mini" type="button" id="switchRole">Switch</button>
         </div>
       </section>
+
+      <section class="panel" style="margin-top:16px;border-color:var(--red2)">
+        <div class="panel-head"><div><p class="eyebrow" style="color:var(--red)">Danger Zone</p><h2 style="color:var(--red)">Reset All Data</h2></div></div>
+        <p style="font-size:12px;color:var(--muted);margin:10px 0">This will permanently delete all employees, payroll history, and documents. Use this to start fresh for a new company.</p>
+        <div class="actions">
+          <button class="dangerBtn mini" type="button" id="resetToBlank">Wipe Data & Start Fresh</button>
+        </div>
+      </section>
     </section>
 
   </section>
+
+  <!-- ═══════════════ ONBOARDING WIZARD ═══════════════ -->
+  <div class="modal-overlay" id="onboardingWizard">
+    <div class="modal-box" style="max-width:500px">
+      <div class="modal-body" style="text-align:center">
+        <div class="mark" style="margin:0 auto 20px">E</div>
+        <h2>Welcome to EasyPay</h2>
+        <p>Set up your company profile to get started with Kenya's most advanced payroll SaaS.</p>
+        
+        <div class="fields" style="grid-template-columns:1fr;text-align:left;margin-top:24px">
+          <label>Company Name <span class="req">*</span>
+            <input id="oCompanyName" placeholder="e.g. Acme Kenya Ltd">
+          </label>
+          <label>Company KRA PIN
+            <input id="oKraPin" placeholder="P000000000Z">
+          </label>
+          <label>Payroll Period
+            <input id="oPeriod" value="July 2026">
+          </label>
+        </div>
+        
+        <div style="margin-top:24px">
+          <button class="primary" style="width:100%" id="startOnboarding">Create Company Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══════════════ EMPLOYEE MODAL ═══════════════ -->
   <div class="modal-overlay" id="employeeModal">
@@ -942,10 +978,32 @@ function toast(msg) {
 /* ═══════════════════════════════════════════════════
    PERSISTENCE
    ═══════════════════════════════════════════════════ */
+const BLANK_STATE = {
+  settings: { companyName:'', kraPin:'', county:'Nairobi', period:'July 2026',
+    shaRate:2.75, shaEmployerRate:2.75, pensionRate:0, round:false },
+  role: 'admin',
+  departments: ['Management', 'Operations', 'Finance'],
+  customDeductions: [],
+  employeeDeductions: [],
+  employees: [],
+  bonuses: [],
+  overtime: [],
+  advanceHistory: [],
+  payrollHistory: [],
+  p9History: [],
+  leaveBalances: {},
+  leaveRequests: [],
+  documents: [],
+  statutoryEvents: [],
+  auditLog: [],
+  onboarded: false
+};
+
 const DEFAULTS = {
   settings: { companyName:'Your Company Ltd', kraPin:'', county:'Nairobi', period:'July 2026',
     shaRate:2.75, shaEmployerRate:2.75, pensionRate:0, round:false },
   role: 'admin',
+  onboarded: true,
   departments: ['Accounts', 'Sales', 'IT'],
   customDeductions: [],
   employeeDeductions: [],
@@ -1032,12 +1090,15 @@ const DEFAULTS = {
 function save() { localStorage.setItem('easypay', JSON.stringify(state)); }
 function load() {
   try {
-    const d = JSON.parse(localStorage.getItem('easypay'));
+    const raw = localStorage.getItem('easypay');
+    if (!raw) return structuredClone(DEFAULTS);
+    const d = JSON.parse(raw);
+    d.onboarded = d.onboarded !== undefined ? d.onboarded : true;
     Object.assign(d.settings, DEFAULTS.settings, d.settings || {});
     d.departments = Array.isArray(d.departments) ? d.departments : [...DEFAULTS.departments];
     d.customDeductions = Array.isArray(d.customDeductions) ? d.customDeductions : [];
     d.employeeDeductions = Array.isArray(d.employeeDeductions) ? d.employeeDeductions : [];
-    d.employees = Array.isArray(d.employees) ? d.employees : [...DEFAULTS.employees];
+    d.employees = Array.isArray(d.employees) ? d.employees : [];
     d.advanceHistory = Array.isArray(d.advanceHistory) ? d.advanceHistory : [];
     d.payrollHistory = Array.isArray(d.payrollHistory) ? d.payrollHistory : [];
     d.p9History = Array.isArray(d.p9History) ? d.p9History : [];
@@ -1051,15 +1112,9 @@ function load() {
     d.role = d.role || 'admin';
     d.approved = d.approved || false;
     d.locked = d.locked || false;
-    // Backfill new fields
-    d.employees.forEach(e => {
-      if (!e.hasOwnProperty('bankName')) e.bankName = '';
-    });
-    // Backfill leave balances for existing employees
+    d.employees.forEach(e => { if (!e.hasOwnProperty('bankName')) e.bankName = ''; });
     d.employees.filter(e=>e.active).forEach(e => {
-      if (!d.leaveBalances[e.id]) {
-        d.leaveBalances[e.id] = { annual:21, sick:7, maternity:0, paternity:14, bereavement:5 };
-      }
+      if (!d.leaveBalances[e.id]) d.leaveBalances[e.id] = { annual:21, sick:7, maternity:0, paternity:14, bereavement:5 };
     });
     return d;
   } catch { return structuredClone(DEFAULTS); }
@@ -1221,6 +1276,11 @@ q('#loginUser').addEventListener('keydown', e => { if (e.key === 'Enter') q('#lo
 
 /* ── Render all ── */
 function renderAll() {
+  if (!state.onboarded) {
+    q('#onboardingWizard').style.display = 'flex';
+    return;
+  }
+  q('#onboardingWizard').style.display = 'none';
   const t = totals();
   q('#grossMetric').textContent = money.format(t.gross);
   q('#netMetric').textContent = money.format(t.net);
@@ -1253,6 +1313,43 @@ function renderAll() {
   renderAudit();
   save();
 }
+
+// Reset Handler
+q('#resetToBlank').onclick = () => {
+  if (confirm("DANGER: This will permanently wipe all employees, history, and settings. This cannot be undone. Are you sure?")) {
+    state = structuredClone(BLANK_STATE);
+    save();
+    location.reload();
+  }
+};
+
+// Onboarding Handler
+q('#startOnboarding').onclick = () => {
+  const name = q('#oCompanyName').value.trim();
+  if (!name) return toast("Company name is required!");
+  state.settings.companyName = name;
+  state.settings.kraPin = q('#oKraPin').value.trim();
+  state.settings.period = q('#oPeriod').value.trim();
+  state.onboarded = true;
+  audit(`Onboarded new company: ${name}`);
+  renderAll();
+  toast("Company profile created!");
+};
+
+// Blank Template Download
+const downloadBlankTemplate = () => {
+  const template = structuredClone(BLANK_STATE);
+  const json = JSON.stringify(template, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'easypay_blank_template.json';
+  a.click();
+  toast("Blank Company Template downloaded!");
+};
+
+q('#downloadBlankTemplate').onclick = downloadBlankTemplate;
+q('#downloadBlankTemplateDash').onclick = downloadBlankTemplate;
 
 function renderChecklist(t) {
   const missingKRA = state.employees.filter(e=>e.active && !e.kraPin).length;
