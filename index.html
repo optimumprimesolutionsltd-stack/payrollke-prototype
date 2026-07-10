@@ -19,6 +19,7 @@
 body{min-height:100vh;color:var(--ink);background:var(--bg);font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer;border:none;background:none}
+
 /* ── LAYOUT ── */
 .app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
 .side{display:flex;flex-direction:column;gap:20px;padding:22px 20px;color:#f0faf7;background:linear-gradient(175deg,#0e4a3a 0%,#0d5a3f 40%,#0a3e2e 100%);border-right:1px solid rgba(255,255,255,.06)}
@@ -35,6 +36,7 @@ button{cursor:pointer;border:none;background:none}
 .period strong{margin:4px 0 12px;color:#fff;font-size:15px}
 .period button{width:100%}
 .main{padding:28px 32px;overflow-y:auto;max-height:100vh}
+
 /* ── HEADER ── */
 .top,.panel-head,.actions,.form-actions{display:flex;align-items:center}
 .top,.panel-head{justify-content:space-between;gap:16px}
@@ -44,6 +46,7 @@ button{cursor:pointer;border:none;background:none}
 .panel h2{font-size:17px;font-weight:700}
 .eyebrow{margin:0 0 4px;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
 .actions,.form-actions{gap:10px;flex-wrap:wrap}
+
 /* ── BUTTONS ── */
 .primary,.secondary,.icon,.mini,.dangerBtn,.ghost{border-radius:var(--radius-sm);padding:0 14px;font-weight:700;font-size:13.5px;transition:all .2s}
 .primary{color:#fff;background:var(--green);min-height:40px}
@@ -60,6 +63,7 @@ button{cursor:pointer;border:none;background:none}
 .mini:hover{border-color:var(--green);background:var(--green2)}
 .ghost{color:var(--muted);border:1px solid var(--line);background:#fff;min-height:34px;font-weight:600}
 .ghost:hover{background:var(--paper)}
+
 /* ── CARDS ── */
 .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
 .metric,.panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow)}
@@ -71,37 +75,47 @@ button{cursor:pointer;border:none;background:none}
 .metric.net strong{color:var(--blue)}
 .metric.paye strong{color:var(--red)}
 .metric.advance strong{color:var(--gold)}
+
 /* ── SCREENS ── */
 .screen{display:none}
 .screen.active{display:block}
 .grid{display:grid;grid-template-columns:1.08fr .92fr;gap:16px}
 .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .panel{padding:20px}
 .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
 label{display:grid;gap:7px;color:var(--muted);font-size:12.5px;font-weight:700}
 input,select,textarea{width:100%;min-height:40px;border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--ink);background:var(--paper);padding:0 12px;font-size:13.5px;transition:border-color .2s,box-shadow .2s}
 input:focus,select:focus,textarea:focus{border-color:var(--green);outline:none;box-shadow:0 0 0 3px rgba(13,90,63,.1)}
+
 /* ── TOGGLE ── */
 .toggle{display:flex;grid-template-columns:none;align-items:center;gap:8px;color:var(--ink)}
 .toggle input{width:18px;min-height:18px;accent-color:var(--green)}
+
 /* ── PILLS ── */
 .pill{display:inline-flex;align-items:center;justify-content:center;min-width:72px;border-radius:999px;color:#7b5a0c;background:#fff2c9;padding:6px 12px;text-align:center;font-size:12.5px;font-weight:700}
 .pill.ok{color:#0f563f;background:var(--green2)}
 .pill.bad{color:#fff;background:var(--red)}
 .pill.draft{color:var(--muted);background:#f0f4f2}
+.pill.locked{color:var(--green);background:var(--green2)}
+.pill.error{color:#fff;background:var(--red)}
+
 /* ── EMPLOYEE STRIP ── */
 .employeeStrip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0;padding:14px;border-radius:var(--radius-sm);background:#f2f7f5}
+
 /* ── LINE ITEMS ── */
 .lines,.reports,.stack{display:grid;gap:9px}
 .line{display:flex;justify-content:space-between;gap:12px;min-height:34px;border-bottom:1px solid #edf2f0;color:var(--muted);align-items:center;font-size:13.5px}
 .line strong{color:var(--ink);font-weight:700}
 .line.net{margin-top:8px;border:0;color:var(--green);font-size:18px;font-weight:800}
 .line.net strong{color:var(--green)}
+
 /* ── REPORT CARD ── */
 .report,.check{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;min-height:48px;border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 14px;transition:border-color .2s}
 .report:hover,.check:hover{border-color:var(--green)}
 .report span,.check span{display:block;color:var(--muted);font-size:11.5px}
+
 /* ── TABLE ── */
 .table-wrap{overflow:auto;margin-top:16px;border:1px solid var(--line);border-radius:var(--radius)}
 table{width:100%;border-collapse:collapse;min-width:1200px}
@@ -109,23 +123,29 @@ th,td{padding:11px 14px;border-bottom:1px solid #edf2f0;text-align:left;font-siz
 th{color:var(--muted);background:#f4f9f7;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
 td input{min-height:36px;width:100%}
 .right{text-align:right}
+
 /* ── UPLOAD ── */
 .upload{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:16px;padding:14px;border:1px dashed #a8beb8;border-radius:var(--radius-sm);background:#f4f9f7}
+
 /* ── EMPTY ── */
 .empty{padding:24px;text-align:center;color:var(--muted)}
+
 /* ── CHART ── */
 .miniChart{display:grid;gap:8px}
 .bar{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;color:var(--muted);font-size:13px}
 .bar i{display:block;height:10px;border-radius:999px;background:var(--green)}
 .bench{border-left:4px solid var(--green);padding-left:12px;color:var(--muted)}
+
 /* ── TOAST ── */
 .toast{position:fixed;right:24px;bottom:24px;transform:translateY(12px);opacity:0;pointer-events:none;max-width:380px;border-radius:var(--radius);color:#fff;background:#141e1c;padding:14px 16px;transition:180ms ease;z-index:9999;font-size:13.5px;font-weight:500}
 .toast.show{transform:translateY(0);opacity:1}
+
 /* ── AUDIT ── */
 .audit-entry{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #edf2f0;font-size:13px}
 .audit-entry .time{color:var(--muted);min-width:150px}
 .audit-entry .actor{color:var(--ink);font-weight:700;min-width:100px}
 .audit-entry .action{color:var(--ink);flex:1}
+
 /* ── LOGIN ── */
 .login-overlay{position:fixed;inset:0;background:linear-gradient(145deg,#0e4a3a,#0d5a3f,#0a3e2e);z-index:10000;display:flex;align-items:center;justify-content:center}
 .login-box{background:#fff;border-radius:16px;padding:48px;box-shadow:var(--shadow-lg);width:400px;text-align:center;animation:fadeUp .3s ease}
@@ -135,10 +155,12 @@ td input{min-height:36px;width:100%}
 .login-box .fields{grid-template-columns:1fr;gap:12px}
 .login-box .fields label{font-size:12px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
 /* ── SEARCH ── */
 .search-bar{display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .search-bar input{max-width:320px}
 .search-bar select{max-width:160px}
+
 /* ── PLANS ── */
 .plan-card{border:1px solid var(--line);border-radius:var(--radius);padding:22px;text-align:center;background:#fff;transition:transform .2s,box-shadow .2s}
 .plan-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
@@ -147,18 +169,63 @@ td input{min-height:36px;width:100%}
 .plan-card .price{font-size:28px;font-weight:900;color:var(--green);margin:8px 0}
 .plan-card ul{list-style:none;padding:0;text-align:left;font-size:13px}
 .plan-card ul li{padding:5px 0;border-bottom:1px solid #f0f4f2}
+
 /* ── STAT BADGE ── */
 .stat-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:var(--green2);color:var(--green);font-size:11.5px;font-weight:700}
 .toggle-active{display:flex;align-items:center;gap:8px}
 .toggle-active .toggle-label{font-size:13px;color:var(--muted)}
+
 /* ── P9 TABLE ── */
 .p9-table th{font-size:11px}
 .p9-table td{font-size:13px}
 .p9-table .cumulative{font-weight:700;color:var(--green)}
 .p9-table .monthly-payee{font-weight:700;color:var(--blue)}
+
+/* ── LEAVE CARDS ── */
+.leave-card{border:1px solid var(--line);border-radius:var(--radius);padding:16px;background:#fff;transition:transform .2s}
+.leave-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.leave-card .leave-type{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.leave-card .leave-balance{font-size:28px;font-weight:900;margin:4px 0}
+.leave-card .leave-total{font-size:12px;color:var(--muted)}
+
+/* ── CALENDAR ── */
+.calendar-event{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #edf2f0}
+.calendar-event .date{font-weight:700;color:var(--green);min-width:100px;font-size:12px}
+.calendar-event .desc{flex:1}
+.calendar-event .urgent{color:var(--red);font-weight:700}
+.calendar-event .soon{color:var(--gold);font-weight:700}
+
+/* ── ERROR ALERT ── */
+.error-alert{border:1px solid var(--red);background:var(--red2);border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0;display:flex;gap:10px;align-items:flex-start}
+.error-alert .icon-x{color:var(--red);font-weight:900;font-size:16px}
+.error-alert .msg{font-size:13px;color:var(--ink)}
+.error-alert .msg strong{display:block;margin-bottom:2px}
+.warn-alert{border:1px solid var(--gold);background:var(--gold2);border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0;display:flex;gap:10px;align-items:flex-start}
+.warn-alert .icon-w{color:var(--gold);font-weight:900;font-size:16px}
+.warn-alert .msg{font-size:13px;color:var(--ink)}
+
+/* ── DOCUMENT CARD ── */
+.doc-card{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 14px;transition:border-color .2s}
+.doc-card:hover{border-color:var(--green)}
+.doc-card .doc-icon{width:36px;height:36px;border-radius:6px;background:var(--green2);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.doc-card .doc-info{flex:1}
+.doc-card .doc-info strong{font-size:13px}
+.doc-card .doc-info span{font-size:11px;color:var(--muted)}
+
+/* ── COST CHART ── */
+.cost-row{display:grid;grid-template-columns:180px 1fr auto;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid #edf2f0}
+.cost-row .dept-name{font-size:13px;font-weight:600}
+.cost-row .cost-bar{height:12px;border-radius:6px;background:var(--green)}
+.cost-row .cost-val{font-size:13px;font-weight:700;text-align:right;min-width:100px}
+
+/* ── BONUS/OT FORM ── */
+.bonus-row{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #edf2f0}
+.bonus-row .emp-name{min-width:160px;font-weight:600}
+.bonus-row input{max-width:140px}
+
 /* ── RESPONSIVE ── */
-@media(max-width:1050px){.app{grid-template-columns:1fr}.side{min-height:auto;border-right:none}.nav{grid-template-columns:repeat(7,minmax(120px,1fr));overflow-x:auto;padding-bottom:8px}.period{margin-top:0}.grid,.two,.three{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.main,.side{padding:18px}.top{align-items:flex-start;flex-direction:column}.metrics,.fields,.employeeStrip,.upload{grid-template-columns:1fr}.bar{grid-template-columns:1fr}}
+@media(max-width:1050px){.app{grid-template-columns:1fr}.side{min-height:auto;border-right:none}.nav{grid-template-columns:repeat(7,minmax(120px,1fr));overflow-x:auto;padding-bottom:8px}.period{margin-top:0}.grid,.two,.three,.four{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.main,.side{padding:18px}.top{align-items:flex-start;flex-direction:column}.metrics,.fields,.employeeStrip,.upload,.four{grid-template-columns:1fr}.bar{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -176,7 +243,8 @@ td input{min-height:36px;width:100%}
     <button class="primary" type="button" id="loginBtn" style="width:100%;margin-top:16px;font-size:15px">Sign In</button>
     <p style="margin-top:18px;font-size:11.5px;color:var(--muted);line-height:1.6">
       <strong>Admin:</strong> admin / admin<br>
-      <strong>HR:</strong> hr / hr123
+      <strong>HR:</strong> hr / hr123<br>
+      <strong>Viewer:</strong> viewer / view
     </p>
   </div>
 </div>
@@ -201,6 +269,12 @@ td input{min-height:36px;width:100%}
       <button data-tab="advances" type="button">Advances &amp; History</button>
       <button data-tab="payslips" type="button">Payslips</button>
       <button data-tab="reports" type="button">Reports &amp; Exports</button>
+      <button data-tab="leave" type="button">Leave Management</button>
+      <button data-tab="bonuses" type="button">Bonus &amp; Overtime</button>
+      <button data-tab="statutory" type="button">Statutory Calendar</button>
+      <button data-tab="analytics" type="button">Cost Analytics</button>
+      <button data-tab="documents" type="button">Document Vault</button>
+      <button data-tab="errorCheck" type="button">Error Detection</button>
       <button data-tab="pricing" type="button">Pricing</button>
       <button data-tab="audit" type="button" class="admin-only">Audit Log</button>
       <button data-tab="settings" type="button">Settings</button>
@@ -347,6 +421,9 @@ td input{min-height:36px;width:100%}
             <tbody id="payrollHistoryRows"></tbody>
           </table>
         </div>
+        <div class="actions" style="margin-top:14px">
+          <button class="mini" type="button" id="voidLastRun">Void Last Run</button>
+        </div>
       </section>
     </section>
 
@@ -464,6 +541,162 @@ td input{min-height:36px;width:100%}
       </section>
     </section>
 
+    <!-- ── LEAVE MANAGEMENT ── -->
+    <section id="leave" class="screen">
+      <section class="panel">
+        <div class="panel-head">
+          <div><p class="eyebrow">Leave Balances</p><h2>Leave Management</h2></div>
+          <div class="actions">
+            <select id="leaveEmployeeSelect" style="max-width:200px"></select>
+            <button class="mini" type="button" id="applyLeave">Apply Leave</button>
+          </div>
+        </div>
+        <div class="four" id="leaveBalanceCards" style="margin-top:14px"></div>
+        <div class="table-wrap" style="margin-top:18px">
+          <table>
+            <thead><tr><th>Employee</th><th>Leave Type</th><th class="right">Days Taken</th><th class="right">Remaining</th><th>Date Applied</th><th>Status</th></tr></thead>
+            <tbody id="leaveTable"></tbody>
+          </table>
+        </div>
+        <!-- Apply Leave Form -->
+        <div id="leaveForm" style="display:none;margin-top:16px">
+          <section class="panel">
+            <div class="panel-head"><div><p class="eyebrow">New Leave</p><h2>Apply for Leave</h2></div></div>
+            <div class="fields">
+              <label>Employee<select id="leaveFormEmp"></select></label>
+              <label>Leave Type<select id="leaveFormType"><option>Annual</option><option>Sick</option><option>Maternity</option><option>Paternity</option><option>Bereavement</option></select></label>
+              <label>From Date<input id="leaveFromDate" type="date"></label>
+              <label>To Date<input id="leaveToDate" type="date"></label>
+              <label>Days<input id="leaveDays" type="number" value="1"></label>
+              <label>Reason<input id="leaveReason" placeholder="e.g. Annual vacation"></label>
+            </div>
+            <div class="actions">
+              <button class="primary" type="button" id="submitLeave">Submit Leave Request</button>
+              <button class="ghost" type="button" id="cancelLeave">Cancel</button>
+            </div>
+          </section>
+        </div>
+      </section>
+    </section>
+
+    <!-- ── BONUS & OVERTIME ── -->
+    <section id="bonuses" class="screen">
+      <section class="grid">
+        <article class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">One-time</p><h2>Bonus &amp; Allowances</h2></div>
+            <div class="actions">
+              <button class="mini" type="button" id="clearBonuses">Clear All</button>
+              <button class="primary" type="button" id="addBonusBtn">Add Bonus</button>
+            </div>
+          </div>
+          <div id="bonusRows" class="lines"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Extra hours</p><h2>Overtime Management</h2></div></div>
+          <div id="overtimeRows" class="lines"></div>
+          <div class="actions" style="margin-top:14px">
+            <button class="mini" type="button" id="addOTBtn">Add Overtime</button>
+          </div>
+        </article>
+      </section>
+      <section class="panel" style="margin-top:16px">
+        <div class="panel-head"><div><p class="eyebrow">Preview</p><h2>Payroll with Bonus &amp; OT</h2></div></div>
+        <div id="bonusPreview" class="lines"></div>
+      </section>
+    </section>
+
+    <!-- ── STATUTORY CALENDAR ── -->
+    <section id="statutory" class="screen">
+      <section class="panel">
+        <div class="panel-head"><div><p class="eyebrow">Compliance deadlines</p><h2>Statutory Filing Calendar</h2></div></div>
+        <p style="color:var(--muted);font-size:13px;margin:8px 0 16px">Key KRA, NSSF, and SHA filing deadlines for each month. Deadlines approaching within 7 days are highlighted.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Deadline</th>
+                <th>Due Date</th>
+                <th>Statutory Body</th>
+                <th>Description</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="statutoryRows"></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="panel" style="margin-top:16px">
+        <div class="panel-head"><div><p class="eyebrow">2026 Filing Schedule</p><h2>Upcoming Deadlines</h2></div></div>
+        <div id="upcomingDeadlines" class="stack"></div>
+      </section>
+    </section>
+
+    <!-- ── COST ANALYTICS ── -->
+    <section id="analytics" class="screen">
+      <section class="grid">
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">By Department</p><h2>Department Cost Breakdown</h2></div></div>
+          <div id="deptCostChart"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">By Employee</p><h2>Top Cost Employees</h2></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Employee</th><th class="right">Gross</th><th class="right">Employer Cost</th><th class="right">Total Cost</th></tr></thead>
+              <tbody id="topCostRows"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+      <section class="panel" style="margin-top:16px">
+        <div class="panel-head"><div><p class="eyebrow">Summary</p><h2>Payroll Cost Summary</h2></div></div>
+        <div id="costSummary" class="lines"></div>
+      </section>
+    </section>
+
+    <!-- ── DOCUMENT VAULT ── -->
+    <section id="documents" class="screen">
+      <section class="grid">
+        <article class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Employee Documents</p><h2>Document Vault</h2></div>
+            <button class="mini" type="button" id="addDocument">Add Document</button>
+          </div>
+          <div style="margin-bottom:14px">
+            <select id="docEmployeeFilter" style="max-width:220px"><option value="">All Employees</option></select>
+          </div>
+          <div id="documentList" class="stack"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Quick Upload</p><h2>Upload Document</h2></div></div>
+          <div id="documentUpload" style="text-align:center;padding:30px">
+            <div style="font-size:48px;color:var(--muted);margin-bottom:12px">&#x2B06;</div>
+            <p style="color:var(--muted);font-size:13px">Upload employee documents (contracts, IDs, certificates)</p>
+            <div class="actions" style="margin-top:16px;justify-content:center">
+              <select id="docUploadEmp" style="max-width:180px"></select>
+              <select id="docUploadType"><option>Employment Contract</option><option>ID / Passport</option><option>KRA PIN Certificate</option><option>NSSF Card</option><option>SHA Card</option><option>Academic Certificate</option><option>Other</option></select>
+            </div>
+            <div style="margin-top:14px;text-align:left">
+              <label style="font-size:12px">Notes<input id="docUploadNotes" placeholder="Optional notes"></label>
+            </div>
+          </div>
+        </article>
+      </section>
+    </section>
+
+    <!-- ── ERROR DETECTION ── -->
+    <section id="errorCheck" class="screen">
+      <section class="panel">
+        <div class="panel-head">
+          <div><p class="eyebrow">Pre-submission audit</p><h2>Payroll Error Detection</h2></div>
+          <button class="primary" type="button" id="runErrorCheck">Run Audit Now</button>
+        </div>
+        <p style="color:var(--muted);font-size:13px;margin:8px 0 16px">Automatically checks for common payroll errors before approval. Run this check before approving any payroll period.</p>
+        <div id="errorResults" class="stack"></div>
+      </section>
+    </section>
+
     <!-- ── PRICING ── -->
     <section id="pricing" class="screen">
       <section class="panel">
@@ -490,7 +723,9 @@ td input{min-height:36px;width:100%}
             <li>Annual P9 forms</li>
             <li>Bulk payslip ZIP</li>
             <li>Bank payment export</li>
-            <li>Audit log & roles</li>
+            <li>Leave management</li>
+            <li>Error detection</li>
+            <li>Audit log &amp; roles</li>
             <li>Priority support</li>
           </ul>
         </div>
@@ -500,10 +735,13 @@ td input{min-height:36px;width:100%}
           <ul>
             <li>Unlimited employees</li>
             <li>All Growth features</li>
+            <li>Bonus &amp; overtime</li>
             <li>TallyPrime journal</li>
-            <li>Full backup & restore</li>
+            <li>Full backup &amp; restore</li>
+            <li>Statutory calendar</li>
+            <li>Cost analytics</li>
+            <li>Document vault</li>
             <li>Dedicated account manager</li>
-            <li>Custom integrations</li>
           </ul>
         </div>
       </div>
@@ -610,6 +848,8 @@ const DEFAULTS = {
     { id:id(), name:'Brian Mwangi', bankName:'KCB Bank', empId:'EMP002', kraPin:'P000000001A', department:'Sales', jobGrade:'G5', bankAccount:'1234567890', basicSalary:55000, houseAllowance:10000, transportAllowance:5000, otherAllowance:2000, helb:4000, advance:5000, active:true },
     { id:id(), name:'Faith Njeri', bankName:'Absa Bank', empId:'EMP003', kraPin:'P000000002B', department:'IT', jobGrade:'G4', bankAccount:'9876543210', basicSalary:85000, houseAllowance:15000, transportAllowance:8000, otherAllowance:5000, helb:5000, advance:7000, active:true }
   ],
+  bonuses: [],
+  overtime: [],
   advanceHistory: [
     { employeeId:null, period:'June 2026', type:'issued', amount:5000, note:'Mid-month advance' },
     { employeeId:null, period:'June 2026', type:'repayment', amount:2000, note:'Payroll deduction' },
@@ -621,11 +861,65 @@ const DEFAULTS = {
     { period:'May 2026', status:'locked', gross:168000, paye:22800, nssf:9180, sha:4620, net:116000 }
   ],
   /* P9 history: per-employee per-month snapshots */
-  p9History: [
-    /* Each entry: { period, employeeId, gross, taxablePay, paye, nssf, sha, housingEmployee, helb, advance } */
+  p9History: [],
+  /* Leave management */
+  leaveBalances: {},
+  leaveRequests: [],
+  /* Documents */
+  documents: [],
+  /* Statutory calendar events */
+  statutoryEvents: [
+    { date:'2026-07-20', body:'KRA', desc:'PAYE filing — June salaries', recurring:true, month:7 },
+    { date:'2026-07-20', body:'NSSF', desc:'NSSF contribution — June', recurring:true, month:7 },
+    { date:'2026-07-20', body:'SHA', desc:'SHA (Social Health Authority) contribution', recurring:true, month:7 },
+    { date:'2026-07-20', body:'KRA', desc:'Housing Levy payment — June', recurring:true, month:7 },
+    { date:'2026-07-20', body:'KRA', desc:'PAYE filing — July salaries', recurring:true, month:8 },
+    { date:'2026-08-20', body:'NSSF', desc:'NSSF contribution — July', recurring:true, month:8 },
+    { date:'2026-08-20', body:'SHA', desc:'SHA contribution — July', recurring:true, month:8 },
+    { date:'2026-08-20', body:'KRA', desc:'Housing Levy payment — July', recurring:true, month:8 },
+    { date:'2026-08-20', body:'KRA', desc:'PAYE filing — August salaries', recurring:true, month:9 },
+    { date:'2026-09-20', body:'NSSF', desc:'NSSF contribution — August', recurring:true, month:9 },
+    { date:'2026-09-20', body:'SHA', desc:'SHA contribution — August', recurring:true, month:9 },
+    { date:'2026-09-20', body:'KRA', desc:'Housing Levy payment — August', recurring:true, month:9 },
+    { date:'2026-09-20', body:'KRA', desc:'PAYE filing — September salaries', recurring:true, month:10 },
+    { date:'2026-10-20', body:'NSSF', desc:'NSSF contribution — September', recurring:true, month:10 },
+    { date:'2026-10-20', body:'SHA', desc:'SHA contribution — September', recurring:true, month:10 },
+    { date:'2026-10-20', body:'KRA', desc:'Housing Levy payment — September', recurring:true, month:10 },
+    { date:'2026-10-20', body:'KRA', desc:'PAYE filing — October salaries', recurring:true, month:11 },
+    { date:'2026-11-20', body:'NSSF', desc:'NSSF contribution — October', recurring:true, month:11 },
+    { date:'2026-11-20', body:'SHA', desc:'SHA contribution — October', recurring:true, month:11 },
+    { date:'2026-11-20', body:'KRA', desc:'Housing Levy payment — October', recurring:true, month:11 },
+    { date:'2026-11-20', body:'KRA', desc:'PAYE filing — November salaries', recurring:true, month:12 },
+    { date:'2026-12-20', body:'NSSF', desc:'NSSF contribution — November', recurring:true, month:12 },
+    { date:'2026-12-20', body:'SHA', desc:'SHA contribution — November', recurring:true, month:12 },
+    { date:'2026-12-20', body:'KRA', desc:'Housing Levy payment — November', recurring:true, month:12 },
+    { date:'2026-12-20', body:'KRA', desc:'PAYE filing — December salaries', recurring:true, month:1 },
+    { date:'2027-01-20', body:'NSSF', desc:'NSSF contribution — December', recurring:true, month:1 },
+    { date:'2027-01-20', body:'SHA', desc:'SHA contribution — December', recurring:true, month:1 },
+    { date:'2027-01-20', body:'KRA', desc:'Housing Levy payment — December', recurring:true, month:1 },
+    { date:'2027-01-20', body:'KRA', desc:'PAYE filing — January salaries', recurring:true, month:2 },
+    { date:'2027-02-20', body:'NSSF', desc:'NSSF contribution — January', recurring:true, month:2 },
+    { date:'2027-02-20', body:'SHA', desc:'SHA contribution — January', recurring:true, month:2 },
+    { date:'2027-02-20', body:'KRA', desc:'Housing Levy payment — January', recurring:true, month:2 },
+    { date:'2027-02-20', body:'KRA', desc:'PAYE filing — February salaries', recurring:true, month:3 },
+    { date:'2027-03-20', body:'NSSF', desc:'NSSF contribution — February', recurring:true, month:3 },
+    { date:'2027-03-20', body:'SHA', desc:'SHA contribution — February', recurring:true, month:3 },
+    { date:'2027-03-20', body:'KRA', desc:'Housing Levy payment — February', recurring:true, month:3 },
+    { date:'2027-03-20', body:'KRA', desc:'PAYE filing — March salaries', recurring:true, month:4 },
+    { date:'2027-04-20', body:'NSSF', desc:'NSSF contribution — March', recurring:true, month:4 },
+    { date:'2027-04-20', body:'SHA', desc:'SHA contribution — March', recurring:true, month:4 },
+    { date:'2027-04-20', body:'KRA', desc:'Housing Levy payment — March', recurring:true, month:4 },
+    { date:'2027-04-20', body:'KRA', desc:'PAYE filing — April salaries', recurring:true, month:5 },
+    { date:'2027-05-20', body:'NSSF', desc:'NSSF contribution — April', recurring:true, month:5 },
+    { date:'2027-05-20', body:'SHA', desc:'SHA contribution — April', recurring:true, month:5 },
+    { date:'2027-05-20', body:'KRA', desc:'Housing Levy payment — April', recurring:true, month:5 },
+    { date:'2027-05-20', body:'KRA', desc:'PAYE filing — May salaries', recurring:true, month:6 },
+    { date:'2027-06-20', body:'NSSF', desc:'NSSF contribution — May', recurring:true, month:6 },
+    { date:'2027-06-20', body:'SHA', desc:'SHA contribution — May', recurring:true, month:6 },
+    { date:'2027-06-20', body:'KRA', desc:'Housing Levy payment — May', recurring:true, month:6 }
   ],
   auditLog: [
-    { time:new Date().toISOString(), actor:'System', action:'EasyPay initialized' }
+    { time:new Date().toISOString(), actor:'System', action:'EasyPay initialized with Phase 4 features' }
   ]
 };
 
@@ -641,12 +935,26 @@ function load() {
     d.advanceHistory = Array.isArray(d.advanceHistory) ? d.advanceHistory : [];
     d.payrollHistory = Array.isArray(d.payrollHistory) ? d.payrollHistory : [];
     d.p9History = Array.isArray(d.p9History) ? d.p9History : [];
+    d.bonuses = Array.isArray(d.bonuses) ? d.bonuses : [];
+    d.overtime = Array.isArray(d.overtime) ? d.overtime : [];
+    d.documents = Array.isArray(d.documents) ? d.documents : [];
+    d.statutoryEvents = Array.isArray(d.statutoryEvents) ? d.statutoryEvents : [...DEFAULTS.statutoryEvents];
+    d.leaveBalances = d.leaveBalances || {};
+    d.leaveRequests = Array.isArray(d.leaveRequests) ? d.leaveRequests : [];
     d.auditLog = Array.isArray(d.auditLog) ? d.auditLog : [];
     d.role = d.role || 'admin';
     d.approved = d.approved || false;
     d.locked = d.locked || false;
     // Backfill new fields
-    d.employees.forEach(e => { if (!e.hasOwnProperty('bankName')) e.bankName = ''; });
+    d.employees.forEach(e => {
+      if (!e.hasOwnProperty('bankName')) e.bankName = '';
+    });
+    // Backfill leave balances for existing employees
+    d.employees.filter(e=>e.active).forEach(e => {
+      if (!d.leaveBalances[e.id]) {
+        d.leaveBalances[e.id] = { annual:21, sick:7, maternity:0, paternity:14, bereavement:5 };
+      }
+    });
     return d;
   } catch { return structuredClone(DEFAULTS); }
 }
@@ -659,6 +967,7 @@ let selectedId = state.employees[0]?.id;
    ═══════════════════════════════════════════════════ */
 function audit(action) {
   state.auditLog.unshift({ time:new Date().toISOString(), actor: state.role || 'admin', action });
+  if (state.auditLog.length > 500) state.auditLog = state.auditLog.slice(0, 500);
   save();
 }
 
@@ -699,10 +1008,12 @@ function payroll(input) {
   const houseAllowance = num(input.houseAllowance);
   const transportAllowance = num(input.transportAllowance);
   const otherAllowance = num(input.otherAllowance);
+  const bonus = num(input.bonus || 0);
+  const overtimePay = num(input.overtimePay || 0);
   const pension = num(input.pension);
   const helb = num(input.helb);
   const advance = num(input.advance ?? input.salaryAdvance);
-  const gross = basic + houseAllowance + transportAllowance + otherAllowance;
+  const gross = basic + houseAllowance + transportAllowance + otherAllowance + bonus + overtimePay;
   const nssf = calcNssf(gross);
   const sha = gross * (num(s.shaRate) / 100);
   const housingEmployee = gross * 0.015;
@@ -716,17 +1027,20 @@ function payroll(input) {
   return {
     gross, nssfEmployee: nssf.employee, nssfEmployer: nssf.employer, sha,
     housingEmployee, housingEmployer, taxablePay, paye,
-    pension, helb, advance, globalCustom, empCustomTotal,
+    pension, helb, advance, bonus, overtimePay, globalCustom, empCustomTotal,
     net,
     statEmployee: paye + nssf.employee + sha + housingEmployee + helb,
-    statEmployer: nssf.employer + sha * 2 + housingEmployee * 2 // employer sha + housing
+    statEmployer: nssf.employer + sha * 2 + housingEmployee * 2
   };
 }
 
 function employeeRun(e) {
+  const empBonus = (state.bonuses || []).filter(b => b.employeeId === e.id).reduce((s,b) => s + num(b.amount), 0);
+  const empOT = (state.overtime || []).filter(o => o.employeeId === e.id).reduce((s,o) => s + num(o.amount), 0);
   return payroll({ basicSalary: e.basicSalary, houseAllowance: e.houseAllowance,
     transportAllowance: e.transportAllowance, otherAllowance: e.otherAllowance,
-    helb: e.helb, advance: e.advance, resident: true, employeeId: e.id });
+    bonus: empBonus, overtimePay: empOT, helb: e.helb, advance: e.advance,
+    resident: true, employeeId: e.id });
 }
 
 function totals() {
@@ -737,8 +1051,8 @@ function totals() {
     gross: sum('gross'), paye: sum('paye'), nssf: sum('nssfEmployee'),
     nssfEmployer: sum('nssfEmployer'), sha: sum('sha'),
     housingEmployee: sum('housingEmployee'), housingEmployer: sum('housingEmployer'),
-    helb: sum('helb'), advance: sum('advance'), net: sum('net'),
-    active: active.length
+    helb: sum('helb'), advance: sum('advance'), bonus: sum('bonus'), overtime: sum('overtimePay'),
+    net: sum('net'), active: active.length
   };
 }
 
@@ -754,6 +1068,12 @@ const TABS = {
   advances:['Manage salary advances','Advances & History'],
   payslips:['Download individual or bulk payslips','Payslips'],
   reports:['Statutory returns and finance exports','Reports & Exports'],
+  leave:['Manage leave balances and requests','Leave Management'],
+  bonuses:['Bonuses, allowances and overtime','Bonus & Overtime'],
+  statutory:['KRA, NSSF and SHA filing deadlines','Statutory Calendar'],
+  analytics:['Department and employee cost breakdown','Cost Analytics'],
+  documents:['Employee contracts, IDs and certificates','Document Vault'],
+  errorCheck:['Pre-submission payroll audit','Error Detection'],
   pricing:['Plans and pricing','Pricing'],
   audit:['Compliance and audit trail','Audit Log'],
   settings:['Company profile and roles','Settings']
@@ -777,7 +1097,8 @@ q('#loginBtn').addEventListener('click', () => {
   const pass = q('#loginPass').value;
   const users = {
     admin: { password:'admin', role:'admin' },
-    hr: { password:'hr123', role:'hr' }
+    hr: { password:'hr123', role:'hr' },
+    viewer: { password:'view', role:'viewer' }
   };
   const found = users[user];
   if (found && found.password === pass) {
@@ -814,6 +1135,14 @@ function renderAll() {
   renderAdvances();
   renderPayslips();
   renderReports();
+  renderLeave();
+  renderBonuses();
+  renderOvertime();
+  renderBonusPreview();
+  renderStatutory();
+  renderAnalytics();
+  renderDocuments();
+  renderErrorCheck();
   renderSettings();
   renderAudit();
   save();
@@ -835,11 +1164,12 @@ function renderChecklist(t) {
 }
 
 function renderVariance(t) {
-  const maxVal = Math.max(t.gross, t.paye + t.nssf + t.sha + t.housingEmployee + t.helb, t.advance, 1);
+  const totalStat = t.paye + t.nssf + t.sha + t.housingEmployee + t.helb;
+  const maxVal = Math.max(t.gross, totalStat, t.advance, 1);
   q('#varianceChart').innerHTML = [
     ['Gross', t.gross, 'var(--green)'],
     ['Net', t.net, 'var(--blue)'],
-    ['Statutory', t.paye + t.nssf + t.sha + t.housingEmployee + t.helb, 'var(--red)'],
+    ['Statutory', totalStat, 'var(--red)'],
     ['Advances', t.advance, 'var(--gold)']
   ].map(([label,val,color]) => {
     const pct = Math.round(val / maxVal * 100);
@@ -890,6 +1220,9 @@ function renderPayrollPreview() {
   if (!e) { q('#lines').innerHTML = '<p class="empty">Select an employee.</p>'; return; }
   const r = employeeRun(e);
   const lines = [
+    ['Basic salary', r.gross - r.bonus - r.overtimePay],
+    ['Bonus', r.bonus],
+    ['Overtime pay', r.overtimePay],
     ['Gross pay', r.gross],
     ['PAYE', r.paye],
     ['NSSF (employee)', r.nssfEmployee],
@@ -900,7 +1233,7 @@ function renderPayrollPreview() {
     ['Salary advance', r.advance],
     ['Custom deductions', r.globalCustom + r.empCustomTotal]
   ];
-  q('#lines').innerHTML = lines.map(([label,val]) =>
+  q('#lines').innerHTML = lines.filter(([,v]) => v !== 0).map(([label,val]) =>
     `<div class="line"><span>${escHtml(label)}</span><strong>${money.format(val)}</strong></div>`
   ).join('') + `<div class="line net"><span>Net pay</span><strong>${money.format(r.net)}</strong></div>`;
 
@@ -958,98 +1291,61 @@ function renderPayrollHistory() {
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 function renderP9() {
-  const year = q('#p9Year').value;
-  const empSelect = q('#p9EmployeeSelect');
-  // Populate employee selector
-  empSelect.innerHTML = state.employees.filter(e=>e.active).map(e =>
+  const sel = q('#p9EmployeeSelect');
+  sel.innerHTML = state.employees.filter(e=>e.active).map(e =>
     `<option value="${e.id}">${escHtml(e.name)}</option>`
   ).join('');
-  const selectedEmpId = empSelect.value || state.employees.filter(e=>e.active)[0]?.id;
-  if (!selectedEmpId) { q('#p9Rows').innerHTML = '<tr><td colspan="6" class="empty">No active employees.</td></tr>'; return; }
-  const emp = state.employees.find(e => e.id === selectedEmpId);
-  if (!emp) return;
-  // Build P9 data: use p9History first, then fill from payrollHistory
-  const empHistory = (state.p9History || []).filter(h => h.employeeId === emp.id);
+  const empId = sel.value || state.employees[0]?.id;
+  if (!empId) { q('#p9Rows').innerHTML = ''; q('#p9Footer').innerHTML = ''; return; }
+  const year = q('#p9Year').value;
+  const empHistory = (state.p9History || []).filter(h => h.employeeId === empId);
   const periodMap = {};
   empHistory.forEach(h => { periodMap[h.period] = h; });
-  // Also try to extract from payroll history (aggregate level)
-  (state.payrollHistory || []).forEach(h => {
-    const p = h.period.toLowerCase();
-    MONTHS.forEach((m,i) => {
-      if (p.includes(m.toLowerCase())) {
-        const key = `${m} ${year}`;
-        if (!periodMap[key]) {
-          // Distribute aggregate totals evenly across months if not already stored
-          // This is a fallback; ideally each month has its own snapshot
-          periodMap[key] = {
-            period: key, employeeId: emp.id,
-            gross: h.gross / Math.max(state.employees.filter(e2=>e2.active).length, 1),
-            taxablePay: (h.gross - h.nssf - h.sha) / Math.max(state.employees.filter(e2=>e2.active).length, 1),
-            paye: h.paye / Math.max(state.employees.filter(e2=>e2.active).length, 1),
-            nssf: h.nssf / Math.max(state.employees.filter(e2=>e2.active).length, 1),
-            sha: h.sha / Math.max(state.employees.filter(e2=>e2.active).length, 1),
-            housingEmployee: 0, helb: emp.helb || 0, advance: emp.advance || 0
-          };
-        }
-      }
-    });
-  });
-
-  const rows = [];
-  let cumulativePaye = 0;
-  let totalGross = 0, totalTaxable = 0, totalPaye = 0;
-  MONTHS.forEach(m => {
+  let cumulative = 0;
+  q('#p9Rows').innerHTML = MONTHS.map(m => {
     const key = `${m} ${year}`;
     const data = periodMap[key];
-    const gross = data ? data.gross : 0;
-    const taxable = data ? data.taxablePay : 0;
     const paye = data ? data.paye : 0;
-    cumulativePaye += paye;
-    totalGross += gross;
-    totalTaxable += taxable;
-    totalPaye += paye;
-    rows.push({ month: m, gross, taxable, paye, cumulative: cumulativePaye, monthlyPayee: paye });
-  });
-
-  q('#p9Rows').innerHTML = rows.map(r =>
-    `<tr>
-      <td>${escHtml(r.month)}</td>
-      <td class="right">${money.format(r.gross)}</td>
-      <td class="right">${money.format(r.taxable)}</td>
-      <td class="right monthly-payee">${money.format(r.paye)}</td>
-      <td class="right cumulative">${money.format(r.cumulative)}</td>
-      <td class="right monthly-payee">${money.format(r.monthlyPayee)}</td>
-    </tr>`
-  ).join('');
-
-  q('#p9Footer').innerHTML = `<tr style="border-top:2px solid var(--line);font-weight:700">
+    cumulative += paye;
+    return `<tr>
+      <td>${m}</td>
+      <td class="right">${data ? money.format(data.gross) : '—'}</td>
+      <td class="right">${data ? money.format(data.taxablePay) : '—'}</td>
+      <td class="right">${paye > 0 ? money.format(paye) : '—'}</td>
+      <td class="right cumulative">${cumulative > 0 ? money.format(cumulative) : '—'}</td>
+      <td class="right monthly-payee">${cumulative > 0 ? money.format(cumulative) : '—'}</td>
+    </tr>`;
+  }).join('');
+  q('#p9Footer').innerHTML = `<tr style="font-weight:700;background:#f4f9f7">
     <td>ANNUAL TOTAL</td>
-    <td class="right">${money.format(totalGross)}</td>
-    <td class="right">${money.format(totalTaxable)}</td>
-    <td class="right" style="color:var(--blue)">${money.format(totalPaye)}</td>
-    <td class="right cumulative" style="color:var(--green)">${money.format(cumulativePaye)}</td>
-    <td class="right" style="color:var(--blue)">${money.format(cumulativePaye)}</td>
+    <td class="right">${money.format(empHistory.reduce((s,h)=>s+(h.gross||0),0))}</td>
+    <td class="right">${money.format(empHistory.reduce((s,h)=>s+(h.taxablePay||0),0))}</td>
+    <td class="right">${money.format(empHistory.reduce((s,h)=>s+(h.paye||0),0))}</td>
+    <td class="right cumulative">${money.format(cumulative)}</td>
+    <td class="right monthly-payee">${money.format(cumulative)}</td>
   </tr>`;
 }
-
-empSelect.addEventListener('change', () => { selectedId = empSelect.value; renderP9(); });
+q('#p9EmployeeSelect').addEventListener('change', renderP9);
+q('#p9Year').addEventListener('change', renderP9);
 
 /* ── Advances ── */
 function renderAdvances() {
   const active = state.employees.filter(e=>e.active);
   q('#advanceRows').innerHTML = active.map(e => {
-    const pct = e.basicSalary > 0 ? ((e.advance / e.basicSalary) * 100).toFixed(1) : '0';
+    const pct = e.basicSalary > 0 ? ((e.advance/e.basicSalary)*100).toFixed(1) : 0;
     return `<tr>
       <td>${escHtml(e.name)}</td>
       <td class="right">${money.format(e.basicSalary)}</td>
       <td class="right">${money.format(e.advance)}</td>
       <td class="right">${pct}%</td>
-      <td><span class="pill ${e.advance > 0 ? 'bad' : 'ok'}">${e.advance > 0 ? 'Active' : 'None'}</span></td>
+      <td>${e.advance > 0 ? '<span class="pill bad">Active</span>' : '<span class="pill ok">None</span>'}</td>
     </tr>`;
   }).join('');
-  q('#advanceHistoryList').innerHTML = (state.advanceHistory || []).map(h =>
-    `<div class="report"><div><strong>${escHtml(h.period)}</strong><span>${escHtml(h.type === 'issued' ? 'Issued' : 'Repaid')} &middot; ${escHtml(h.note || '')}</span></div><strong>${money.format(h.amount)}</strong></div>`
-  ).join('') || '<p class="empty">No advance history.</p>';
+
+  q('#advanceHistoryList').innerHTML = (state.advanceHistory || []).map(h => {
+    const emp = state.employees.find(e2 => e2.id === h.employeeId);
+    return `<div class="report"><div><strong>${h.type === 'issued' ? '+' : '-'} ${money.format(h.amount)}</strong><span>${emp ? escHtml(emp.name) : 'Unknown'} &middot; ${escHtml(h.period)} &middot; ${escHtml(h.note)}</span></div><span class="${h.type === 'issued' ? 'pill bad' : 'pill ok'}">${h.type}</span></div>`;
+  }).join('') || '<p class="empty">No advance history.</p>';
 }
 
 /* ── Payslips ── */
@@ -1057,48 +1353,41 @@ function renderPayslips() {
   const e = state.employees.find(e2 => e2.id === selectedId);
   if (!e) { q('#payslipPreview').innerHTML = '<p class="empty">Select an employee.</p>'; return; }
   const r = employeeRun(e);
-  const per = state.settings.period;
   q('#payslipPreview').innerHTML = `
-    <div class="line"><strong>${escHtml(e.name)}</strong><span>${escHtml(e.empId)} &middot; ${escHtml(e.department)} &middot; ${escHtml(per)}</span></div>
-    <div class="line"><span>Gross</span><strong>${money.format(r.gross)}</strong></div>
-    <div class="line"><span>PAYE</span><strong>${money.format(r.paye)}</strong></div>
-    <div class="line"><span>NSSF</span><strong>${money.format(r.nssfEmployee)}</strong></div>
-    <div class="line"><span>SHA</span><strong>${money.format(r.sha)}</strong></div>
-    <div class="line"><span>Housing levy</span><strong>${money.format(r.housingEmployee)}</strong></div>
-    <div class="line"><span>HELB</span><strong>${money.format(r.helb)}</strong></div>
-    <div class="line"><span>Advance</span><strong>${money.format(r.advance)}</strong></div>
+    <div class="line"><span>Employee</span><strong>${escHtml(e.name)}</strong></div>
+    <div class="line"><span>ID</span><strong>${escHtml(e.empId||'N/A')}</strong></div>
+    <div class="line"><span>KRA PIN</span><strong>${escHtml(e.kraPin||'N/A')}</strong></div>
+    <div class="line"><span>Bank</span><strong>${escHtml(e.bankName||'N/A')} — ${escHtml(e.bankAccount||'N/A')}</strong></div>
+    <div class="line"><span>Period</span><strong>${state.settings.period}</strong></div>
+    <div class="line"><span>Gross pay</span><strong>${money.format(r.gross)}</strong></div>
+    <div class="line"><span>PAYE</span><strong>-${money.format(r.paye)}</strong></div>
+    <div class="line"><span>NSSF</span><strong>-${money.format(r.nssfEmployee)}</strong></div>
+    <div class="line"><span>SHA</span><strong>-${money.format(r.sha)}</strong></div>
+    <div class="line"><span>Housing levy</span><strong>-${money.format(r.housingEmployee)}</strong></div>
+    <div class="line"><span>HELB</span><strong>-${money.format(r.helb)}</strong></div>
+    <div class="line"><span>Advance</span><strong>-${money.format(r.advance)}</strong></div>
     <div class="line net"><span>Net pay</span><strong>${money.format(r.net)}</strong></div>
   `;
 }
 
 /* ── Reports ── */
 function renderReports() {
-  const t = totals();
-  const standardReports = [
-    ['paye', 'PAYE return', t.paye, 'KRA monthly PAYE'],
-    ['nssf', 'NSSF schedule', t.nssf, 'Employee contribution (Tier I + II)'],
-    ['sha', 'SHA schedule', t.sha, 'Health contribution'],
-    ['housing', 'Housing levy', t.housingEmployee + t.housingEmployer, 'Employee + employer'],
-    ['helb', 'HELB deductions', t.helb, 'Higher education loans'],
-    ['advance', 'Salary advance recovery', t.advance, 'Internal deduction report']
+  const deductions = [
+    ['paye','PAYE Report','KRA monthly return data'],
+    ['nssf','NSSF Report','Tier I + II contribution breakdown'],
+    ['sha','SHA Report','Social Health Authority'],
+    ['housing','Housing Levy','1.5% employer + employee'],
+    ['helb','HELB Report','Student loan deductions'],
+    ['advance','Advance Report','Salary advance summary']
   ];
-  const customReports = (state.customDeductions || []).map(d =>
-    ['custom:' + d.id, d.name, num(d.amount) * state.employees.filter(e2=>e2.active).length, 'Custom deductible']
-  );
-  q('#reportsList').innerHTML = [...standardReports, ...customReports].map(([key, a, b, c]) =>
-    `<div class="report">
-      <div><strong>${escHtml(a)}</strong><span>${escHtml(c)}</span></div>
-      <div class="actions"><strong>${money.format(b)}</strong><button class="mini" data-deduct="${key}">Download</button></div>
-    </div>`
+  (state.customDeductions || []).forEach(d => deductions.push([`custom:${d.id}`,`Custom: ${d.name}`,`${money.format(num(d.amount))} per employee`]));
+  q('#reportsList').innerHTML = deductions.map(([key,title,desc]) =>
+    `<div class="report" data-deduct="${key}"><div><strong>${escHtml(title)}</strong><span>${escHtml(desc)}</span></div><span class="mini">&#x2193; Download</span></div>`
   ).join('');
 
   q('#bankList').innerHTML = state.employees.filter(e2=>e2.active).map(e2 => {
     const r2 = employeeRun(e2);
-    const acc = e2.bankAccount || 'N/A';
-    return `<div class="report">
-      <div><strong>${escHtml(e2.name)}</strong><span>Acc: ${escHtml(acc)} &middot; Net salary payable</span></div>
-      <strong>${money.format(r2.net)}</strong>
-    </div>`;
+    return `<div class="report"><div><strong>${escHtml(e2.name)}</strong><span>${escHtml(e2.bankName||'N/A')} &middot; ${escHtml(e2.bankAccount||'N/A')}</span></div><strong>${money.format(r2.net)}</strong></div>`;
   }).join('');
 
   q('#employerSplitRows').innerHTML = state.employees.filter(e2=>e2.active).map(e2 => {
@@ -1118,7 +1407,333 @@ function renderReports() {
   }).join('');
 }
 
-/* ── Settings ── */
+/* ═══════════════════════════════════════════════════
+   PHASE 4: LEAVE MANAGEMENT
+   ═══════════════════════════════════════════════════ */
+function renderLeave() {
+  const sel = q('#leaveEmployeeSelect');
+  sel.innerHTML = state.employees.filter(e=>e.active).map(e =>
+    `<option value="${e.id}">${escHtml(e.name)}</option>`
+  ).join('');
+  const empId = sel.value || state.employees[0]?.id;
+  const bal = state.leaveBalances[empId] || { annual:21, sick:7, maternity:0, paternity:14, bereavement:5 };
+
+  const types = [
+    { key:'annual', label:'Annual Leave', color:'var(--green)', max:21 },
+    { key:'sick', label:'Sick Leave', color:'var(--blue)', max:7 },
+    { key:'maternity', label:'Maternity Leave', color:'var(--red)', max:3 },
+    { key:'paternity', label:'Paternity Leave', color:'var(--gold)', max:14 },
+    { key:'bereavement', label:'Bereavement', color:'var(--muted)', max:5 }
+  ];
+  q('#leaveBalanceCards').innerHTML = types.map(t => {
+    const used = (state.leaveRequests||[]).filter(r => r.employeeId === empId && r.type === t.key && r.status === 'approved').reduce((s,r) => s + r.days, 0);
+    const remaining = Math.max(0, (t.key === 'annual' ? 21 : t.key === 'maternity' ? 3 : t.key === 'paternity' ? 14 : t.key === 'sick' ? 7 : t.key === 'bereavement' ? 5 : 0) - used);
+    return `<div class="leave-card"><div class="leave-type">${t.label}</div><div class="leave-balance" style="color:${t.color}">${remaining}</div><div class="leave-total">${used} days used this year</div></div>`;
+  }).join('');
+
+  // Leave table
+  q('#leaveTable').innerHTML = (state.leaveRequests||[]).map(r => {
+    const emp = state.employees.find(e2 => e2.id === r.employeeId);
+    return `<tr>
+      <td>${emp ? escHtml(emp.name) : 'Unknown'}</td>
+      <td>${escHtml(r.type)}</td>
+      <td class="right">${r.days}</td>
+      <td class="right">—</td>
+      <td>${escHtml(r.fromDate || 'N/A')}</td>
+      <td><span class="pill ${r.status === 'approved' ? 'ok' : r.status === 'rejected' ? 'bad' : 'draft'}">${r.status}</span></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" class="empty">No leave requests yet.</td></tr>';
+}
+q('#leaveEmployeeSelect').addEventListener('change', renderLeave);
+
+q('#applyLeave').addEventListener('click', () => {
+  q('#leaveForm').style.display = '';
+  const sel = q('#leaveFormEmp');
+  sel.innerHTML = state.employees.filter(e=>e.active).map(e =>
+    `<option value="${e.id}">${escHtml(e.name)}</option>`
+  ).join('');
+});
+q('#cancelLeave').addEventListener('click', () => { q('#leaveForm').style.display = 'none'; });
+
+q('#submitLeave').addEventListener('click', () => {
+  const empId = q('#leaveFormEmp').value;
+  const type = q('#leaveFormType').value.toLowerCase();
+  const days = num(q('#leaveDays').value);
+  if (days <= 0) { toast('Enter valid days.'); return; }
+  state.leaveRequests.push({
+    id: id(), employeeId: empId, type, days,
+    fromDate: q('#leaveFromDate').value, toDate: q('#leaveToDate').value,
+    reason: q('#leaveReason').value, status: 'approved',
+    dateApplied: new Date().toISOString()
+  });
+  q('#leaveForm').style.display = 'none';
+  renderAll();
+  toast('Leave request submitted and approved.');
+  audit(`Leave approved: ${type} ${days} days`);
+});
+
+/* ═══════════════════════════════════════════════════
+   PHASE 4: BONUS & OVERTIME
+   ═══════════════════════════════════════════════════ */
+function renderBonuses() {
+  q('#bonusRows').innerHTML = (state.bonuses || []).length ? (state.bonuses || []).map(b => {
+    const emp = state.employees.find(e2 => e2.id === b.employeeId);
+    return `<div class="bonus-row"><span class="emp-name">${emp ? escHtml(emp.name) : 'Unknown'}</span><span>${escHtml(b.description)}</span><strong>${money.format(num(b.amount))}</strong><button class="mini" data-remove-bonus="${b.id}" style="color:var(--red);border-color:var(--red)">Remove</button></div>`;
+  }).join('') : '<p class="empty">No bonuses this period. Click "Add Bonus" to add one.</p>';
+}
+
+function renderOvertime() {
+  q('#overtimeRows').innerHTML = (state.overtime || []).length ? (state.overtime || []).map(o => {
+    const emp = state.employees.find(e2 => e2.id === o.employeeId);
+    const rateLabel = o.rate === 1.5 ? '1.5x (Weekday)' : o.rate === 2 ? '2.0x (Sunday/Holiday)' : o.rate + 'x';
+    return `<div class="bonus-row"><span class="emp-name">${emp ? escHtml(emp.name) : 'Unknown'}</span><span>${o.hours}hrs @ ${rateLabel}</span><strong>${money.format(num(o.amount))}</strong><button class="mini" data-remove-ot="${o.id}" style="color:var(--red);border-color:var(--red)">Remove</button></div>`;
+  }).join('') : '<p class="empty">No overtime entries. Click "Add Overtime" to add one.</p>';
+}
+
+function renderBonusPreview() {
+  const t = totals();
+  q('#bonusPreview').innerHTML = `
+    <div class="line"><span>Total gross (with bonuses)</span><strong>${money.format(t.gross)}</strong></div>
+    <div class="line"><span>Bonus total</span><strong>${money.format(t.bonus)}</strong></div>
+    <div class="line"><span>Overtime total</span><strong>${money.format(t.overtime)}</strong></div>
+    <div class="line"><span>Total PAYE</span><strong>${money.format(t.paye)}</strong></div>
+    <div class="line"><span>Total NSSF (emp)</span><strong>${money.format(t.nssf)}</strong></div>
+    <div class="line"><span>Total NSSF (er)</span><strong>${money.format(t.nssfEmployer)}</strong></div>
+    <div class="line"><span>Total employer cost</span><strong style="color:var(--green)">${money.format(t.gross + t.nssfEmployer + t.sha * 2 + t.housingEmployer)}</strong></div>
+    <div class="line net"><span>Total net payable</span><strong>${money.format(t.net)}</strong></div>
+  `;
+}
+
+q('#addBonusBtn').addEventListener('click', () => {
+  const empId = state.employees[0]?.id;
+  state.bonuses.push({ id:id(), employeeId: empId, description:'One-time bonus', amount:0 });
+  renderAll();
+  toast('Bonus added — edit the employee and amount in the table.');
+  audit('Added bonus entry');
+});
+
+q('#addOTBtn').addEventListener('click', () => {
+  const empId = state.employees[0]?.id;
+  state.overtime.push({ id:id(), employeeId: empId, hours:0, rate:1.5, amount:0 });
+  renderAll();
+  toast('Overtime entry added — edit hours and rate.');
+  audit('Added overtime entry');
+});
+
+q('#clearBonuses').addEventListener('click', () => {
+  state.bonuses = [];
+  state.overtime = [];
+  renderAll();
+  toast('All bonuses and overtime cleared.');
+  audit('Cleared all bonuses and overtime');
+});
+
+/* ═══════════════════════════════════════════════════
+   PHASE 4: STATUTORY CALENDAR
+   ═══════════════════════════════════════════════════ */
+function renderStatutory() {
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1; // 1-12
+
+  // Filter events for current month + next month
+  const relevantEvents = (state.statutoryEvents || []).filter(ev => {
+    const d = new Date(ev.date);
+    return d.getMonth() + 1 >= currentMonth;
+  }).slice(0, 16);
+
+  q('#statutoryRows').innerHTML = relevantEvents.map(ev => {
+    const d = new Date(ev.date);
+    const daysUntil = Math.ceil((d - now) / (1000*60*60*24));
+    let statusClass = 'pill ok';
+    let statusText = 'Upcoming';
+    if (daysUntil < 0) { statusClass = 'pill bad'; statusText = 'Overdue'; }
+    else if (daysUntil <= 7) { statusClass = 'pill bad'; statusText = 'Due soon'; }
+    else if (daysUntil <= 14) { statusClass = 'pill draft'; statusText = 'Approaching'; }
+    return `<tr>
+      <td>${d.toLocaleDateString('en-KE',{month:'short',day:'numeric',year:'numeric'})}</td>
+      <td class="right">${d.toLocaleDateString('en-KE',{month:'short',day:'numeric'})}</td>
+      <td>${escHtml(ev.body)}</td>
+      <td>${escHtml(ev.desc)}</td>
+      <td><span class="${statusClass}">${statusText} (${daysUntil > 0 ? daysUntil + 'd' : 'past'})</span></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="5" class="empty">No upcoming deadlines.</td></tr>';
+
+  // Upcoming deadlines
+  const deadlines = (state.statutoryEvents || []).filter(ev => {
+    const d = new Date(ev.date);
+    return d.getMonth() + 1 >= currentMonth;
+  }).slice(0, 8);
+
+  q('#upcomingDeadlines').innerHTML = deadlines.map(ev => {
+    const d = new Date(ev.date);
+    const daysUntil = Math.ceil((d - now) / (1000*60*60*24));
+    const urgency = daysUntil <= 7 ? 'urgent' : daysUntil <= 14 ? 'soon' : '';
+    return `<div class="calendar-event">
+      <div class="date ${urgency}">${d.toLocaleDateString('en-KE',{month:'short',day:'numeric'})}</div>
+      <div class="desc"><strong>${escHtml(ev.body)}</strong><br>${escHtml(ev.desc)}</div>
+      <span class="pill ${daysUntil <= 7 ? 'bad' : 'draft'}">${daysUntil > 0 ? daysUntil + ' days' : 'Overdue'}</span>
+    </div>`;
+  }).join('') || '<p class="empty">No upcoming deadlines this month.</p>';
+}
+
+/* ═══════════════════════════════════════════════════
+   PHASE 4: COST ANALYTICS
+   ═══════════════════════════════════════════════════ */
+function renderAnalytics() {
+  const active = state.employees.filter(e=>e.active);
+  // By department
+  const deptCosts = {};
+  active.forEach(e => {
+    const r = employeeRun(e);
+    const totalCost = r.gross + r.nssfEmployer + r.sha * 2 + r.housingEmployee + r.housingEmployer;
+    const dept = e.department || 'Unassigned';
+    if (!deptCosts[dept]) deptCosts[dept] = { gross:0, employer:0, total:0, count:0 };
+    deptCosts[dept].gross += r.gross;
+    deptCosts[dept].employer += r.nssfEmployer + r.sha * 2 + r.housingEmployer;
+    deptCosts[dept].total += totalCost;
+    deptCosts[dept].count++;
+  });
+
+  const maxCost = Math.max(...Object.values(deptCosts).map(d => d.total), 1);
+  q('#deptCostChart').innerHTML = Object.entries(deptCosts).sort((a,b) => b[1].total - a[1].total).map(([dept, cost]) => {
+    const pct = Math.round(cost.total / maxCost * 100);
+    return `<div class="cost-row"><div class="dept-name">${escHtml(dept)}<br><span style="font-size:11px;color:var(--muted)">${cost.count} employee${cost.count>1?'s':''}</span></div><div class="cost-bar" style="width:${pct}%"></div><div class="cost-val">${money.format(cost.total)}</div></div>`;
+  }).join('') || '<p class="empty">No employees to analyze.</p>';
+
+  // Top cost employees
+  const empCosts = active.map(e => {
+    const r = employeeRun(e);
+    const totalCost = r.gross + r.nssfEmployer + r.sha * 2 + r.housingEmployee + r.housingEmployer;
+    return { name: e.name, gross: r.gross, employerCost: r.nssfEmployer + r.sha * 2 + r.housingEmployer, totalCost };
+  }).sort((a,b) => b.totalCost - a.totalCost);
+
+  q('#topCostRows').innerHTML = empCosts.map(ec =>
+    `<tr><td>${escHtml(ec.name)}</td><td class="right">${money.format(ec.gross)}</td><td class="right">${money.format(ec.employerCost)}</td><td class="right" style="font-weight:700">${money.format(ec.totalCost)}</td></tr>`
+  ).join('');
+
+  // Cost summary
+  const t = totals();
+  const totalEmployer = t.nssfEmployer + t.sha * 2 + t.housingEmployee + t.housingEmployer;
+  q('#costSummary').innerHTML = `
+    <div class="line"><span>Active employees</span><strong>${t.active}</strong></div>
+    <div class="line"><span>Total gross salary</span><strong>${money.format(t.gross)}</strong></div>
+    <div class="line"><span>Total employer contributions</span><strong>${money.format(totalEmployer)}</strong></div>
+    <div class="line"><span>Total cost to company</span><strong style="color:var(--green)">${money.format(t.gross + totalEmployer)}</strong></div>
+    <div class="line"><span>Total statutory (employee)</span><strong>${money.format(t.paye + t.nssf + t.sha + t.housingEmployee + t.helb)}</strong></div>
+    <div class="line"><span>Total net payable</span><strong>${money.format(t.net)}</strong></div>
+    <div class="line"><span>Average cost per employee</span><strong>${money.format((t.gross + totalEmployer) / Math.max(t.active, 1))}</strong></div>
+    <div class="line net"><span>Monthly payroll budget</span><strong>${money.format(t.gross + totalEmployer)}</strong></div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════
+   PHASE 4: DOCUMENT VAULT
+   ═══════════════════════════════════════════════════ */
+function renderDocuments() {
+  const filterEmp = q('#docEmployeeFilter').value;
+  const empSelect = q('#docEmployeeFilter');
+  empSelect.innerHTML = '<option value="">All Employees</option>' +
+    state.employees.filter(e=>e.active).map(e => `<option value="${e.id}">${escHtml(e.name)}</option>`).join('');
+
+  const uploadEmp = q('#docUploadEmp');
+  uploadEmp.innerHTML = state.employees.filter(e=>e.active).map(e =>
+    `<option value="${e.id}">${escHtml(e.name)}</option>`
+  ).join('');
+
+  const docs = (state.documents || []).filter(d => !filterEmp || d.employeeId === filterEmp);
+  const iconMap = { 'Employment Contract':'C', 'ID / Passport':'ID', 'KRA PIN Certificate':'K', 'NSSF Card':'N', 'SHA Card':'S', 'Academic Certificate':'A', 'Other':'D' };
+
+  q('#documentList').innerHTML = docs.length ? docs.map(d => {
+    const emp = state.employees.find(e2 => e2.id === d.employeeId);
+    return `<div class="doc-card">
+      <div class="doc-icon">${iconMap[d.docType] || 'D'}</div>
+      <div class="doc-info">
+        <strong>${escHtml(d.docType)}</strong>
+        <span>${emp ? escHtml(emp.name) : 'Unknown'} &middot; ${d.dateAdded ? new Date(d.dateAdded).toLocaleDateString('en-KE') : 'N/A'}</span>
+        ${d.notes ? `<span>${escHtml(d.notes)}</span>` : ''}
+      </div>
+      <button class="mini" data-remove-doc="${d.id}" style="color:var(--red);border-color:var(--red)">&#x2715;</button>
+    </div>`;
+  }).join('') : '<p class="empty">No documents uploaded. Use the upload panel to add documents.</p>';
+}
+
+q('#addDocument').addEventListener('click', () => {
+  const empId = q('#docUploadEmp').value;
+  const docType = q('#docUploadType').value;
+  const notes = q('#docUploadNotes').value.trim();
+  if (!empId) { toast('Select an employee.'); return; }
+  state.documents.push({ id:id(), employeeId: empId, docType, notes, dateAdded: new Date().toISOString() });
+  q('#docUploadNotes').value = '';
+  renderAll();
+  toast('Document added.');
+  audit(`Added document: ${docType}`);
+});
+
+q('#documentList').addEventListener('click', e => {
+  const removeId = e.target.dataset.removeDoc;
+  if (!removeId) return;
+  state.documents = state.documents.filter(d => d.id !== removeId);
+  renderAll();
+  toast('Document removed.');
+});
+
+/* ═══════════════════════════════════════════════════
+   PHASE 4: ERROR DETECTION
+   ═══════════════════════════════════════════════════ */
+function runErrorDetection() {
+  const errors = [];
+  const warnings = [];
+
+  state.employees.filter(e=>e.active).forEach(e => {
+    const r = employeeRun(e);
+    // Negative net pay
+    if (r.net < 0) {
+      errors.push({ emp: e.name, msg: `Net pay is negative (Ksh ${money.format(r.net)}). Deductions exceed gross pay.`, severity:'error' });
+    }
+    // Advance > 50% of salary
+    if (e.advance > 0 && e.basicSalary > 0 && (e.advance / e.basicSalary) > 0.5) {
+      errors.push({ emp: e.name, msg: `Advance is ${((e.advance/e.basicSalary)*100).toFixed(0)}% of basic salary (above 50% threshold).`, severity:'warn' });
+    }
+    // Missing KRA PIN
+    if (!e.kraPin) {
+      errors.push({ emp: e.name, msg: 'KRA PIN is missing. Cannot file P10 return.', severity:'error' });
+    }
+    // PAYE = 0 for high earners
+    if (r.gross > 24000 && r.paye === 0) {
+      warnings.push({ emp: e.name, msg: 'Gross pay exceeds Ksh 24,000 but PAYE is zero. Verify calculations.', severity:'warn' });
+    }
+  });
+
+  // Inactive employee in advances
+  const inactiveWithAdvances = state.employees.filter(e => !e.active && e.advance > 0);
+  if (inactiveWithAdvances.length) {
+    errors.push({ emp: inactiveWithAdvances.map(e=>e.name).join(', '), msg: 'Inactive employee(s) still have outstanding advances.', severity:'error' });
+  }
+
+  // Period not approved
+  if (!state.approved) {
+    warnings.push({ emp: 'System', msg: 'Payroll has not been approved for this period.', severity:'warn' });
+  }
+
+  return { errors, warnings };
+}
+
+function renderErrorCheck() {
+  const result = runErrorDetection();
+  const items = [...result.errors.map(e => ({...e, cls:'error-alert', icon:'✕'})), ...result.warnings.map(w => ({...w, cls:'warn-alert', icon:'!'}))];
+  q('#errorResults').innerHTML = items.length ? items.map(i =>
+    `<div class="${i.cls}"><span class="${i.cls === 'error-alert' ? 'icon-x' : 'icon-w'}">${i.icon}</span><div class="msg"><strong>${escHtml(i.emp)}</strong>${escHtml(i.msg)}</div></div>`
+  ).join('') : `<div class="check"><div><strong>All checks passed</strong><span>No payroll errors detected for the current period.</span></div><span class="pill ok">OK</span></div>`;
+}
+
+q('#runErrorCheck').addEventListener('click', () => {
+  renderErrorCheck();
+  toast('Error detection completed.');
+});
+
+/* ═══════════════════════════════════════════════════
+   PHASE 4: SETTINGS (updated)
+   ═══════════════════════════════════════════════════ */
 function renderSettings() {
   q('#companyName').value = state.settings.companyName;
   q('#kraPinCompany').value = state.settings.kraPin || '';
@@ -1134,7 +1749,6 @@ function renderSettings() {
     `<div class="report"><div><strong>${escHtml(d.name)}</strong><span>Global deduction</span></div><strong>${money.format(num(d.amount))}</strong></div>`
   ).join('') || '<p class="empty">No custom deductions.</p>';
 
-  // Per-employee deductions
   const empSelect = q('#dedEmployee');
   empSelect.innerHTML = state.employees.filter(e2=>e2.active).map(e2 =>
     `<option value="${e2.id}">${escHtml(e2.name)}</option>`
@@ -1153,49 +1767,6 @@ function renderAudit() {
   q('#auditLog').innerHTML = (state.auditLog || []).map(a =>
     `<div class="audit-entry"><span class="time">${new Date(a.time).toLocaleString('en-KE')}</span><span class="actor">${escHtml(a.actor)}</span><span class="action">${escHtml(a.action)}</span></div>`
   ).join('') || '<p class="empty">No audit entries.</p>';
-}
-
-/* ── CSV Import ── */
-function parseCSV(text) {
-  const lines = text.trim().split(/\r?\n/);
-  const rows = lines.map(l => {
-    const result = [];
-    let cur = '', inQuotes = false;
-    for (let i = 0; i < l.length; i++) {
-      const c = l[i];
-      if (c === '"') { if (inQuotes && l[i+1] === '"') { cur += '"'; i++; } else { inQuotes = !inQuotes; } continue; }
-      if (c === ',' && !inQuotes) { result.push(cur.trim()); cur = ''; continue; }
-      cur += c;
-    }
-    result.push(cur.trim());
-    return result;
-  });
-  if (rows.length < 1) return { employees: [], errors: ['Empty file'] };
-  const header = rows[0].map(h => h.toLowerCase().replace(/[\s_]/g,''));
-  const nameIx = header.findIndex(h => ['name','employeename','fullname'].includes(h));
-  const salaryIx = header.findIndex(h => ['salary','basicsalary','gross'].includes(h));
-  const advanceIx = header.findIndex(h => ['advance','salaryadvance','salaryadvance'].includes(h));
-  const kraIx = header.findIndex(h => ['krapin','pin','kra'].includes(h));
-  const bankIx = header.findIndex(h => ['bankaccount','account','accountnumber','bankacc'].includes(h));
-  const deptIx = header.findIndex(h => ['department','dept'].includes(h));
-  const helbIx = header.findIndex(h => ['helb','helbamount'].includes(h));
-  const bankNameIx = header.findIndex(h => ['bankname','bank'].includes(h));
-  const data = rows.slice(1);
-  const validRows = [];
-  const errors = [];
-  data.forEach((row, i) => {
-    const name = row[nameIx >= 0 ? nameIx : 0];
-    const salary = num(row[salaryIx >= 0 ? salaryIx : 1]);
-    if (!name || salary <= 0) { errors.push(`Row ${i+2}: missing name/salary`); return; }
-    validRows.push({
-      id:id(), name, bankName:row[bankNameIx>=0?bankNameIx:-1]||'', empId:`EMP${String(state.employees.length+validRows.length+1).padStart(3,'0')}`,
-      kraPin:row[kraIx>=0?kraIx:2]||'', department:row[deptIx>=0?deptIx:3]||'General',
-      jobGrade:row[4]||'G7', bankAccount:row[bankIx>=0?bankIx:5]||'',
-      basicSalary:salary, houseAllowance:0, transportAllowance:0, otherAllowance:0,
-      helb:num(row[helbIx>=0?helbIx:6]), advance:num(row[advanceIx>=0?advanceIx:-1])||0, active:true
-    });
-  });
-  return { employees: validRows, errors };
 }
 
 /* ═══════════════════════════════════════════════════
@@ -1228,7 +1799,6 @@ function downloadDeductionReport(key) {
   audit(`Downloaded ${key} report`);
 }
 
-/* ── Bank payment export ── */
 function downloadBankExport() {
   const rows = ['employee,bankName,bankAccount,department,payableAmount,grossPay'];
   state.employees.filter(e2=>e2.active).forEach(e2 => {
@@ -1240,7 +1810,6 @@ function downloadBankExport() {
   audit('Exported bank payment file');
 }
 
-/* ── KRA P10 Return ── */
 function downloadP10() {
   const rows = ['employeeName,bankName,kraPin,grossPay,taxableIncome,paye,personalRelief,netPaye,empId,department'];
   state.employees.filter(e2=>e2.active).forEach(e2 => {
@@ -1252,7 +1821,6 @@ function downloadP10() {
   audit('Exported KRA P10 return');
 }
 
-/* ── TallyPrime Journal ── */
 function downloadTallyJournal() {
   const t = totals();
   const per = state.settings.period;
@@ -1268,6 +1836,8 @@ function downloadTallyJournal() {
     [per,'Journal','Housing Levy Payable (Employer)', -t.housingEmployer, `Housing employer ${per}`],
     [per,'Journal','HELB Payable', -t.helb, `HELB deduction ${per}`],
     [per,'Journal','Salary Advances Receivable', -t.advance, `Advance recovery ${per}`],
+    [per,'Journal','Bonus Payable', -t.bonus, `Bonuses ${per}`],
+    [per,'Journal','Overtime Payable', -t.overtime, `Overtime ${per}`],
     [per,'Journal','Bank Payable', -t.net, `Net salary payment ${per}`]
   ];
   download(`easypay-tally-journal-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.map(r2 => r2.map(csvCell).join(',')).join('\n'));
@@ -1275,7 +1845,6 @@ function downloadTallyJournal() {
   audit('Exported TallyPrime journal');
 }
 
-/* ── Annual P9 CSV Download ── */
 function downloadP9CSV() {
   const year = q('#p9Year').value;
   const rows = ['employeeName,month,grossPay,taxableIncome,monthlyPaye,cumulativePaye,annualPayee'];
@@ -1297,7 +1866,6 @@ function downloadP9CSV() {
   audit(`Downloaded Annual P9 for ${year}`);
 }
 
-/* ── Annual P9 PDF Download ── */
 function downloadP9PDF() {
   const year = q('#p9Year').value;
   const { jsPDF } = window.jspdf;
@@ -1323,70 +1891,48 @@ function downloadP9PDF() {
   const startX = 12;
   let startY = y;
 
-  // Header row
   doc.setFont('helvetica','bold');
   doc.setFontSize(9);
   let x = startX;
-  headers.forEach((h, i) => {
-    doc.text(h, x, startY);
-    x += colWidths[i];
-  });
+  headers.forEach((h, i) => { doc.text(h, x, startY); x += colWidths[i]; });
   startY += 2;
   doc.setDrawColor(180);
   doc.line(startX, startY, startX + colWidths.reduce((a,b)=>a+b,0), startY);
   startY += lh;
 
-  // Data rows
   doc.setFont('helvetica','normal');
   doc.setFontSize(8.5);
-  let totalPages = 1;
   state.employees.filter(e2=>e2.active).forEach(e2 => {
     const empHistory = (state.p9History || []).filter(h => h.employeeId === e2.id);
     const periodMap = {};
     empHistory.forEach(h => { periodMap[h.period] = h; });
     let cumulative = 0;
-
     MONTHS.forEach(m => {
       const key = `${m} ${year}`;
       const data = periodMap[key];
       const paye = data ? data.paye : 0;
       cumulative += paye;
-
-      // Check if new page needed
       if (startY > doc.internal.pageSize.height - 20) {
-        doc.addPage();
-        startY = 15;
-        totalPages++;
-        doc.setFont('helvetica','bold');
-        doc.setFontSize(9);
+        doc.addPage(); startY = 15;
         x = startX;
+        doc.setFont('helvetica','bold'); doc.setFontSize(9);
         headers.forEach((h, i) => { doc.text(h, x, startY); x += colWidths[i]; });
         startY += 2;
         doc.setDrawColor(180);
         doc.line(startX, startY, startX + colWidths.reduce((a,b)=>a+b,0), startY);
         startY += lh;
-        doc.setFont('helvetica','normal');
-        doc.setFontSize(8.5);
+        doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
       }
-
       x = startX;
-      doc.text(e2.name.substring(0, 20), x, startY);
-      x += colWidths[0];
-      doc.text(m, x, startY);
-      x += colWidths[1];
-      doc.text(data ? money.format(data.gross) : '—', x, startY, { align:'right' });
-      x += colWidths[2];
-      doc.text(data ? money.format(data.taxablePay) : '—', x, startY, { align:'right' });
-      x += colWidths[3];
-      doc.text(paye > 0 ? money.format(paye) : '—', x, startY, { align:'right' });
-      x += colWidths[4];
+      doc.text(e2.name.substring(0, 20), x, startY); x += colWidths[0];
+      doc.text(m, x, startY); x += colWidths[1];
+      doc.text(data ? money.format(data.gross) : '—', x, startY, { align:'right' }); x += colWidths[2];
+      doc.text(data ? money.format(data.taxablePay) : '—', x, startY, { align:'right' }); x += colWidths[3];
+      doc.text(paye > 0 ? money.format(paye) : '—', x, startY, { align:'right' }); x += colWidths[4];
       doc.text(cumulative > 0 ? money.format(cumulative) : '—', x, startY, { align:'right' });
       startY += lh;
     });
-
-    // Total row
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(8.5);
+    doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
     x = startX;
     doc.text(`${e2.name} — TOTAL`, x, startY);
     x += colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3];
@@ -1397,13 +1943,8 @@ function downloadP9PDF() {
     doc.setFont('helvetica','normal');
   });
 
-  // Annual summary
-  if (startY > doc.internal.pageSize.height - 30) {
-    doc.addPage();
-    startY = 15;
-  }
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(11);
+  if (startY > doc.internal.pageSize.height - 30) { doc.addPage(); startY = 15; }
+  doc.setFont('helvetica','bold'); doc.setFontSize(11);
   doc.text('ANNUAL PAYEE SUMMARY', 20, startY);
   startY += lh;
   doc.setFontSize(9);
@@ -1417,24 +1958,21 @@ function downloadP9PDF() {
     startY += lh;
   });
   startY += lh;
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(10);
+  doc.setFont('helvetica','bold'); doc.setFontSize(10);
   doc.text(`TOTAL ANNUAL PAYEE: Ksh ${money.format(totalPayee)}`, 20, startY);
-
   doc.save(`easypay-annual-p9-${year}.pdf`);
   toast(`Annual P9 PDF for ${year} downloaded.`);
   audit(`Downloaded Annual P9 PDF for ${year}`);
 }
 
-/* ── Full backup ── */
 function downloadFullBackup() {
   const data = JSON.stringify(state, null, 2);
-  download(`easypay-full-backup-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.json`, data);
+  download(`e
+asypay-full-backup-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.json`, data);
   toast('Full company backup downloaded.');
   audit('Downloaded full company backup');
 }
 
-/* ── Payslip PDF ── */
 function downloadPayslipPDF() {
   const e = state.employees.find(e2 => e2.id === selectedId);
   if (!e) { toast('Select an employee first.'); return; }
@@ -1461,16 +1999,20 @@ function downloadPayslipPDF() {
   y += lh + 8;
   const r = employeeRun(e);
   const lines = [
+    ['Basic salary', r.gross - r.bonus - r.overtimePay],
+    ['Bonus', r.bonus],
+    ['Overtime', r.overtimePay],
     ['Gross pay', r.gross],
     ['PAYE', -r.paye],
     ['NSSF (employee)', -r.nssfEmployee],
     ['SHA', -r.sha],
     ['Housing levy', -r.housingEmployee],
     ['HELB', -r.helb],
+    ['Pension', -r.pension],
     ['Salary advance', -r.advance],
     ['Custom deductions', -(r.globalCustom + r.empCustomTotal)]
   ];
-  lines.forEach(([label, val]) => {
+  lines.filter(([,v]) => v !== 0).forEach(([label, val]) => {
     doc.setFont('helvetica','normal'); doc.setFontSize(11);
     doc.text(label, 20, y);
     doc.text((val < 0 ? '-' : '') + money.format(Math.abs(val)), 170, y, { align:'right' });
@@ -1485,7 +2027,6 @@ function downloadPayslipPDF() {
   audit(`Downloaded payslip PDF for ${e.name}`);
 }
 
-/* ── Bulk payslip ZIP ── */
 async function downloadPayslipZIP() {
   const zip = new JSZip();
   const folder = zip.folder('payslips');
@@ -1510,6 +2051,9 @@ async function downloadPayslipZIP() {
     y += lh + 8;
     const r = employeeRun(e);
     const lines = [
+      ['Basic salary', r.gross - r.bonus - r.overtimePay],
+      ['Bonus', r.bonus],
+      ['Overtime', r.overtimePay],
       ['Gross pay', r.gross],
       ['PAYE', -r.paye],
       ['NSSF (employee)', -r.nssfEmployee],
@@ -1519,7 +2063,7 @@ async function downloadPayslipZIP() {
       ['Salary advance', -r.advance],
       ['Custom deductions', -(r.globalCustom + r.empCustomTotal)]
     ];
-    lines.forEach(([label, val]) => {
+    lines.filter(([,v]) => v !== 0).forEach(([label, val]) => {
       doc.setFont('helvetica','normal'); doc.setFontSize(11);
       doc.text(label, 20, y);
       doc.text((val < 0 ? '-' : '') + money.format(Math.abs(val)), 170, y, { align:'right' });
@@ -1539,6 +2083,17 @@ async function downloadPayslipZIP() {
   audit('Downloaded bulk payslip ZIP');
 }
 
+function downloadBankReport() {
+  const rows = ['employee,bankName,bankAccount,department,netPay,grossPay,bankNameLowercase'];
+  state.employees.filter(e2=>e2.active).forEach(e2 => {
+    const r2 = employeeRun(e2);
+    rows.push([e2.name, e2.bankName||'', e2.bankAccount||'', e2.department||'', r2.net, r2.gross, (e2.bankName||'').toLowerCase()].map(csvCell).join(','));
+  });
+  download(`easypay-bank-report-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.join('\n'));
+  toast('Bank report downloaded.');
+  audit('Exported bank report');
+}
+
 /* ═══════════════════════════════════════════════════
    EVENT HANDLERS
    ═══════════════════════════════════════════════════ */
@@ -1551,7 +2106,7 @@ q('#employeeRows').addEventListener('input', e => {
   if (!emp) return;
   const field = e.target.dataset.field;
   if (!field) return;
-  if (field === 'basicSalary' || field === 'helb' || field === 'advance') {
+  if (['basicSalary','helb','advance'].includes(field)) {
     emp[field] = num(e.target.value);
   } else {
     emp[field] = e.target.value;
@@ -1559,15 +2114,10 @@ q('#employeeRows').addEventListener('input', e => {
   renderAll();
 });
 
-/* Use employee */
+/* Employee row click */
 q('#employeeRows').addEventListener('click', e => {
   const useId = e.target.dataset.use;
-  if (useId) {
-    selectedId = useId;
-    renderAll();
-    showTab('payroll');
-    return;
-  }
+  if (useId) { selectedId = useId; renderAll(); showTab('payroll'); return; }
   const deactivateId = e.target.dataset.deactivate;
   if (deactivateId) {
     const emp = state.employees.find(e2 => e2.id === deactivateId);
@@ -1582,11 +2132,24 @@ q('#employeeRows').addEventListener('click', e => {
   const historyBtn = e.target.dataset.viewHistory;
   if (historyBtn) {
     const h = state.payrollHistory.find(h2 => h2.period === historyBtn);
-    if (h) {
-      showTab('dashboard');
-      toast(`Viewing ${h.period} payroll — Gross: ${money.format(h.gross)}, Net: ${money.format(h.net)}`);
-    }
+    if (h) { showTab('dashboard'); toast(`Viewing ${h.period} payroll — Gross: ${money.format(h.gross)}, Net: ${money.format(h.net)}`); }
   }
+});
+
+/* Reports download clicks */
+q('#reportsList').addEventListener('click', e => {
+  const deduct = e.target.closest('[data-deduct]');
+  if (deduct) downloadDeductionReport(deduct.dataset.deduct);
+});
+
+/* Bonus / OT remove clicks */
+q('#bonusRows').addEventListener('click', e => {
+  const removeId = e.target.dataset.removeBonus;
+  if (removeId) { state.bonuses = state.bonuses.filter(b => b.id !== removeId); renderAll(); toast('Bonus removed.'); audit('Removed bonus'); }
+});
+q('#overtimeRows').addEventListener('click', e => {
+  const removeId = e.target.dataset.removeOt;
+  if (removeId) { state.overtime = state.overtime.filter(o => o.id !== removeId); renderAll(); toast('Overtime removed.'); audit('Removed overtime'); }
 });
 
 /* Settings */
@@ -1597,147 +2160,138 @@ q('#periodInput').addEventListener('input', e => { state.settings.period = e.tar
 q('#shaRateInput').addEventListener('input', e => { state.settings.shaRate = num(e.target.value); renderAll(); });
 q('#shaEmployerRateInput').addEventListener('input', e => { state.settings.shaEmployerRate = num(e.target.value); renderAll(); });
 q('#pensionRateInput').addEventListener('input', e => { state.settings.pensionRate = num(e.target.value); renderAll(); });
-q('#roundToggle').addEventListener('change', e => { state.settings.round = e.target.checked; renderAll(); });
-q('#roundToggleSettings').addEventListener('change', e => { state.settings.round = e.target.checked; renderAll(); });
+q('#roundToggle').addEventListener('change', e => { state.settings.round = e.target.checked; q('#roundToggleSettings').checked = e.target.checked; renderAll(); });
+q('#roundToggleSettings').addEventListener('change', e => { state.settings.round = e.target.checked; q('#roundToggle').checked = e.target.checked; renderAll(); });
 
-/* Custom deductions */
+/* Deductions */
 q('#addDed').addEventListener('click', () => {
   const name = q('#newDedName').value.trim();
   const amount = num(q('#newDedAmount').value);
-  if (!name || amount <= 0) { toast('Enter name and amount.'); return; }
+  if (!name || amount <= 0) { toast('Enter a name and amount.'); return; }
   state.customDeductions.push({ id:id(), name, amount });
-  q('#newDedName').value = '';
-  q('#newDedAmount').value = '';
+  q('#newDedName').value = ''; q('#newDedAmount').value = '';
   renderAll();
-  toast(`Added deduction: ${name}`);
+  toast('Custom deduction added.');
   audit(`Added custom deduction: ${name}`);
 });
-
-/* Per-employee deductions */
 q('#addEmpDed').addEventListener('click', () => {
   const empId = q('#dedEmployee').value;
   const name = q('#dedName').value.trim();
   const amount = num(q('#dedAmount').value);
-  if (!name || amount <= 0) { toast('Enter name and amount.'); return; }
+  if (!name || amount <= 0) { toast('Enter a name and amount.'); return; }
   state.employeeDeductions.push({ id:id(), employeeId: empId, name, amount });
-  q('#dedName').value = '';
-  q('#dedAmount').value = '';
+  q('#dedName').value = ''; q('#dedAmount').value = '';
   renderAll();
-  toast(`Added deduction for ${name}.`);
-  audit(`Added per-employee deduction: ${name}`);
+  toast('Employee deduction added.');
+  audit(`Added employee deduction: ${name}`);
 });
 
-/* CSV upload */
-q('#csvUpload').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  file.text().then(t => {
-    const result = parseCSV(t);
-    if (result.employees.length) {
-      state.employees = result.employees;
-      toast(`Imported ${result.employees.length} employees.`);
-      audit(`CSV import: ${result.employees.length} employees`);
-    }
-    if (result.errors.length) toast(result.errors.join('; '));
-    renderAll();
-  });
-});
-
-/* Download template */
-q('#downloadTemplate').addEventListener('click', () =>
-  download('easypay-employee-template.csv',
-    'name,bankName,salary,advance,kraPin,bankAccount,department,helb\n' +
-    'Amina Otieno,Equity Bank,30000,0,A012345678Z,0123456789,Accounts,0\n' +
-    'Brian Mwangi,KCB Bank,55000,5000,P000000001A,1234567890,Sales,4000\n'
-  )
-);
-
-/* Clear advances */
-q('#clearAdvances').addEventListener('click', () => {
-  state.employees.forEach(e2 => e2.advance = 0);
+/* Role switch */
+q('#switchRole').addEventListener('click', () => {
+  state.role = q('#currentUserRole').value;
   renderAll();
-  toast('All advances cleared.');
-  audit('Cleared all advances');
+  toast(`Switched to ${state.role} role.`);
+  audit(`Role switched to ${state.role}`);
 });
 
-/* Add advance */
-q('#addAdvance').addEventListener('click', () => {
-  const name = q('#newAdvanceEmp').value.trim();
-  const amount = num(q('#newAdvanceAmount').value);
-  if (!name || amount <= 0) { toast('Enter name and amount.'); return; }
-  const emp = state.employees.find(e2 => e2.name.toLowerCase() === name.toLowerCase());
-  if (!emp) { toast('Employee not found.'); return; }
-  emp.advance = amount;
-  state.advanceHistory.unshift({ employeeId:emp.id, period:state.settings.period, type:'issued', amount, note:'Manual advance' });
-  q('#newAdvanceEmp').value = '';
-  q('#newAdvanceAmount').value = '';
+/* Departments */
+q('#addDept').addEventListener('click', () => {
+  const name = q('#newDeptName').value.trim();
+  if (!name) { toast('Enter a department name.'); return; }
+  state.departments.push(name);
+  q('#newDeptName').value = '';
   renderAll();
-  toast(`Advance added for ${name}.`);
-  audit(`Added advance: ${name} — Ksh ${money.format(amount)}`);
+  toast('Department added.');
+  audit(`Added department: ${name}`);
 });
+
+function renderDepartments() {
+  q('#deptList').innerHTML = state.departments.map(d =>
+    `<div class="report"><div><strong>${escHtml(d)}</strong></div><button class="mini" data-remove-dept="${escHtml(d)}" style="color:var(--red);border-color:var(--red)">Remove</button></div>`
+  ).join('');
+}
+
+/* Filter department select */
+function renderDeptFilters() {
+  const sel = q('#filterDepartment');
+  const current = sel.value;
+  sel.innerHTML = '<option>All Departments</option>' + state.departments.map(d => `<option>${escHtml(d)}</option>`).join('');
+  sel.value = current || 'All Departments';
+}
 
 /* Add employee */
 q('#addEmployee').addEventListener('click', () => {
-  const e = { id:id(), name:'New Employee', bankName:'', empId:`EMP${String(state.employees.length+1).padStart(3,'0')}`,
-    kraPin:'', department:state.departments[0]||'General', jobGrade:'G7', bankAccount:'',
-    basicSalary:30000, houseAllowance:0, transportAllowance:0, otherAllowance:0, helb:0, advance:0, active:true };
-  state.employees.push(e);
-  selectedId = e.id;
+  const empId = 'EMP' + String(state.employees.length + 1).padStart(3,'0');
+  state.employees.push({ id:id(), name:'New Employee', bankName:'', empId, kraPin:'', department: state.departments[0]||'', jobGrade:'G7', bankAccount:'', basicSalary:0, houseAllowance:0, transportAllowance:0, otherAllowance:0, helb:0, advance:0, active:true });
   renderAll();
-  showTab('employees');
-  toast('New employee added.');
+  toast('Employee added.');
   audit('Added new employee');
 });
 
-/* Search */
-q('#searchEmployees').addEventListener('input', () => renderEmployeeRows());
-q('#filterDepartment').addEventListener('change', () => renderEmployeeRows());
-q('#filterStatus').addEventListener('change', () => renderEmployeeRows());
-
-/* Department filter */
-const deptSelect = q('#filterDepartment');
-function updateDeptFilter() {
-  deptSelect.innerHTML = '<option>All Departments</option>' + state.departments.map(d => `<option>${escHtml(d)}</option>`).join('');
-}
-
-/* Employer split toggle */
-q('#employerSplit').addEventListener('click', () => {
-  showEmployerSplit = !showEmployerSplit;
-  q('#employerSplit').textContent = showEmployerSplit ? 'Hide Employer Split' : 'Show Employer Split';
-  renderPayrollPreview();
+/* CSV import */
+q('#csvUpload').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const lines = ev.target.result.split('\n').filter(l => l.trim());
+    const header = lines[0].toLowerCase();
+    const errors = [];
+    lines.slice(1).forEach((line, i) => {
+      const cols = line.split(',').map(c => c.trim().replace(/^"|"$/g,''));
+      if (cols.length < 2) { errors.push(`Row ${i+2}: Too few columns.`); return; }
+      const name = cols[0];
+      if (!name) { errors.push(`Row ${i+2}: Missing name.`); return; }
+      const basicSalary = num(cols[2] || cols[cols.length-1]);
+      if (!basicSalary) { errors.push(`Row ${i+2}: Invalid salary.`); return; }
+      const empId = 'EMP' + String(state.employees.length + 1).padStart(3,'0');
+      state.employees.push({ id:id(), name, bankName: cols[1]||'', empId, kraPin:'', department: state.departments[0]||'', jobGrade:'G7', bankAccount:'', basicSalary, helb:0, advance:0, active:true });
+    });
+    e.target.value = '';
+    renderAll();
+    if (errors.length) { toast(`Imported with ${errors.length} warning(s).`); }
+    else { toast('CSV imported successfully.'); }
+    audit(`CSV import: ${lines.length - 1} employees added`);
+  };
+  reader.readAsText(file);
 });
 
-/* Run payroll */
+/* CSV template */
+q('#downloadTemplate').addEventListener('click', () => {
+  download('easypay-employee-template.csv', 'name,bankName,salary,advance\nAmina Otieno,Equity Bank,30000,0\nBrian Mwangi,KCB Bank,55000,5000\n');
+  toast('Template downloaded.');
+  audit('Downloaded employee CSV template');
+});
+
+/* Payroll run */
 q('#runPayroll').addEventListener('click', () => {
-  // Save current run to history (aggregate)
   const t = totals();
-  state.payrollHistory.unshift({
-    period: state.settings.period, status:'draft',
-    gross:t.gross, paye:t.paye, nssf:t.nssf, sha:t.sha, net:t.net
+  const active = state.employees.filter(e=>e.active);
+  // Save P9 snapshot for each employee
+  active.forEach(e => {
+    const r = employeeRun(e);
+    const period = state.settings.period;
+    // Check if period already exists for this employee
+    const existing = state.p9History.findIndex(h => h.employeeId === e.id && h.period === period);
+    const snapshot = { employeeId: e.id, period, gross: r.gross, taxablePay: r.taxablePay, paye: r.paye, nssf: r.nssfEmployee, sha: r.sha, helb: r.helb, advance: r.advance, net: r.net };
+    if (existing >= 0) {
+      state.p9History[existing] = snapshot;
+    } else {
+      state.p9History.push(snapshot);
+    }
   });
-  // Also save per-employee snapshots for P9
-  state.employees.filter(e2=>e2.active).forEach(e2 => {
-    const r2 = employeeRun(e2);
-    state.p9History.unshift({
-      period: state.settings.period, employeeId: e2.id,
-      gross: r2.gross, taxablePay: r2.taxablePay, paye: r2.paye,
-      nssf: r2.nssfEmployee, sha: r2.sha, housingEmployee: r2.housingEmployee,
-      helb: r2.helb, advance: r2.advance
-    });
-  });
-  state.approved = false;
-  state.locked = false;
+  state.payrollHistory.push({ period: state.settings.period, status:'draft', gross:t.gross, paye:t.paye, nssf:t.nssf, sha:t.sha, net:t.net });
   renderAll();
-  toast('Payroll run refreshed for all employees.');
-  audit('Refreshed payroll run');
+  toast('Payroll run completed and P9 snapshot saved.');
+  audit(`Payroll run: ${state.settings.period}`);
 });
 
 /* Approve */
 q('#approve').addEventListener('click', () => {
   state.approved = true;
-  if (state.payrollHistory.length) {
-    state.payrollHistory[0].status = 'approved';
-  }
+  // Update last history entry
+  const last = state.payrollHistory[state.payrollHistory.length - 1];
+  if (last) { last.status = 'approved'; }
   renderAll();
   toast('Payroll approved.');
   audit('Payroll approved');
@@ -1745,103 +2299,102 @@ q('#approve').addEventListener('click', () => {
 
 /* Lock */
 q('#lock').addEventListener('click', () => {
-  if (!state.approved) { toast('Approve payroll before locking.'); return; }
   state.locked = true;
-  if (state.payrollHistory.length) {
-    state.payrollHistory[0].status = 'locked';
-  }
+  const last = state.payrollHistory[state.payrollHistory.length - 1];
+  if (last) { last.status = 'locked'; }
   renderAll();
-  toast('Payroll period locked.');
-  audit('Payroll period locked');
+  toast('Payroll locked.');
+  audit('Payroll locked');
 });
 
-/* Export CSV */
-q('#exportCsv').addEventListener('click', () => {
-  const rows = ['name,bankName,empId,department,gross,paye,nssf,sha,helb,advance,net'];
+/* Export buttons */
+q('#exportCsv').addEventListener('click', e => {
+  e.preventDefault();
+  const rows = ['employee,bankName,kraPin,department,jobGrade,empId,gross,net,paye,nssf,sha,housing,helb,advance,basicSalary'];
   state.employees.filter(e2=>e2.active).forEach(e2 => {
     const r2 = employeeRun(e2);
-    rows.push([e2.name, e2.bankName||'', e2.empId||'', e2.department||'', r2.gross, r2.paye, r2.nssfEmployee, r2.sha, r2.helb, r2.advance, r2.net].join(','));
+    rows.push([e2.name, e2.bankName||'', e2.kraPin||'', e2.department||'', e2.jobGrade||'', e2.empId||'', r2.gross, r2.net, r2.paye, r2.nssfEmployee, r2.sha, r2.housingEmployee, r2.helb, r2.advance, e2.basicSalary].map(csvCell).join(','));
   });
-  download('easypay-payroll-export.csv', rows.join('\n'));
-  toast('Payroll CSV exported.');
+  download(`easypay-payroll-${state.settings.period.toLowerCase().replace(/\s+/g,'-')}.csv`, rows.join('\n'));
+  toast('Payroll CSV downloaded.');
   audit('Exported payroll CSV');
 });
 
-/* Bank export */
-q('#exportBank').addEventListener('click', () => downloadBankExport());
-q('#exportBankReport').addEventListener('click', () => downloadBankExport());
-
-/* KRA P10 */
-q('#exportP10').addEventListener('click', () => downloadP10());
-
-/* TallyPrime */
-q('#exportTally').addEventListener('click', () => downloadTallyJournal());
-
-/* Annual P9 */
-q('#exportP9').addEventListener('click', () => downloadP9PDF());
-q('#downloadP9Csv').addEventListener('click', () => downloadP9CSV());
-q('#downloadP9Pdf').addEventListener('click', () => downloadP9PDF());
-
-/* Full backup */
-q('#backupAll').addEventListener('click', () => downloadFullBackup());
-
-/* Payslip PDF */
-q('#downloadPayslipPdf').addEventListener('click', () => downloadPayslipPDF());
-
-/* Bulk ZIP */
-q('#downloadZip').addEventListener('click', () => downloadPayslipZIP());
-q('#downloadAllPayslips').addEventListener('click', () => downloadPayslipZIP());
-
-/* Deduction reports */
-q('#reportsList').addEventListener('click', e => {
-  if (!e.target.dataset.deduct) return;
-  downloadDeductionReport(e.target.dataset.deduct);
+q('#backupAll').addEventListener('click', downloadFullBackup);
+q('#downloadZip').addEventListener('click', downloadPayslipZIP);
+q('#exportBank').addEventListener('click', downloadBankExport);
+q('#exportP10').addEventListener('click', downloadP10);
+q('#exportTally').addEventListener('click', downloadTallyJournal);
+q('#exportP9').addEventListener('click', downloadP9PDF);
+q('#downloadP9Csv').addEventListener('click', downloadP9CSV);
+q('#downloadP9Pdf').addEventListener('click', downloadP9PDF);
+q('#downloadPayslipPdf').addEventListener('click', downloadPayslipPDF);
+q('#downloadAllPayslips').addEventListener('click', downloadPayslipZIP);
+q('#exportBankReport').addEventListener('click', downloadBankReport);
+q('#clearAdvances').addEventListener('click', () => {
+  state.employees.forEach(e => e.advance = 0);
+  renderAll();
+  toast('All advances cleared.');
+  audit('Cleared all salary advances');
+});
+q('#addAdvance').addEventListener('click', () => {
+  const empName = q('#newAdvanceEmp').value.trim();
+  const amount = num(q('#newAdvanceAmount').value);
+  if (!empName || amount <= 0) { toast('Enter employee name and amount.'); return; }
+  const emp = state.employees.find(e2 => e2.name.toLowerCase() === empName.toLowerCase());
+  if (!emp) { toast('Employee not found.'); return; }
+  emp.advance += amount;
+  state.advanceHistory.push({ id:id(), employeeId: emp.id, period: state.settings.period, type:'issued', amount, note:'Manual advance' });
+  q('#newAdvanceEmp').value = ''; q('#newAdvanceAmount').value = '';
+  renderAll();
+  toast(`Advance of ${money.format(amount)} added to ${emp.name}.`);
+  audit(`Added advance: ${money.format(amount)} to ${emp.name}`);
 });
 
-/* Clear audit */
+/* Employer split toggle */
+q('#employerSplit').addEventListener('click', () => {
+  showEmployerSplit = !showEmployerSplit;
+  renderPayrollPreview();
+});
+
+/* Void last run */
+q('#voidLastRun').addEventListener('click', () => {
+  if (!state.payrollHistory.length) { toast('No payroll history.'); return; }
+  state.payrollHistory.pop();
+  renderAll();
+  toast('Last payroll run voided.');
+  audit('Voided last payroll run');
+});
+
+/* Audit clear */
 q('#clearAudit').addEventListener('click', () => {
-  state.auditLog = [];
+  state.auditLog = [{ time:new Date().toISOString(), actor:'admin', action:'Audit log cleared' }];
   renderAll();
   toast('Audit log cleared.');
+  audit('Audit log cleared');
 });
 
-/* Switch role */
-q('#switchRole').addEventListener('click', () => {
-  state.role = q('#currentUserRole').value;
+/* Employee search & filter */
+q('#searchEmployees').addEventListener('input', renderEmployeeRows);
+q('#filterDepartment').addEventListener('change', renderEmployeeRows);
+q('#filterStatus').addEventListener('change', renderEmployeeRows);
+
+/* ── INIT ── */
+function init() {
+  renderDeptFilters();
   renderAll();
-  toast(`Switched to ${state.role} role.`);
-  audit(`Switched role to ${state.role}`);
-});
-
-/* Departments */
-q('#addDept').addEventListener('click', () => {
-  const name = q('#newDeptName').value.trim();
-  if (!name) { toast('Enter a department name.'); return; }
-  if (state.departments.includes(name)) { toast('Department already exists.'); return; }
-  state.departments.push(name);
-  q('#newDeptName').value = '';
-  updateDeptFilter();
+  renderDepartments();
+  // Populate leave balances for existing employees
+  state.employees.filter(e=>e.active).forEach(e => {
+    if (!state.leaveBalances[e.id]) {
+      state.leaveBalances[e.id] = { annual:21, sick:7, maternity:0, paternity:14, bereavement:5 };
+    }
+  });
   renderAll();
-  toast(`Department "${name}" added.`);
-  audit(`Added department: ${name}`);
-});
+  renderDepartments();
+}
 
-q('#deptList').addEventListener('click', e => {
-  const removeId = e.target.dataset.removeDept;
-  if (!removeId) return;
-  state.departments = state.departments.filter(d => d !== removeId);
-  updateDeptFilter();
-  renderAll();
-  toast(`Department "${removeId}" removed.`);
-});
-
-/* ═══════════════════════════════════════════════════
-   INIT
-   ═══════════════════════════════════════════════════ */
-updateDeptFilter();
-if (!selectedId && state.employees[0]) selectedId = state.employees[0].id;
-syncSelectedToForm();
-renderAll();
+init();
 </script>
 </body>
 </html>
